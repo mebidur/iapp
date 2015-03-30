@@ -1,0 +1,23 @@
+<?php
+
+	Route::get('/', 'Auth\AuthController@getLogin');
+
+	Route::controllers([
+		'auth' => 'Auth\AuthController',
+		'password' => 'Auth\PasswordController',
+	]);
+
+	Route::group(['middleware' => 'auth'], function()
+	{
+		Route::controllers([
+			'home' => 'HomeController',
+			'invoice' => 'InvoiceController',
+			'receipt' => 'ReceiptController',
+		]);
+	});
+
+
+
+
+
+

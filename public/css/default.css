@@ -1,0 +1,77 @@
+html,body{
+	height: 100%;
+}
+.login-container{
+	background: #0060AD url(../img/loginbg.jpg) no-repeat left top;
+	color: #fff !important;
+}
+.nav-icon{
+	border: 1px solid #dfdfdf !important;
+	border-top: 4px solid #EAEBEC !important;
+}
+.nav-icon a:hover{
+	text-decoration: none;
+}
+.iapp-navbar{
+	margin-bottom: 6px !important;
+}
+.active-tab{
+	background-color: #337ab7;
+	border: 1px solid #337ab7 !important;
+	border-top: 4px solid #1A5D96 !important;
+}
+.active-tab a{
+	color: #fff !important;
+}
+.active-tab h5, .active-tab h6{
+	color: #fff !important;
+}
+.title-line{
+	padding-bottom: 4px !important;
+	border-bottom: 1px solid #dfdfdf;
+}
+.container-bordered{
+	border:1px solid #dfdfdf !important;
+	border-top: 3px solid #EAEBEC !important;
+}
+.iapp-footer{
+	background-color: #F8F8F8;
+	display: block;
+	padding: 10px;
+	margin-top: 40px;
+	border-top:2px solid #dfdfdf;
+	position: absolute;
+	width: 100%;
+	bottom: 0;
+}
+.wrapper{
+	position: relative;
+	padding-bottom: 100px;
+	min-height: 100%;
+}
+.iapp-lg-btn{
+  height: 80px;
+  margin-top: 8px;
+  border-bottom: 5px solid #034E8E;
+  font-size: 26px;
+}
+.iapp-date{
+	  padding: 0px 8px !important;
+}
+.iapp-terms, .iapp-policy{
+	font-size: 13px !important;
+}
+.container-bordered  input[type="email"], input[type="text"]{
+	height: 40px !important;
+	padding: 9px 18px !important;
+}
+.remove-element{
+	position: relative;
+	top: 29px;
+	font-size: 17px;
+	font-weight: bold;
+}
+.remove-element:hover{
+	text-decoration: none;
+	cursor: pointer;
+}
