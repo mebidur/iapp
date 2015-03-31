@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" ng-app="iApp">
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -9,7 +9,6 @@
 	<link href="{{ asset('/css/app.css') }}" rel="stylesheet">
 	<link rel="stylesheet" type="text/css" href="{{url('css/default.css')}}">
 	<link rel="stylesheet" type="text/css" href="{{url('css/datepicker.css')}}">
-	<script type="text/javascript" src="{{url('js/angular.min.js')}}"></script>
 </head>
 <body>
 	<div class="wrapper">

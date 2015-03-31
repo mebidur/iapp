@@ -10,7 +10,8 @@ class Description extends Model {
 	protected $table = 'descriptions';
 	protected $fillable = ['invoice_id','receipt_id','workDescription','rate','hour','amount'];
 
-	public function invoice(){
-		return $this->belongsTo('App\WorkInvoice','invoice_id','id');
+	public function invoice()
+	{
+		return $this->belongsTo('App\Invoice','invoice_id','id');
 	}
 }

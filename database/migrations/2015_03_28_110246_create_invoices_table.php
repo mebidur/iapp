@@ -22,7 +22,6 @@ class CreateInvoicesTable extends Migration {
 			$table->string('serviceReceiver');
 			$table->string('companyAddress');
 			$table->string('clientAddress');
-			$table->integer('description_id');
 			$table->string('termsCondition');
 			$table->string('bankDetails');
 			$table->string('keyNote');

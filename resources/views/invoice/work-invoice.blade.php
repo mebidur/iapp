@@ -4,10 +4,10 @@
 	@include('app-nav')
 </div>
 <br>
-<div class="container container-bordered" ng-app="iApp" ng-controller="CrtElement">
+<div class="container container-bordered">
 	<h3 class="title-line">Working Hour Invoice</h3>
-	<p>
-	@if (count($errors) > 0)
+	<p></p>
+		@if (count($errors) > 0)
 		<div class="alert alert-danger">
 			<strong>Whoops!</strong> There were some problems with your input.<br><br>
 			<ul>
@@ -17,78 +17,145 @@
 			</ul>
 		</div>
 	@endif
-	</p>
-	{!!Form::open(['url' => 'invoice/work'])!!}
+	<p></p>
+	{!!Form::open(['url' => 'invoice/work','name' => 'workInvoiceForm','novalidate'])!!}
 	<div class="row">
 		<div class="col-md-6">
-			<label><b>Invoice No#</b></label>
-			<input class="form-control" type="text" name="invoiceNumber" value="{{\Input::old('invoiceNumber')}}">
+			<label><b>Invoice No</b></label>
+			<input class="form-control" 
+			type="text"
+			placeholder="Invoice Number" 
+			name="invoiceNumber" 
+			ng-model="workInvoice.invoiceNumber"
+			value="{{old('invoiceNumber')}}" 
+            ng-minlength="5" 
+            ng-maxlength="20"
+			required />
+
+		<div ng-show="workInvoiceForm.invoiceNumber.$dirty && workInvoiceForm.invoiceNumber.$invalid">
+        <small class="text-danger" ng-show="workInvoiceForm.invoiceNumber.$error.required">
+           Invoice no# is required.
+        </small>
+        <small class="text-danger" 
+                ng-show="workInvoiceForm.invoiceNumber.$error.minlength">
+                Your Invoice no# is required to be at least 5 characters
+        </small>
+        <small class="text-danger" 
+                ng-show="workInvoiceForm.invoiceNumber.$error.maxlength">
+                Your name cannot be longer than 20 characters
+        </small>
+      </div>
+
 		</div>
 		<div class="col-md-6">
-			<label><b>Service Date</b></label>
-			<input type="text" class="form-control iapp-date datepicker" name="serviceDate" placeholder="DD/MM/YYYY" value="{{\Input::old('serviceDate')}}">
+			<label><b>Invoice Date</b></label>
+			<!-- datepicker -->
+			<input type="date" class="form-control iapp-date datepicker" 
+			name="serviceDate" 
+			placeholder="DD/MM/YYYY" 
+			value="{{old('serviceDate')}}"
+			ng-model="workInvoice.serviceDate"
+			required/>
+			<div class="" ng-show="workInvoiceForm.serviceDate.$dirty && workInvoiceForm.serviceDate.$invalid">
+		        <small class="text-danger" ng-show="workInvoiceForm.serviceDate.$error.required">
+		           Invoice Date is required.
+		        </small>
+		      </div>
 		</div>
 	</div>
 	<p></p>
 	<div class="row">
 		<div class="col-md-6">
 			<label><b>Service Provider</b></label>
-			<input type="text" class="form-control" name="serviceProvider" placeholder="Eg: ABC Inc," value="{{\Input::old('serviceProvider')}}">
+			<input type="text" class="form-control" 
+			name="serviceProvider" 
+			ng-model="workInvoice.serviceProvider"
+			placeholder="Eg: XYZ Inc," 
+			ng-minlength="3" 
+			value="{{old('serviceProvider')}}"
+			required />
+			<div ng-show="workInvoiceForm.serviceProvider.$dirty && workInvoiceForm.serviceProvider.$invalid">
+		        <small class="text-danger" ng-show="workInvoiceForm.serviceProvider.$error.required">
+		           Service Provide name is required.
+		        </small>
+		        <small class="text-danger" ng-show="workInvoiceForm.serviceProvider.$error.minlength">
+		        	Service Provider name is required to be at least 3 characters
+		        </small>
+		      </div>
 		</div>
 		<div class="col-md-6">
-			<label><b>Client's Name</b></label>
-			<input type="text" class="form-control" name="serviceReceiver" placeholder="Client's Name" value="{{\Input::old('serviceReceiver')}}">
+			<label><b>Customer Name</b></label>
+			{!!Form::text('serviceReceiver',old('serviceReceiver'),['placeholder' => 'Customer Name', 'class'=> 'form-control','ng-model' =>'workInvoice.serviceReceiver','ng-minlength' => '3','required'])!!}
+			<div ng-show="workInvoiceForm.serviceReceiver.$dirty && workInvoiceForm.serviceReceiver.$invalid">
+		        <small class="text-danger" ng-show="workInvoiceForm.serviceReceiver.$error.required">
+		           Client's name is required.
+		        </small>
+		        <small class="text-danger" ng-show="workInvoiceForm.serviceReceiver.$error.minlength">
+		        	Client's name is required to be at least 3 characters
+		        </small>
+		      </div>
 		</div>
 	</div>
 	<p></p>
 	<div class="row">
 		<div class="col-md-6">
 			<label><b>Service Provider Address</b></label>
-			<textarea class="form-control" rows="5" name="companyAddress" placeholder="Eg: President George Bush Turnpike, Irving, TX 75038, USA"></textarea>
+			<textarea class="form-control" 
+			rows="5" 
+			name="companyAddress" 
+			placeholder="Eg: President George Bush Turnpike, Irving, TX 75038, USA"
+			ng-model="workInvoice.companyAddress"
+			ng-minlength="5"
+			required></textarea>
+			<div ng-show="workInvoiceForm.companyAddress.$dirty && workInvoiceForm.companyAddress.$invalid">
+		        <small class="text-danger" ng-show="workInvoiceForm.companyAddress.$error.required">
+		           Service Provider Address is required.
+		        </small>
+		        <small class="text-danger" ng-show="workInvoiceForm.companyAddress.$error.minlength">
+		        	Service Provider Address provided is required to be at least 5 characters
+		        </small>
+		    </div>
 		</div>
 		<div class="col-md-6">
 			<label><b>Client Address</b></label>
-			<textarea class="form-control" rows="5" name="clientAddress" placeholder="Eg: 1315 Commerce Street, Dallas, TX 75202, USA"></textarea>
+			<textarea class="form-control" 
+			rows="5" name="clientAddress" 
+			placeholder="Eg: 1315 Commerce Street, Dallas, TX 75202, USA"
+			ng-minlength="5"
+			ng-model="workInvoice.clientAddress"
+			required></textarea>
+			<div ng-show="workInvoiceForm.clientAddress.$dirty && workInvoiceForm.clientAddress.$invalid">
+		        <small class="text-danger" ng-show="workInvoiceForm.clientAddress.$error.required">
+		           Customer Address is required.
+		        </small>
+		        <small class="text-danger" ng-show="workInvoiceForm.clientAddress.$error.minlength">
+		        	Customer Address provided is required to be at least 5 characters
+		        </small>
+		    </div>
 		</div>
 	</div>
 	<p></p>
 	<div class="row">
 		<div class="col-md-6">
 			<label><b>Currency</b></label>
-			<select class="form-control" name="currency">
+			<select class="form-control" name="currency" ng-model="workInvoice.currency" required>
 				<option selected disabled value="">Select Currency</option>
 				<option value="NPR">Nepalse Rupee</option>
 				<option value="IC">Indian Rupee</option>
-				<option value="AUD">Australian Dollar</option>
-				<option value="BRL">Brazilian Real </option>
-				<option value="CAD">Canadian Dollar</option>
-				<option value="CZK">Czech Koruna</option>
-				<option value="DKK">Danish Krone</option>
-				<option value="EUR">Euro</option>
-				<option value="HKD">Hong Kong Dollar</option>
-				<option value="HUF">Hungarian Forint </option>
-				<option value="ILS">Israeli New Sheqel</option>
-				<option value="JPY">Japanese Yen</option>
-				<option value="MYR">Malaysian Ringgit</option>
-				<option value="MXN">Mexican Peso</option>
-				<option value="NOK">Norwegian Krone</option>
-				<option value="NZD">New Zealand Dollar</option>
-				<option value="PHP">Philippine Peso</option>
-				<option value="PLN">Polish Zloty</option>
-				<option value="GBP">Pound Sterling</option>
-				<option value="SGD">Singapore Dollar</option>
-				<option value="SEK">Swedish Krona</option>
-				<option value="CHF">Swiss Franc</option>
-				<option value="TWD">Taiwan New Dollar</option>
-				<option value="THB">Thai Baht</option>
-				<option value="TRY">Turkish Lira</option>
+				<option value="EUR">Euro</option>				
+				<option value="GBP">Pound Sterling</option>			
 				<option value="USD">U.S. Dollar</option>
 			</select>
+			<div ng-show="workInvoiceForm.currency.$dirty && workInvoiceForm.currency.$invalid">
+		        <small class="text-danger" ng-show="workInvoiceForm.currency.$error.required">
+		           The Currency field is required.
+		        </small>
+		      </div>
 		</div>
 		<div class="col-md-6"></div>
 	</div>
 	<p></p>
-	<div id="workDescriptonHolder">
+	<div id="workDescriptonHolder" ng-controller="CrtElement">
 		<div class="row">
 			<div class="col-md-6">
 				<label><b>Description of Work</b></label>
@@ -104,7 +171,7 @@
 			</div>
 			<div class="col-md-1">
 				<br>
-				<button type="button"class="btn btn-primary" ng-click="add()" style="float: right;  position: relative; top: 6px;"><b>+</b> More</button>
+				<button type="button"class="btn btn-primary add-more-field" ng-click="add()" style="float: right;  position: relative; top: 6px;"><b>+</b> More</button>
 			</div>
 		</div>
 	</div>
@@ -112,28 +179,65 @@
 	<div class="row">
 		<div class="col-md-6">
 			<label><b>Terms &amp; Conditions</b></label>
-			<textarea class="form-control" rows="18" name="termsCondition" placeholder="Eg: Payment within 14 days of Invoice date."></textarea>
-		</div>
+			<textarea class="form-control" 
+			rows="10" name="termsCondition" 
+			ng-minlength="20"
+			ng-model="workInvoice.termsCondition"
+			placeholder="Eg: Payment within 14 days of Invoice date." required></textarea>
+			<div ng-show="workInvoiceForm.termsCondition.$dirty && workInvoiceForm.termsCondition.$invalid">
+		        <small class="text-danger" ng-show="workInvoiceForm.termsCondition.$error.required">
+		           The Terms &amp; Conditions field is required.
+		        </small>			        
+		        <small class="text-danger" ng-show="workInvoiceForm.termsCondition.$error.minlength">
+		        	Terms &amp; Condition provided is required to be at least 20 characters
+		        </small>
+			</div>
+			</div>
 		<div class="col-md-6">
 			<label><b>Bank Account Details</b></label>
-			<textarea class="form-control" rows="5" name="bankDetails" placeholder="Bank Name:Bank of America
+			<textarea class="form-control" 
+			rows="5" name="bankDetails" 
+			placeholder="Bank Name:Bank of America
 Routing (ABA):061000052
 Account Number:00003508397694056
-Account Type:CHECKING"></textarea>
+Account Type:CHECKING"
+			ng-model="workInvoice.bankDetails"
+			required></textarea>
+			<div ng-show="workInvoiceForm.bankDetails.$dirty && workInvoiceForm.bankDetails.$invalid">
+		        <small class="text-danger" ng-show="workInvoiceForm.bankDetails.$error.required">
+		           The Bank Details field is required.
+		        </small>
+			</div>
 		</div>
 	</div>
 	<p></p>
 	<div class="row">
 		<div class="col-md-6">
 			<label><b>Note</b></label>
-			<textarea class="form-control" rows="5" name="keyNote" placeholder="Eg: Thank you for your business."></textarea>
+			<textarea class="form-control" 
+			rows="5" name="keyNote" 
+			placeholder="Eg: Thank you for your business."
+			ng-model="workInvoice.keyNote"
+			ng-minlength="20"
+			required />{{old('keyNote')}}
+			</textarea>
+			<div class="" ng-show="workInvoiceForm.keyNote.$dirty && workInvoiceForm.keyNote.$invalid">
+		        <small class="text-danger" ng-show="workInvoiceForm.keyNote.$error.required">
+		           This field is required.
+		        </small>
+		        <small class="text-danger" ng-show="workInvoiceForm.keyNote.$error.minlength">
+		        	This field is required to be at least 20 characters
+		        </small>
+		      </div>
 		</div>
 		<div class="col-md-6">
 			<br>
-			<input type="radio" id="downloadPDF" name="requestType" value="downloadPDF"> <label for="downloadPDF"><b>Download PDF</b></label>&nbsp;	&nbsp;
-			<input type="radio" id="printInvoice" name="requestType" value="printWorkInvoice" checked> <label for="printInvoice"><b>Print Invoice</b></label>
+				<div class="choices-holder">
+					<input type="radio" id="downloadPDF" name="requestType" value="downloadPDF"> <label for="downloadPDF"><b>Download PDF</b></label>&nbsp;	&nbsp;
+					<input type="radio" id="printInvoice" name="requestType" value="printWorkInvoice" checked> <label for="printInvoice"><b>Print Invoice</b></label>
+				</div>				
 			<br>
-			<button type="submit" class="btn btn-primary btn-block input-lg work-invoice-btn iapp-lg-btn" data-loading-text="Submiting ...">Continue ...</button>
+			<button type="submit" ng-disabled="workInvoiceForm.$invalid" class="btn btn-primary btn-block input-lg work-invoice-btn iapp-lg-btn" data-loading-text="Please wait ...">Continue ...</button>
 		</div>
 	</div>
 	<p></p>
@@ -141,5 +245,7 @@ Account Type:CHECKING"></textarea>
 </div>
 @stop
 @section('script')
+<script type="text/javascript" src="{{url('js/angular.min.js')}}"></script>
+<script type="text/javascript" src="{{url('js/app.js')}}"></script>
 <script type="text/javascript" src="{{url('js/CreateElement.js')}}"></script>
 @stop

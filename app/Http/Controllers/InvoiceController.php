@@ -2,7 +2,7 @@
 namespace App\Http\Controllers;
 use Illuminate\Support\Str;
 use App\Http\Requests\WorkInvoiceRequest;
-use App\WorkInvoice;
+use App\Invoice;
 use App\Organization;
 use App\Description;
 
@@ -19,13 +19,16 @@ class InvoiceController extends Controller {
 					->with(['current' => 'work-invoice',]);
 	}
 
-	public function postWork(WorkInvoiceRequest $request, WorkInvoice $invoice)
+	public function getTest(){
+		return strtotime('2010-12-12'. ' '.date('H:i:s'));
+	}
+	public function postWork(WorkInvoiceRequest $request, Invoice $invoice)
 	{
-		$invoice = new WorkInvoice;
+		$invoice = new Invoice;
 		$invoice->invoiceNumber = $request->invoiceNumber;
 		$invoice->organization_id = 1;//Session::get('organization_id');
 		$invoice->serviceProvider =	$request->serviceProvider;
-		$invoice->serviceDate = $request->serviceDate;
+		$invoice->serviceDate = $request->serviceDate.' '.date('H:i:s');
 		$invoice->serviceReceiver = $request->serviceReceiver;
 		$invoice->companyAddress = $request->companyAddress;
 		$invoice->clientAddress = $request->clientAddress;
@@ -49,6 +52,7 @@ class InvoiceController extends Controller {
 			return \Redirect::to('/home')->with(['message'=>'New Work Invoice Created.']);
 		}else{
 			return 'under construction Download PDF ...';
+			// return response()->download($file, "Ahmed Badawy - CV.pdf");
 		}
 		
 

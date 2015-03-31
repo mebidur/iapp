@@ -86,13 +86,13 @@ return [
 	*/
 
 	'custom' => [
-		'workDescription[0]' => [
+		'workDescription[]' => [
 			'required' => 'The work description field is required.',
 		],
-		'rate[0]' => [
+		'rate[]' => [
 			'required' => 'The rate field is required.',
 		],
-		'hour[0]' => [
+		'hour[]' => [
 			'required' => 'The hour field is required.'
 		],
 

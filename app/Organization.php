@@ -12,7 +12,12 @@ class Organization extends Model {
 
 	public function invoice()
 	{
-		return $this->hasMany('App\WorkInvoice');
+		return $this->hasMany('App\Invoice');
+	}
+
+	public function receipt()
+	{
+		return $this->hasMany('App\Receipt');
 	}
 
 }

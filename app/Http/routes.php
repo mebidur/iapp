@@ -1,4 +1,7 @@
 <?php
+	// \Blade::setRawTags('{{', '}}');
+	// \Blade::setContentTags('{{{', '}}}');
+	// \Blade::setEscapedContentTags('{{{', '}}}');
 
 	Route::get('/', 'Auth\AuthController@getLogin');
 

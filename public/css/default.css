@@ -49,11 +49,14 @@ html,body{
 	padding-bottom: 100px;
 	min-height: 100%;
 }
+.choices-holder {
+  padding-top: 13px;
+}
 .iapp-lg-btn{
-  height: 80px;
-  margin-top: 8px;
-  border-bottom: 5px solid #034E8E;
-  font-size: 26px;
+	height: 61px;
+	margin-top: -6px;
+	border-bottom: 3px solid #034E8E;
+	font-size: 20px;
 }
 .iapp-date{
 	  padding: 0px 8px !important;
@@ -61,7 +64,7 @@ html,body{
 .iapp-terms, .iapp-policy{
 	font-size: 13px !important;
 }
-.container-bordered  input[type="email"], input[type="text"]{
+.container-bordered  input[type="email"], select,input[type="text"],input[type="number"],input[type="date"]{
 	height: 40px !important;
 	padding: 9px 18px !important;
 }
@@ -74,4 +77,16 @@ html,body{
 .remove-element:hover{
 	text-decoration: none;
 	cursor: pointer;
+}
+
+.datepicker:before {
+	border-left: 0px solid transparent !important; 
+	border-right: 0px solid transparent !important; 
+	border-bottom: 0px solid #ccc !important; 
+}
+input.ng-invalid, textarea.ng-invalid, select.ng-invalid {
+/*border: 1px solid #a94442;*/
+}
+input.ng-valid, textarea.ng-valid, select.ng-valid {
+/*border: 1px solid green;*/
 }
