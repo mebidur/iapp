@@ -19,37 +19,22 @@ class InvoiceController extends Controller {
 					->with(['current' => 'work-invoice',]);
 	}
 
-	public function getTest(){
-		return strtotime('2010-12-12'. ' '.date('H:i:s'));
-	}
 	public function postWork(WorkInvoiceRequest $request, Invoice $invoice)
 	{
-		$invoice = new Invoice;
-		$invoice->invoiceNumber = $request->invoiceNumber;
-		$invoice->organization_id = 1;//Session::get('organization_id');
-		$invoice->serviceProvider =	$request->serviceProvider;
-		$invoice->serviceDate = $request->serviceDate.' '.date('H:i:s');
-		$invoice->serviceReceiver = $request->serviceReceiver;
-		$invoice->companyAddress = $request->companyAddress;
-		$invoice->clientAddress = $request->clientAddress;
-		$invoice->termsCondition = $request->termsCondition;
-		$invoice->bankDetails = $request->bankDetails;
-		$invoice->keyNote = $request->keyNote;
-
-		$invoice->save();
-		for($i = 0; $i < count($request->workDescription); $i++){
-			$desc = new Description;
-			$desc->invoice_id = $invoice->id;
-			$desc->workDescription = $request->workDescription[$i];
-			if($request->requestType == 'printWorkInvoice' && $request->requestType == 'downloadPDF'){
-				$desc->rate = $request->rate[$i];	
-				$desc->hour = $request->hour[$i];
-			}
-			$desc->save();
+		$descArray = [];
+		$invoice = $invoice->create(array_merge($request->all(),['organization_id' => \Auth::user()->organization_id]));	
+		
+		for($i = 0; $i < count($request->rate); $i++){
+			array_push($descArray, new Description(['invoice_id' => $invoice->id, 'workDescription' => $request->workDescription[$i],'rate' => $request->rate[$i], 'hour' => $request->hour[$i] ]));
 		}
+		$desc = $invoice->description()->saveMany($descArray);
 		
 		if($request->requestType == 'printWorkInvoice'){
-			return \Redirect::to('/home')->with(['message'=>'New Work Invoice Created.']);
+
+		    return $html = view('invoice.workPdf')->with(['invoice' => $invoice, 'description' => $desc])->render();
+			return PDF::load($html)->show();
+
+			// return \Redirect::to('/home')->with(['message'=>'New Work Invoice Created.']);
 		}else{
 			return 'under construction Download PDF ...';
 			// return response()->download($file, "Ahmed Badawy - CV.pdf");
