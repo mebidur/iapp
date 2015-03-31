@@ -19,9 +19,9 @@ class WorkInvoiceRequest extends Request {
 			'companyAddress' 		=> 'required',
 			'clientAddress' 		=> 'required',
 			'currency' 				=> 'required',
-			'workDescription[]' 	=> 'required',
-			'rate[]' 				=> 'required',
-			'hour[]' 				=> 'required',
+			// 'workDescription[0]' 	=> 'required',
+			// 'rate[0]' 				=> 'required',
+			// 'hour[0]' 				=> 'required',
 			'termsCondition' 		=> 'required',
 			'bankDetails' 			=> 'required',
 			'keyNote' 				=> 'required'

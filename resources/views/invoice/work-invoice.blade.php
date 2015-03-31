@@ -50,7 +50,7 @@
 		<div class="col-md-6">
 			<label><b>Invoice Date</b></label>
 			<!-- datepicker -->
-			<input type="date" class="form-control iapp-date datepicker" 
+			<input type="date" class="form-control iapp-date" 
 			name="serviceDate" 
 			placeholder="DD/MM/YYYY" 
 			value="{{old('serviceDate')}}"

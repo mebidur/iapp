@@ -88,5 +88,5 @@ input.ng-invalid, textarea.ng-invalid, select.ng-invalid {
 /*border: 1px solid #a94442;*/
 }
 input.ng-valid, textarea.ng-valid, select.ng-valid {
-/*border: 1px solid green;*/
+border: 1px solid green;
 }
