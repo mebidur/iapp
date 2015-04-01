@@ -182,6 +182,7 @@
 			<textarea class="form-control" 
 			rows="10" name="termsCondition" 
 			ng-minlength="20"
+			ng-maxlength="250"
 			ng-model="workInvoice.termsCondition"
 			placeholder="Eg: Payment within 14 days of Invoice date." required></textarea>
 			<div ng-show="workInvoiceForm.termsCondition.$dirty && workInvoiceForm.termsCondition.$invalid">
@@ -190,6 +191,9 @@
 		        </small>			        
 		        <small class="text-danger" ng-show="workInvoiceForm.termsCondition.$error.minlength">
 		        	Terms &amp; Condition provided is required to be at least 20 characters
+		        </small>
+		        <small class="text-danger" ng-show="workInvoiceForm.termsCondition.$error.maxlength">
+		        	Terms &amp; Condition provided is required to be at maximum 250 characters
 		        </small>
 			</div>
 			</div>
@@ -234,7 +238,7 @@ Account Type:CHECKING"
 			<br>
 				<div class="choices-holder">
 					<input type="radio" id="downloadPDF" name="requestType" value="downloadPDF"> <label for="downloadPDF"><b>Download PDF</b></label>&nbsp;	&nbsp;
-					<input type="radio" id="printInvoice" name="requestType" value="printWorkInvoice" checked> <label for="printInvoice"><b>Print Invoice</b></label>
+					<input type="radio" id="printInvoice" name="requestType" value="workInvoice" checked> <label for="printInvoice"><b>Print Invoice</b></label>
 				</div>				
 			<br>
 			<button type="submit" ng-disabled="workInvoiceForm.$invalid" class="btn btn-primary btn-block input-lg work-invoice-btn iapp-lg-btn" data-loading-text="Please wait ...">Continue ...</button>

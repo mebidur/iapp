@@ -41,13 +41,13 @@
 <div class="container" style="max-width:900px !important;">
   <div class="row" style="border-bottom:1px dashed #dfdfdf;">
     <div class="col-xs-12">
-      <h2 class="text-center">Invoice</h2>
+      <h2 class="text-center">Receipt</h2>
     </div>
   </div>
   <br>
   <div class="row">
-    <div class="col-xs-5"><b>Invoice No:</b> {{$invoice->invoiceNumber}}</div>
-    <div class="col-xs-5 col-xs-offset-2 text-left"><b>Invoice Date:</b> {{date('d/m/Y',strtotime($invoice->serviceDate))}}</div>
+    <div class="col-xs-5"><b>Receipt No:</b> {{$receipt->receiptNumber}}</div>
+    <div class="col-xs-5 col-xs-offset-2 text-left"><b>Receipt Date:</b> {{date('d/m/Y',strtotime($receipt->receiptDate))}}</div>
   </div>
   <p></p>
   <div class="row">
@@ -58,8 +58,8 @@
         </div>
       <div class="panel-body">
           <p>
-           <b>{{$invoice->serviceProvider}}</b><br>
-            <span>{{$invoice->companyAddress}}</span>
+           <b>{{$receipt->serviceProvider}}</b><br>
+            <span>{{$receipt->companyAddress}}</span>
           </p>
         </div>
       </div>
@@ -71,8 +71,8 @@
         </div>
         <div class="panel-body">
           <p>
-            <b>{{$invoice->serviceReceiver}}</b><br>
-            <span>{{$invoice->clientAddress}}</span>
+            <b>{{$receipt->serviceReceiver}}</b><br>
+            <span>{{$receipt->clientAddress}}</span>
           </p>
         </div>
       </div>
@@ -82,7 +82,7 @@
     <thead>
       <tr>
         <th><h5><b>Service</b></h5></th>
-        <th><h5><b>Hours / Qty</b></h5></th>
+        <th><h5><b>Hours / Quantity</b></h5></th>
         <th><h5><b>Rate / Price</b></h5></th>
         <th><h5><b>Sub Total</b></h5></th>
       </tr>
@@ -105,31 +105,9 @@
     </tbody>
   </table>
   <p></p>
-  <div class="row">
-    <div class="col-xs-5">
-      <div class="panel panel-info">
-        <div class="panel-heading">
-          <h5>Bank details</h5>
-        </div>
-        <div class="panel-body iapp-details">
-          <pre>{{$invoice->bankDetails}}</pre>
-        </div>
-      </div>
-    </div>
-    <div class="col-xs-7">
-    <div class="panel panel-info">
-        <div class="panel-heading">
-          <h5>Terms &amp; Conditions</h5>
-        </div>
-        <div class="panel-body iapp-details">
-        <pre>{{$invoice->termsCondition}}</pre>
-        </div>
-      </div>
-    </div>
-  </div>
   <div class="row col-xs-12 iapp-details">
   	<h5 class="underline-text"><b >Note</b></h5>
-  	<pre>{{$invoice->keyNote}}</pre>
+  	<pre>{{$receipt->keyNote}}</pre>
   </div>
   <p></p>
 </div>

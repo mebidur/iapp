@@ -82,8 +82,7 @@
     <thead>
       <tr>
         <th><h5><b>Service</b></h5></th>
-        <th><h5><b>Hours / Qty</b></h5></th>
-        <th><h5><b>Rate / Price</b></h5></th>
+        <th><h5><b>Amount</b></h5></th>
         <th><h5><b>Sub Total</b></h5></th>
       </tr>
     </thead>
@@ -92,19 +91,18 @@
       @foreach($description as $each)
       <tr>
         <td>{{$each['workDescription']}}</td>
-        <td>{{$each['hour']}}</td>
-        <?php $subTotal += $each['rate'] * $each['hour'];?>
-        <td>{{$currency . ' '.$each['rate']}}</td>
-        <td>{{$currency . ' '.$each['rate'] * $each['hour']}}</td>
+        <td>{{$each['amount']}}</td>
+        <td>{{$each['amount']}}</td>
+        <?php $subTotal += $each['amount'];?>
       </tr>
       @endforeach
       <tr>
-        <td colspan="3" class="text-right"><b>Total:</b></td>
+        <td colspan="2" class="text-right"><b>Total:</b></td>
         <td><b>{{$currency . ' '.round($subTotal,2)}}</b></td>
       </tr>
     </tbody>
   </table>
-  <p></p>
+    <p></p>
   <div class="row">
     <div class="col-xs-5">
       <div class="panel panel-info">
@@ -127,6 +125,7 @@
       </div>
     </div>
   </div>
+  <p></p>
   <div class="row col-xs-12 iapp-details">
   	<h5 class="underline-text"><b >Note</b></h5>
   	<pre>{{$invoice->keyNote}}</pre>

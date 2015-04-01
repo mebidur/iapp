@@ -2,13 +2,23 @@
 
 use App\Http\Requests\Request;
 
-class WorkInvoiceRequest extends Request {
+class ServiceInvoice extends Request {
 
+	/**
+	 * Determine if the user is authorized to make this request.
+	 *
+	 * @return bool
+	 */
 	public function authorize()
 	{
 		return true;
 	}
 
+	/**
+	 * Get the validation rules that apply to the request.
+	 *
+	 * @return array
+	 */
 	public function rules()
 	{
 		return [
@@ -19,11 +29,8 @@ class WorkInvoiceRequest extends Request {
 			'companyAddress' 		=> 'required',
 			'clientAddress' 		=> 'required',
 			'currency' 				=> 'required',
-			// 'workDescription[0]' 	=> 'required',
-			// 'rate[0]' 				=> 'required',
-			// 'hour[0]' 				=> 'required',
-			'termsCondition' 		=> 'required',
-			'bankDetails' 			=> 'required',
+			'bankDetails'			=> 'required',
+			'termsCondition'		=> 'required',
 			'keyNote' 				=> 'required'
 		];
 	}

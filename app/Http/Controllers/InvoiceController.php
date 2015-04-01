@@ -1,10 +1,12 @@
 <?php 
 namespace App\Http\Controllers;
 use Illuminate\Support\Str;
-use App\Http\Requests\WorkInvoiceRequest;
+use App\Http\Requests\WorkInvoice;
+use App\Http\Requests\ServiceInvoice;
 use App\Invoice;
 use App\Organization;
 use App\Description;
+use Vsmoraes\Pdf\Pdf;
 
 class InvoiceController extends Controller {
 
@@ -19,7 +21,7 @@ class InvoiceController extends Controller {
 					->with(['current' => 'work-invoice',]);
 	}
 
-	public function postWork(WorkInvoiceRequest $request, Invoice $invoice)
+	public function postWork(WorkInvoice $request, Invoice $invoice, PDF $pdf)
 	{
 		$descArray = [];
 		$invoice = $invoice->create(array_merge($request->all(),['organization_id' => \Auth::user()->organization_id]));	
@@ -29,19 +31,17 @@ class InvoiceController extends Controller {
 		}
 		$desc = $invoice->description()->saveMany($descArray);
 		
-		if($request->requestType == 'printWorkInvoice'){
+		if($request->requestType == 'workInvoice'){
+		    return \View::make('invoice.workPdf')->with(['invoice' => $invoice, 'description' => $desc,'currency' => $request->currency])->render();
 
-		    return $html = view('invoice.workPdf')->with(['invoice' => $invoice, 'description' => $desc])->render();
-			return PDF::load($html)->show();
-
-			// return \Redirect::to('/home')->with(['message'=>'New Work Invoice Created.']);
 		}else{
 			return 'under construction Download PDF ...';
+			$html = \View::make('invoice.workPdf')->with(['invoice' => $invoice, 'description' => $desc,'currency' => $request->currency])->render();
+			// return $pdf->load($html, 'A4', 'portrait')
+			return $pdf->load($html)->download();
+			 $pdf->load($html, 'A4', 'portrait')->download();
 			// return response()->download($file, "Ahmed Badawy - CV.pdf");
 		}
-		
-
-
 	}
 
 	public function getService()
@@ -49,9 +49,25 @@ class InvoiceController extends Controller {
 		return \View::make('invoice.service-invoice')
 					->with(['current' => 'service-invoice',]);
 	}
-	public function postService()
+	public function postService(ServiceInvoice $request, Invoice $invoice, PDF $pdf)
 	{
-		return \Input::all();
+		$descArray = [];
+		$invoice = $invoice->create(array_merge($request->all(),['organization_id' => \Auth::user()->organization_id]));	
+		
+		for($i = 0; $i < count($request->workDescription); $i++){
+			array_push($descArray, new Description(['invoice_id' => $invoice->id, 'workDescription' => $request->workDescription[$i],'amount' => $request->amount[$i]]));
+		}
+		$desc = $invoice->description()->saveMany($descArray);
+		
+		if($request->requestType == 'serviceInvoice'){
+		    return \View::make('invoice.servicePdf')->with(['invoice' => $invoice, 'description' => $desc,'currency' => $request->currency])->render();
+
+		}else{
+			return 'under construction Download PDF ...';
+			$html = \View::make('invoice.workPdf')->with(['invoice' => $invoice, 'description' => $desc,'currency' => $request->currency])->render();
+			return $pdf->load($html, 'A4', 'portrait')->download();
+			// return response()->download($file, "Ahmed Badawy - CV.pdf");
+		}
 	}
 
 }
