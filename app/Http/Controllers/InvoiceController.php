@@ -27,7 +27,10 @@ class InvoiceController extends Controller {
 		$invoice = $invoice->create(array_merge($request->all(),['organization_id' => \Auth::user()->organization_id]));	
 		
 		for($i = 0; $i < count($request->rate); $i++){
-			array_push($descArray, new Description(['invoice_id' => $invoice->id, 'workDescription' => $request->workDescription[$i],'rate' => $request->rate[$i], 'hour' => $request->hour[$i] ]));
+			array_push($descArray, new Description(['invoice_id' => $invoice->id,
+													'workDescription' => $request->workDescription[$i],
+													'rate' => $request->rate[$i],
+													'hour' => $request->hour[$i], ]));
 		}
 		$desc = $invoice->description()->saveMany($descArray);
 		
@@ -37,9 +40,7 @@ class InvoiceController extends Controller {
 		}else{
 			return 'under construction Download PDF ...';
 			$html = \View::make('invoice.workPdf')->with(['invoice' => $invoice, 'description' => $desc,'currency' => $request->currency])->render();
-			// return $pdf->load($html, 'A4', 'portrait')
-			return $pdf->load($html)->download();
-			 $pdf->load($html, 'A4', 'portrait')->download();
+			return $pdf->load($html, 'A4', 'portrait')->download();
 			// return response()->download($file, "Ahmed Badawy - CV.pdf");
 		}
 	}

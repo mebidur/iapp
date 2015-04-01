@@ -31,7 +31,10 @@ class ReceiptController extends Controller {
 		$receipt = $receipt->create(array_merge($request->all(),['organization_id' => \Auth::user()->organization_id]));	
 		
 		for($i = 0; $i < count($request->rate); $i++){
-			array_push($descArray, new Description(['receipt_id' => $receipt->id, 'workDescription' => $request->workDescription[$i],'rate' => $request->rate[$i], 'hour' => $request->hour[$i] ]));
+			array_push($descArray, new Description(['receipt_id' => $receipt->id,
+													'workDescription' => $request->workDescription[$i],
+													'rate' => $request->rate[$i],
+													'hour' => $request->hour[$i] ]));
 		}
 		$desc = $receipt->description()->saveMany($descArray);
 		
