@@ -7,7 +7,7 @@ app.controller('CrtElementService',function($scope, $compile){
             '</div>'+
             '<div class="col-md-4">'+
                 '<label><b>Amount</b></label>'+
-                '<input type="text" class="form-control" name="amount[]" placeholder="Eg: 10">'+
+                '<input type="text" class="form-control" name="amount[]" placeholder="Amount">'+
             '</div>'+
            ' <div class="col-md-2">'+
                 '<br>'+

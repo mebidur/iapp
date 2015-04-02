@@ -61,7 +61,7 @@
 			<input type="text" class="form-control" 
 			name="serviceProvider" 
 			ng-model="workInvoice.serviceProvider"
-			placeholder="Eg: XYZ Inc," 
+			placeholder="Company Name" 
 			ng-minlength="3" 
 			value="{{old('serviceProvider')}}"
 			required>
@@ -94,7 +94,7 @@
 			<textarea class="form-control" 
 			rows="5" 
 			name="companyAddress" 
-			placeholder="Eg: President George Bush Turnpike, Irving, TX 75038, USA"
+			placeholder="Company Location"
 			ng-model="workInvoice.companyAddress"
 			ng-minlength="5"
 			required></textarea>
@@ -111,7 +111,7 @@
 			<label><b>Client Address</b></label>
 			<textarea class="form-control" 
 			rows="5" name="clientAddress" 
-			placeholder="Eg: 1315 Commerce Street, Dallas, TX 75202, USA"
+			placeholder="Customer Address"
 			ng-minlength="5"
 			ng-model="workInvoice.clientAddress"
 			required></textarea>
@@ -154,7 +154,7 @@
 			</div>
 			<div class="col-md-4">
 				<label><b>Amount</b></label>
-				<input type="text" class="form-control" name="amount[]" placeholder="Eg: 10">
+				<input type="text" class="form-control" name="amount[]" placeholder="Amount">
 			</div>
 			<div class="col-md-2">
 				<br>
@@ -168,7 +168,7 @@
 			<label><b>Note</b></label>
 			<textarea class="form-control" 
 			rows="5" name="keyNote" 
-			placeholder="Eg: Thank you for your business."
+			placeholder="Special note from service provider"
 			ng-model="workInvoice.keyNote"
 			ng-minlength="20"
 			required>{{old('keyNote')}}

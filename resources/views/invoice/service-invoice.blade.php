@@ -61,7 +61,7 @@
 			<input type="text" class="form-control" 
 			name="serviceProvider" 
 			ng-model="serviceInvoice.serviceProvider"
-			placeholder="Eg: XYZ Inc," 
+			placeholder="Company Name" 
 			ng-minlength="3" 
 			value="{{old('serviceProvider')}}"
 			required />
@@ -94,7 +94,7 @@
 			<textarea class="form-control" 
 			rows="5" 
 			name="companyAddress" 
-			placeholder="Eg: President George Bush Turnpike, Irving, TX 75038, USA"
+			placeholder="Company Location"
 			ng-model="serviceInvoice.companyAddress"
 			ng-minlength="5"
 			required></textarea>
@@ -111,7 +111,7 @@
 			<label><b>Client Address</b></label>
 			<textarea class="form-control" 
 			rows="5" name="clientAddress" 
-			placeholder="Eg: 1315 Commerce Street, Dallas, TX 75202, USA"
+			placeholder="Customer Address"
 			ng-minlength="5"
 			ng-model="serviceInvoice.clientAddress"
 			required></textarea>
@@ -154,7 +154,7 @@
 			</div>
 			<div class="col-md-4">
 				<label><b>Amount</b></label>
-				<input type="text" class="form-control" name="amount[]" placeholder="Eg: 10">
+				<input type="text" class="form-control" name="amount[]" placeholder="Amount">
 			</div>
 			<div class="col-md-2">
 				<br>
@@ -171,7 +171,7 @@
 			ng-minlength="20"
 			ng-maxlength="250"
 			ng-model="workInvoice.termsCondition"
-			placeholder="Eg: Payment within 14 days of Invoice date." required></textarea>
+			placeholder="Terms of Services" required></textarea>
 			<div ng-show="workInvoiceForm.termsCondition.$dirty && workInvoiceForm.termsCondition.$invalid">
 		        <small class="text-danger" ng-show="workInvoiceForm.termsCondition.$error.required">
 		           The Terms &amp; Conditions field is required.
@@ -188,10 +188,7 @@
 			<label><b>Bank Account Details</b></label>
 			<textarea class="form-control" 
 			rows="5" name="bankDetails" 
-			placeholder="Bank Name:Bank of America
-Routing (ABA):061000052
-Account Number:00003508397694056
-Account Type:CHECKING"
+			placeholder="Bank Account Detail Information ..."
 			ng-model="workInvoice.bankDetails"
 			required></textarea>
 			<div ng-show="workInvoiceForm.bankDetails.$dirty && workInvoiceForm.bankDetails.$invalid">
@@ -207,7 +204,7 @@ Account Type:CHECKING"
 			<label><b>Note</b></label>
 			<textarea class="form-control" 
 			rows="5" name="keyNote" 
-			placeholder="Eg: Thank you for your business."
+			placeholder="Special note from service provider"
 			ng-model="serviceInvoice.keyNote"
 			ng-minlength="20"
 			required>{{old('keyNote')}}

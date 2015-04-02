@@ -7,11 +7,11 @@ app.controller('CrtElement',function($scope, $compile){
             '</div>'+
             '<div class="col-md-2">'+
                 '<label><b>Rate</b></label>'+
-                '<input type="text" class="form-control" name="rate[]" placeholder="Eg: 10">'+
+                '<input type="text" class="form-control" name="rate[]" placeholder="Rate">'+
             '</div>'+
             '<div class="col-md-3">'+
                 '<label><b>Hour</b></label>'+
-                '<input type="text" class="form-control" name="hour[]" placeholder="Eg: 10">'+
+                '<input type="text" class="form-control" name="hour[]" placeholder="Worked Hour">'+
             '</div>'+
             '<div class="col-md-1">'+
                 '<br>'+
