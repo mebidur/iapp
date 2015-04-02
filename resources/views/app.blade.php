@@ -54,6 +54,24 @@
 	{!!HTML::script('js/bootstrap.min.js')!!}
 	{!!HTML::script('js/bootstrap-datepicker.js')!!}
 	{!!HTML::script('js/custom.js')!!}
+	{!!HTML::script('js/angular.min.js')!!}
+	{!!HTML::script('js/app.js')!!}
+	{!!HTML::script('js/CreateElement.js')!!}
+	{!!HTML::script('js/CreateElementService.js')!!}
+	{!!HTML::script('js/printPage.js')!!}
+
+<script type="text/javascript">
+	$(document).ready(function(){
+	     $(document).on("keydown", disableF5);
+	});
+	function disableF5(e){
+		if ((e.which || e.keyCode) != 116 || (e.which || e.keyCode) != 82){
+			window.onbeforeunload = function(){
+		        return 'Really, want to reload ?';
+			}
+		}
+	};
+</script>
 	@yield('script')
 </body>
 </html>

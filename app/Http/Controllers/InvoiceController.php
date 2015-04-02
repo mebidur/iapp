@@ -23,16 +23,24 @@ class InvoiceController extends Controller {
 
 	public function postWork(WorkInvoice $request, Invoice $invoice, PDF $pdf)
 	{
-		$descArray = [];
-		$invoice = $invoice->create(array_merge($request->all(),['organization_id' => \Auth::user()->organization_id]));	
+		$data = Invoice::where('invoiceNumber',$request->invoiceNumber)->first();
 		
-		for($i = 0; $i < count($request->rate); $i++){
-			array_push($descArray, new Description(['invoice_id' => $invoice->id,
-													'workDescription' => $request->workDescription[$i],
-													'rate' => $request->rate[$i],
-													'hour' => $request->hour[$i], ]));
+		if(!empty($data)){
+			$invoice = $data;
+			$desc = $invoice->description();
+
+		}else{
+			$descArray = [];
+			$invoice = $invoice->create(array_merge($request->all(),['organization_id' => \Auth::user()->organization_id]));	
+			
+			for($i = 0; $i < count($request->rate); $i++){
+				array_push($descArray, new Description(['invoice_id' => $invoice->id,
+														'workDescription' => $request->workDescription[$i],
+														'rate' => $request->rate[$i],
+														'hour' => $request->hour[$i], ]));
+			}
+			$desc = $invoice->description()->saveMany($descArray);
 		}
-		$desc = $invoice->description()->saveMany($descArray);
 		
 		if($request->requestType == 'workInvoice'){
 		    return \View::make('invoice.workPdf')->with(['invoice' => $invoice, 'description' => $desc,'currency' => $request->currency])->render();

@@ -236,8 +236,3 @@
 	{!!Form::close()!!}
 </div>
 @stop
-@section('script')
-<script type="text/javascript" src="{{url('js/angular.min.js')}}"></script>
-<script type="text/javascript" src="{{url('js/app.js')}}"></script>
-<script type="text/javascript" src="{{url('js/CreateElement.js')}}"></script>
-@stop
