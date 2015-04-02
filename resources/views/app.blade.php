@@ -61,9 +61,9 @@
 	{!!HTML::script('js/printPage.js')!!}
 
 <script type="text/javascript">
-	$(document).ready(function(){
-	     $(document).on("keydown", disableF5);
-	});
+	// $(document).ready(function(){
+	//      $(document).on("keydown", disableF5);
+	// });
 	function disableF5(e){
 		if ((e.which || e.keyCode) != 116 || (e.which || e.keyCode) != 82){
 			window.onbeforeunload = function(){

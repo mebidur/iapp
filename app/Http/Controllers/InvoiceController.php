@@ -43,12 +43,11 @@ class InvoiceController extends Controller {
 		}
 		
 		if($request->requestType == 'workInvoice'){
-		    return \View::make('invoice.workPdf')->with(['invoice' => $invoice, 'description' => $desc,'currency' => $request->currency])->render();
+		    return \View::make('invoice.workPdf')->with(['invoice' => $invoice, 'description' => $desc,'currency' => $request->currency,'requestType' => $request->requestType])->render();
 
 		}else{
-			return 'under construction Download PDF ...';
-			$html = \View::make('invoice.workPdf')->with(['invoice' => $invoice, 'description' => $desc,'currency' => $request->currency])->render();
-			return $pdf->load($html, 'A4', 'portrait')->download();
+			$html = \View::make('invoice.workPdf')->with(['invoice' => $invoice, 'description' => $desc,'currency' => $request->currency,'requestType' => $request->requestType])->render();
+			return $pdf->load($html, 'A4', 'portrait')->download('Invoice');
 			// return response()->download($file, "Ahmed Badawy - CV.pdf");
 		}
 	}
@@ -69,12 +68,11 @@ class InvoiceController extends Controller {
 		$desc = $invoice->description()->saveMany($descArray);
 		
 		if($request->requestType == 'serviceInvoice'){
-		    return \View::make('invoice.servicePdf')->with(['invoice' => $invoice, 'description' => $desc,'currency' => $request->currency])->render();
+		    return \View::make('invoice.servicePdf')->with(['invoice' => $invoice, 'description' => $desc,'currency' => $request->currency,'requestType' => $request->requestType])->render();
 
 		}else{
-			return 'under construction Download PDF ...';
-			$html = \View::make('invoice.workPdf')->with(['invoice' => $invoice, 'description' => $desc,'currency' => $request->currency])->render();
-			return $pdf->load($html, 'A4', 'portrait')->download();
+			$html = \View::make('invoice.servicePdf')->with(['invoice' => $invoice, 'description' => $desc,'currency' => $request->currency,'requestType' => $request->requestType])->render();
+			return $pdf->load($html, 'A4', 'portrait')->download('Receipt');
 			// return response()->download($file, "Ahmed Badawy - CV.pdf");
 		}
 	}
