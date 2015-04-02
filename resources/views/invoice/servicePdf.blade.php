@@ -46,6 +46,17 @@
     border-color: #087A9D;
     color: #fff;
   }
+
+.invoice-info td{
+  width: 50%;
+}
+
+.panels th{
+  width: 50%;
+  background: #D9EDF7;
+  padding: 20px !important;
+  /*border-radius: 10px 10px 0px 0px;*/
+}
 </style>
 </head>  
 <body>
@@ -60,12 +71,34 @@
     </div>
   </div>
   <br>
-  <div class="row">
+  <!-- <div class="row">
     <div class="col-xs-5"><b>Invoice No:</b> {{$invoice->invoiceNumber}}</div>
     <div class="col-xs-5 col-xs-offset-2 text-left"><b>Invoice Date:</b> {{date('d/m/Y',strtotime($invoice->serviceDate))}}</div>
-  </div>
+  </div> --> 
+  <table class="invoice-info" border="0" width="100%">
+    <tr>
+      <td><b>Invoice No:</b> {{$invoice->invoiceNumber}}</td>
+      <td><b>Invoice Date:</b> {{date('d/m/Y',strtotime($invoice->serviceDate))}}</td>
+    </tr>
+  </table>
+  <table class="panels table table-bordered" border="0" width="100%">
+    <tr>
+      <th>Service Provider</th>
+      <th>Customer Information</th>
+    </tr>
+    <tr>
+      <td>
+        <b>{{$invoice->serviceProvider}}</b>
+          <span>{{$invoice->companyAddress}}</span>
+      </td>
+      <td>
+        <b>{{$invoice->serviceReceiver}}</b>
+          <span>{{$invoice->clientAddress}}</span>
+      </td>
+    </tr>
+  </table>
   <p></p>
-  <div class="row">
+  <!-- <div class="row">
     <div class="col-xs-5">
       <div class="panel panel-info">
       <div class="panel-heading">
@@ -92,7 +125,7 @@
         </div>
       </div>
     </div>
-  </div>
+  </div> -->
   <table class="table table-bordered">
     <thead>
       <tr>
@@ -118,7 +151,22 @@
     </tbody>
   </table>
     <p></p>
-  <div class="row">
+
+    <table class="panels table table-bordered" border="0" width="100%">
+    <tr>
+      <th>Bank details</th>
+      <th>Terms &amp; Conditions</th>
+    </tr>
+    <tr>
+      <td>
+        {{$invoice->bankDetails}}
+      </td>
+      <td>
+        {{$invoice->termsCondition}}
+      </td>
+    </tr>
+  </table>
+  <!-- <div class="row">
     <div class="col-xs-5">
       <div class="panel panel-info">
         <div class="panel-heading">
@@ -139,7 +187,7 @@
         </div>
       </div>
     </div>
-  </div>
+  </div> -->
   <p></p>
   <div class="row col-xs-12 iapp-details">
   	<h5 class="underline-text"><b >Note</b></h5>
