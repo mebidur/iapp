@@ -35,10 +35,25 @@
   tbody tr{
   	font-size: 14px !important;
   }
+  .pdf-print-btn{
+    width: 70px;
+    padding: 6px 0px;
+    border-radius: 13px;
+    background: #0099C9;
+    margin: 24px 40px;
+    border: 0px;
+    font-size: 13px;
+    border-color: #087A9D;
+    color: #fff;
+  }
 </style>
 </head>  
 <body>
 <div class="container" style="max-width:900px !important;">
+  <div class="row hidden-print">
+    <div class="col-xs-10"></div>
+    <div class="col-xs-2"><button class="pdf-print-btn"><span class="glyphicon glyphicon-print"></span> Print</button></div>
+  </div>
   <div class="row" style="border-bottom:1px dashed #dfdfdf;">
     <div class="col-xs-12">
       <h2 class="text-center">Receipt</h2>

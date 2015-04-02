@@ -7,16 +7,7 @@
 <div class="container container-bordered">
 	<h3 class="title-line">Service Invoice</h3>
 	<p></p>
-		@if (count($errors) > 0)
-		<div class="alert alert-danger">
-			<strong>Whoops!</strong> There were some problems with your input.<br><br>
-			<ul>
-				@foreach ($errors->all() as $error)
-					<li>{{ $error }}</li>
-				@endforeach
-			</ul>
-		</div>
-	@endif
+	@include('include.error-msg')
 	<p></p>
 	{!!Form::open(['url' => 'invoice/service','name' => 'serviceInvoiceForm','novalidate'])!!}
 	<div class="row">
@@ -30,7 +21,7 @@
 			value="{{old('invoiceNumber')}}" 
             ng-minlength="5" 
             ng-maxlength="20"
-			required />
+			required>
 
 		<div ng-show="serviceInvoiceForm.invoiceNumber.$dirty && serviceInvoiceForm.invoiceNumber.$invalid">
         <small class="text-danger" ng-show="serviceInvoiceForm.invoiceNumber.$error.required">
@@ -167,7 +158,7 @@
 			</div>
 			<div class="col-md-2">
 				<br>
-				<button type="button"class="btn btn-primary add-more-service" ng-click="add()" style="float: right;"><b>+</b> Add More</button>
+				<button type="button"class="btn btn-primary add-more-service" ng-click="add()" style="float: right;"><b>+</b> More</button>
 			</div>
 		</div>
 	</div>
@@ -219,7 +210,7 @@ Account Type:CHECKING"
 			placeholder="Eg: Thank you for your business."
 			ng-model="serviceInvoice.keyNote"
 			ng-minlength="20"
-			required />{{old('keyNote')}}
+			required>{{old('keyNote')}}
 			</textarea>
 			<div class="" ng-show="serviceInvoiceForm.keyNote.$dirty && serviceInvoiceForm.keyNote.$invalid">
 		        <small class="text-danger" ng-show="serviceInvoiceForm.keyNote.$error.required">

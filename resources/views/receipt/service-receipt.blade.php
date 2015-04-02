@@ -7,16 +7,7 @@
 <div class="container container-bordered">
 	<h3 class="title-line">Working Hour Invoice</h3>
 	<p></p>
-		@if (count($errors) > 0)
-		<div class="alert alert-danger">
-			<strong>Whoops!</strong> There were some problems with your input.<br><br>
-			<ul>
-				@foreach ($errors->all() as $error)
-					<li>{{ $error }}</li>
-				@endforeach
-			</ul>
-		</div>
-	@endif
+	@include('include.error-msg')
 	<p></p>
 	{!!Form::open(['url' => 'receipt/service','name' => 'serviceReceiptForm','novalidate'])!!}
 	<div class="row">
@@ -30,7 +21,7 @@
 			value="{{old('receiptNumber')}}" 
             ng-minlength="5" 
             ng-maxlength="20"
-			required />
+			required>
 
 		<div ng-show="serviceReceiptForm.invoiceNumber.$dirty && serviceReceiptForm.invoiceNumber.$invalid">
         <small class="text-danger" ng-show="serviceReceiptForm.invoiceNumber.$error.required">
@@ -55,7 +46,7 @@
 			placeholder="DD/MM/YYYY" 
 			value="{{old('receiptDate')}}"
 			ng-model="workInvoice.receiptDate"
-			required/>
+			required>
 			<div class="" ng-show="serviceReceiptForm.receiptDate.$dirty && serviceReceiptForm.receiptDate.$invalid">
 		        <small class="text-danger" ng-show="serviceReceiptForm.receiptDate.$error.required">
 		           Invoice Date is required.
@@ -73,7 +64,7 @@
 			placeholder="Eg: XYZ Inc," 
 			ng-minlength="3" 
 			value="{{old('serviceProvider')}}"
-			required />
+			required>
 			<div ng-show="serviceReceiptForm.serviceProvider.$dirty && serviceReceiptForm.serviceProvider.$invalid">
 		        <small class="text-danger" ng-show="serviceReceiptForm.serviceProvider.$error.required">
 		           Service Provide name is required.
@@ -167,7 +158,7 @@
 			</div>
 			<div class="col-md-2">
 				<br>
-				<button type="button"class="btn btn-primary add-more-service" ng-click="add()" style="float: right;"><b>+</b> Add More</button>
+				<button type="button"class="btn btn-primary add-more-service" ng-click="add()" style="float: right;"><b>+</b> More</button>
 			</div>
 		</div>
 	</div>
@@ -180,7 +171,7 @@
 			placeholder="Eg: Thank you for your business."
 			ng-model="workInvoice.keyNote"
 			ng-minlength="20"
-			required />{{old('keyNote')}}
+			required>{{old('keyNote')}}
 			</textarea>
 			<div class="" ng-show="serviceReceiptForm.keyNote.$dirty && serviceReceiptForm.keyNote.$invalid">
 		        <small class="text-danger" ng-show="serviceReceiptForm.keyNote.$error.required">

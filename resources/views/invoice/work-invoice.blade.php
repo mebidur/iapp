@@ -7,16 +7,7 @@
 <div class="container container-bordered">
 	<h3 class="title-line">Working Hour Invoice</h3>
 	<p></p>
-		@if (count($errors) > 0)
-		<div class="alert alert-danger">
-			<strong>Whoops!</strong> There were some problems with your input.<br><br>
-			<ul>
-				@foreach ($errors->all() as $error)
-					<li>{{ $error }}</li>
-				@endforeach
-			</ul>
-		</div>
-	@endif
+	@include('include.error-msg')
 	<p></p>
 	{!!Form::open(['url' => 'invoice/work','name' => 'workInvoiceForm','novalidate'])!!}
 	<div class="row">
