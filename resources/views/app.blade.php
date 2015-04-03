@@ -46,6 +46,7 @@
 	<div class="iapp-footer">
        <center>
           <p >&copy; 2015 | All rights reserved. <a href="javascript:void(0)" class="iapp-terms">Privacy Policy</a> - <a href="javascript:void(0)" class="iapp-policy">Terms &amp; Conditions.</a></p>
+          <input type="hidden" class="siteUrl" value="{{url('/')}}">
        </center>
              
   </div>

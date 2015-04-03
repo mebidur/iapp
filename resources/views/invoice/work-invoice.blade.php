@@ -18,9 +18,10 @@
 			placeholder="Invoice Number" 
 			name="invoiceNumber" 
 			ng-model="workInvoice.invoiceNumber"
-			value="{{old('invoiceNumber')}}" 
             ng-minlength="5" 
             ng-maxlength="20"
+            ng-init ="{{old('invoiceNumber')}}"
+            ensure-unique="invoiceNumber"
 			required />
 
 		<div ng-show="workInvoiceForm.invoiceNumber.$dirty && workInvoiceForm.invoiceNumber.$invalid">
@@ -35,6 +36,10 @@
                 ng-show="workInvoiceForm.invoiceNumber.$error.maxlength">
                 Your name cannot be longer than 20 characters
         </small>
+        <small class="text-danger"
+				ng-show="workInvoiceForm.invoiceNumber.$error.unique">
+				That invoice number provided is  already taken, please try another.
+		</small>
       </div>
 
 		</div>

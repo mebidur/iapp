@@ -17,7 +17,7 @@ class Dompdf implements Pdf
      *
      * @var string
      */
-    protected $filename = 'dompdf_out.pdf';
+    protected $filename = 'downloadFile.pdf';
 
 
     /**

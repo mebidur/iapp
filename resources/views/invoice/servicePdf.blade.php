@@ -140,10 +140,13 @@
   }
 }
 .container{
-  width:900px !important;
+  max-width:900px !important;
 }
 .center-content{
   margin: 0 auto !important;
+}
+.table-header tr td{
+  vertical-align: middle !important;
 }
 
 </style>
@@ -152,11 +155,11 @@
 <div class="container {{($requestType != 'downloadPDF') ? 'center-content' : ''}}">
   @if($requestType != 'downloadPDF')
   <div class="hidden-print">
-    <button class="pdf-print-btn"><span class="glyphicon glyphicon-print"></span> Print</button>
+    <button class="pdf-print-btn">Print</button>
   </div>
   @endif
   <h2 style="text-align:center">Invoice</h2><br>
-  <table class="table">
+  <table class="table table-header">
     <tr>
       <td><b>Invoice No:</b> {{$invoice->invoiceNumber}}</td>
       <td><b>Invoice Date:</b> {{date('d/m/Y',strtotime($invoice->serviceDate))}}</td>
@@ -198,7 +201,7 @@
       </tr>
       @endforeach
       <tr>
-        <td colspan="2" class="text-right"><b>Total:</b></td>
+        <td colspan="2" style="text-align:right"><b>Total:</b></td>
         <td><b>{{$currency . ' '.round($subTotal,2)}}</b></td>
       </tr>
     </tbody>

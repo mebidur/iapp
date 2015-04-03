@@ -140,23 +140,26 @@
   }
 }
 .container{
-  width:900px !important;
+  max-width:900px !important;
 }
 .center-content{
   margin: 0 auto !important;
+}
+.table-header tr td{
+  vertical-align: middle !important;
 }
 
 </style>
 </head>  
 <body>
-<div class="container {{($requestType != 'downloadPDF') ? 'center-content' : ''}}">
+<div id="workPdf" class="container {{($requestType != 'downloadPDF') ? 'center-content' : ''}}">
   @if($requestType != 'downloadPDF')
-  <div class="hidden-print">
-    <button class="pdf-print-btn"><span class="glyphicon glyphicon-print"></span> Print</button>
+  <div class="hidden-print" ng-controller="printPage">
+    <button class="pdf-print-btn" ng-click="print()" print-element-id="workPdf">Print</button>
   </div>
   @endif
   <h2 style="text-align:center">Invoice</h2><br>
-  <table class="table">
+  <table class="table table-header">
     <tr>
       <td><b>Invoice No:</b> {{$invoice->invoiceNumber}}</td>
       <td><b>Invoice Date:</b> {{date('d/m/Y',strtotime($invoice->serviceDate))}}</td>
@@ -233,6 +236,9 @@
   </div>
   <p></p>
 </div>
+<script type="text/javascript" src="{{url('js/angular.min.js')}}"></script>
+<script type="text/javascript" src="{{url('js/app.js')}}"></script>
+<script type="text/javascript" src="{{url('js/printPage.js')}}"></script>
 
 
 

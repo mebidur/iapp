@@ -13,7 +13,10 @@
 	<div class="row">
 		<div class="col-md-6">
 			<label><b>Invoice No</b></label>
-			<input class="form-control" 
+			<input class="form-control"
+			ng-class="{
+						error: serviceInvoiceForm.invoiceNumber.$dirty &&
+						serviceInvoiceForm.invoiceNumber.$invalid}" 
 			type="text"
 			placeholder="Invoice Number" 
 			name="invoiceNumber" 
@@ -21,9 +24,11 @@
 			value="{{old('invoiceNumber')}}" 
             ng-minlength="5" 
             ng-maxlength="20"
-			required>
+            ensure-unique="invoiceNumber"
+			required
+			ng-focus />
 
-		<div ng-show="serviceInvoiceForm.invoiceNumber.$dirty && serviceInvoiceForm.invoiceNumber.$invalid">
+		<div ng-show="serviceInvoiceForm.invoiceNumber.$dirty && serviceInvoiceForm.invoiceNumber.$invalid && !serviceInvoiceForm.invoiceNumber.$focused">
         <small class="text-danger" ng-show="serviceInvoiceForm.invoiceNumber.$error.required">
            Invoice no# is required.
         </small>
@@ -35,6 +40,10 @@
                 ng-show="serviceInvoiceForm.invoiceNumber.$error.maxlength">
                 Your name cannot be longer than 20 characters
         </small>
+        <small class="text-danger"
+				ng-show="serviceInvoiceForm.invoiceNumber.$error.unique">
+				That invoice number provided is  already taken, please try another.
+		</small>
       </div>
 
 		</div>

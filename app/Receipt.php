@@ -12,6 +12,6 @@ class Receipt extends Model {
 
 
 	public function description(){
-		return $this->hasMany('App\Description','id','description_id');
+		return $this->hasMany('App\Description');
 	}
 }

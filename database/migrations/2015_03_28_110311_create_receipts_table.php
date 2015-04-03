@@ -25,6 +25,7 @@ class CreateReceiptsTable extends Migration {
 			$table->string('termsCondition');
 			$table->string('bankDetails');
 			$table->string('keyNote');
+			$table->string('currency');
 			$table->timestamps();
 			$table->softDeletes();
 		});

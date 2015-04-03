@@ -18,34 +18,48 @@ class ReceiptController extends Controller {
 		$this->middleware('auth');
 	}
 	
+	public function getIndex(){
+		$receipts = Receipt::with('description')
+							->where('organization_id', \Auth::user()->organization_id)
+							->get();
+		return \View::make('receipt.view-receipt')->with(['current' => 'receipt',
+														  'receipts' => $receipts,]);
+	}
 	public function getWork()
 	{
 		return View::make('receipt.work-receipt')
-					->with(['current' => 'work-receipt',
-						'receiptNumber'=> strtoupper(Str::random(14)),]);
+					->with(['current' => 'work-receipt']);
 	}
 
 	public function postWork(WorkReceipt $request, Receipt $receipt, PDF $pdf)
 	{
-		$descArray = [];
-		$receipt = $receipt->create(array_merge($request->all(),['organization_id' => \Auth::user()->organization_id]));	
+		$data = Receipt::with('description')
+						->where('receiptNumber',$request->receiptNumber)
+						->first();
 		
-		for($i = 0; $i < count($request->rate); $i++){
-			array_push($descArray, new Description(['receipt_id' => $receipt->id,
-													'workDescription' => $request->workDescription[$i],
-													'rate' => $request->rate[$i],
-													'hour' => $request->hour[$i] ]));
-		}
-		$desc = $receipt->description()->saveMany($descArray);
-		
-		if($request->requestType == 'workReceipt'){
-		    return \View::make('receipt.workReceiptPdf')->with(['receipt' => $receipt, 'description' => $desc,'currency' => $request->currency])->render();
+		if(!empty($data)){
+			$receipt = $data;
+			$desc = $receipt['description'];
 
 		}else{
-			return 'under construction Download PDF ...';
-			$html = \View::make('receipt.workPdf')->with(['receipt' => $receipt, 'description' => $desc,'currency' => $request->currency])->render();
+			$descArray = [];
+			$receipt = $receipt->create(array_merge($request->all(),['organization_id' => \Auth::user()->organization_id]));	
+			
+			for($i = 0; $i < count($request->rate); $i++){
+				array_push($descArray, new Description(['receipt_id' => $receipt->id,
+														'workDescription' => $request->workDescription[$i],
+														'rate' => $request->rate[$i],
+														'hour' => $request->hour[$i] ]));
+			}
+			$desc = $receipt->description()->saveMany($descArray);
+		}
+			 
+		if($request->requestType == 'workReceipt'){
+		    return \View::make('receipt.workReceiptPdf')->with(['receipt' => $receipt, 'description' => $desc,'currency' => $request->currency, 'requestType' => $request->requestType,])->render();
+
+		}else{
+			$html = \View::make('receipt.workReceiptPdf')->with(['receipt' => $receipt, 'description' => $desc,'currency' => $request->currency, 'requestType' => $request->requestType,])->render();
 			return $pdf->load($html, 'A4', 'portrait')->download();
-			// return response()->download($file, "Ahmed Badawy - CV.pdf");
 		}
 	}
 
@@ -58,23 +72,38 @@ class ReceiptController extends Controller {
 
 	public function postService(WorkReceipt $request, Receipt $receipt, PDF $pdf)
 	{
-		$descArray = [];
-		$receipt = $receipt->create(array_merge($request->all(),['organization_id' => \Auth::user()->organization_id]));	
+		$data = Receipt::with('description')->where('receiptNumber',$request->receiptNumber)->first();
 		
-		for($i = 0; $i < count($request->workDescription); $i++){
-			array_push($descArray, new Description(['receipt_id' => $receipt->id, 'workDescription' => $request->workDescription[$i],'amount' => $request->amount[$i],]));
-		}
-		$desc = $receipt->description()->saveMany($descArray);
-		
-		if($request->requestType == 'serviceReceipt'){
-		    return \View::make('receipt.serviceReceiptPdf')->with(['receipt' => $receipt, 'description' => $desc,'currency' => $request->currency])->render();
+		if(!empty($data)){
+			$receipt = $data;
+			$desc = $receipt['description'];
 
 		}else{
-			return 'under construction Download PDF ...';
-			$html = \View::make('receipt.serviceReceipt')->with(['receipt' => $receipt, 'description' => $desc,'currency' => $request->currency])->render();
-			return $pdf->load($html, 'A4', 'portrait')->download();
-			// return response()->download($file, "Ahmed Badawy - CV.pdf");
+			$descArray = [];
+			$receipt = $receipt->create(array_merge($request->all(),['organization_id' => \Auth::user()->organization_id]));	
+			
+			for($i = 0; $i < count($request->workDescription); $i++){
+				array_push($descArray, new Description(['receipt_id' => $receipt->id, 'workDescription' => $request->workDescription[$i],'amount' => $request->amount[$i],]));
+			}
+			$desc = $receipt->description()->saveMany($descArray);
 		}
+			
+		if($request->requestType == 'serviceReceipt'){
+		    return \View::make('receipt.serviceReceiptPdf')->with(['receipt' => $receipt, 'description' => $desc,'currency' => $request->currency , 'requestType' => $request->requestType])->render();
+
+		}else{
+			$html = \View::make('receipt.serviceReceiptPdf')->with(['receipt' => $receipt, 'description' => $desc,'currency' => $request->currency , 'requestType' => $request->requestType])->render();
+			return $pdf->load($html, 'A4', 'portrait')->download();
+		}
+	}
+	
+	public function postCheck()
+	{
+		$data = Receipt::where('receiptNumber',\Input::get('receiptId'))->first();
+		if(!empty($data)){
+			return true;
+		}
+		return false;
 	}
 
 }

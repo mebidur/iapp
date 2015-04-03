@@ -15,6 +15,15 @@ class InvoiceController extends Controller {
 		$this->middleware('auth');
 	}
 
+	public function getIndex()
+	{
+		$invoices = Invoice::with('description')
+							->where('organization_id', \Auth::user()->organization_id)
+							->get();
+
+		return \View::make('home')->with(['current' => 'home','invoices' => $invoices,]);
+	}
+
 	public function getWork()
 	{
 		return \View::make('invoice.work-invoice')
@@ -23,11 +32,11 @@ class InvoiceController extends Controller {
 
 	public function postWork(WorkInvoice $request, Invoice $invoice, PDF $pdf)
 	{
-		$data = Invoice::where('invoiceNumber',$request->invoiceNumber)->first();
+		$data = Invoice::with('description')->where('invoiceNumber',$request->invoiceNumber)->first();
 		
 		if(!empty($data)){
 			$invoice = $data;
-			$desc = $invoice->description();
+			$desc = $invoice['description'];
 
 		}else{
 			$descArray = [];
@@ -37,18 +46,26 @@ class InvoiceController extends Controller {
 				array_push($descArray, new Description(['invoice_id' => $invoice->id,
 														'workDescription' => $request->workDescription[$i],
 														'rate' => $request->rate[$i],
-														'hour' => $request->hour[$i], ]));
+														'hour' => $request->hour[$i],
+														]));
 			}
 			$desc = $invoice->description()->saveMany($descArray);
 		}
 		
 		if($request->requestType == 'workInvoice'){
-		    return \View::make('invoice.workPdf')->with(['invoice' => $invoice, 'description' => $desc,'currency' => $request->currency,'requestType' => $request->requestType])->render();
+		    return \View::make('invoice.workPdf')->with(['invoice' => $invoice,
+		    			 								 'description' => $desc,
+		    			 								 'currency' => $request->currency,
+		    			 								 'requestType' => $request->requestType])
+		    									 ->render();
 
 		}else{
-			$html = \View::make('invoice.workPdf')->with(['invoice' => $invoice, 'description' => $desc,'currency' => $request->currency,'requestType' => $request->requestType])->render();
-			return $pdf->load($html, 'A4', 'portrait')->download('Invoice');
-			// return response()->download($file, "Ahmed Badawy - CV.pdf");
+			$html = \View::make('invoice.workPdf')->with(['invoice' => $invoice, 
+														  'description' => $desc,
+														  'currency' => $request->currency,
+														  'requestType' => $request->requestType])
+												  ->render();
+			return $pdf->load($html, 'A4', 'portrait')->download();
 		}
 	}
 
@@ -59,22 +76,45 @@ class InvoiceController extends Controller {
 	}
 	public function postService(ServiceInvoice $request, Invoice $invoice, PDF $pdf)
 	{
-		$descArray = [];
-		$invoice = $invoice->create(array_merge($request->all(),['organization_id' => \Auth::user()->organization_id]));	
+		$data = Invoice::with('description')->where('invoiceNumber',$request->invoiceNumber)->first();
 		
-		for($i = 0; $i < count($request->workDescription); $i++){
-			array_push($descArray, new Description(['invoice_id' => $invoice->id, 'workDescription' => $request->workDescription[$i],'amount' => $request->amount[$i]]));
-		}
-		$desc = $invoice->description()->saveMany($descArray);
-		
-		if($request->requestType == 'serviceInvoice'){
-		    return \View::make('invoice.servicePdf')->with(['invoice' => $invoice, 'description' => $desc,'currency' => $request->currency,'requestType' => $request->requestType])->render();
+		if(!empty($data)){
+			$invoice = $data;
+			$desc = $invoice['description'];
 
 		}else{
-			$html = \View::make('invoice.servicePdf')->with(['invoice' => $invoice, 'description' => $desc,'currency' => $request->currency,'requestType' => $request->requestType])->render();
-			return $pdf->load($html, 'A4', 'portrait')->download('Receipt');
-			// return response()->download($file, "Ahmed Badawy - CV.pdf");
+			$descArray = [];
+			$invoice = $invoice->create(array_merge($request->all(),['organization_id' => \Auth::user()->organization_id]));	
+			
+			for($i = 0; $i < count($request->workDescription); $i++){
+				array_push($descArray, new Description(['invoice_id' => $invoice->id,
+														'workDescription' => $request->workDescription[$i],
+														'amount' => $request->amount[$i],
+														]));
+			}
+			$desc = $invoice->description()->saveMany($descArray);
 		}
+			
+		if($request->requestType == 'serviceInvoice'){
+		    return \View::make('invoice.servicePdf')->with(['invoice' => $invoice, 'description' => $desc,
+		    												'currency' => $request->currency,
+		    												'requestType' => $request->requestType])->render();
+
+		}else{
+			$html = \View::make('invoice.servicePdf')->with(['invoice' => $invoice, 'description' => $desc,
+															'currency' => $request->currency,
+															'requestType' => $request->requestType])->render();
+			return $pdf->load($html, 'A4', 'portrait')->download();
+		}		
+	}
+
+	public function postCheck()
+	{
+		$data = Invoice::where('invoiceNumber',\Input::get('invoiceNumber'))->first();
+		if(!empty($data)){
+			return true;
+		}
+		return json_encode(['isUnique' => true]);
 	}
 
 }

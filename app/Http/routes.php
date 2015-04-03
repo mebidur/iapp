@@ -13,10 +13,11 @@
 	Route::group(['middleware' => 'auth'], function()
 	{
 		Route::controllers([
-			'home' => 'HomeController',
+			// 'home' => 'HomeController',
 			'invoice' => 'InvoiceController',
 			'receipt' => 'ReceiptController',
 		]);
+		Route::get('home', 'InvoiceController@getIndex');
 	});
 
 
