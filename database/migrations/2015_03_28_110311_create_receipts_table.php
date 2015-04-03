@@ -22,10 +22,9 @@ class CreateReceiptsTable extends Migration {
 			$table->string('serviceReceiver');
 			$table->string('companyAddress');
 			$table->string('clientAddress');
-			$table->string('termsCondition');
-			$table->string('bankDetails');
 			$table->string('keyNote');
 			$table->string('currency');
+			$table->string('type');
 			$table->timestamps();
 			$table->softDeletes();
 		});

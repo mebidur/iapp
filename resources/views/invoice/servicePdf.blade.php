@@ -101,68 +101,84 @@
     padding-bottom: 2px !important;
     border-bottom: 1px dashed #dfdfdf;
   }
+  .iapp-details{
+    max-width: 900px !important;
+  }
+  .iapp-details h4{
+    font-size: 16px !important;
+    padding-left: 8px !important;
+  }
   .iapp-details pre{
-  	  background: #fff !important;
-	  border: none !important;
-	  padding: 0px !important;
-	  font-family: sans-serif !important;
+    background: #fff !important;
+    border: none !important;
+    padding: 0px !important;
+    font-family: sans-serif !important;
     margin: 0px !important;
-      white-space: pre-line !important;
+    white-space: pre-line !important;
   }
 
   .pdf-print-btn{
-  width: 70px;
-  padding: 6px 0px;
-  border-radius: 13px;
-  background: #0099C9;
-  margin: 24px 40px;
-  border: 0px;
-  font-size: 13px;
-  position: absolute;
-  border-color: #087A9D;
-  color: #fff;
-  right: 16%;
+    width: 70px;
+    padding: 6px 0px;
+    border-radius: 13px;
+    background: #0099C9;
+    margin: 10px 86% !important;
+    border: 0px;
+    font-size: 13px;
+    border-color: #087A9D;
+    color: #fff;    
   }
 
-.invoice-info td{
-  width: 50%;
-}
-.mid-panels th{
-  background: #D9EDF7;
-}
-.panels th{
-  width: 50%;
-  background: #D9EDF7;
-}
-@media print {
-  .hidden-print {
-    display: none !important;
+  .invoice-info td{
+    width: 50%;
   }
-}
-.container{
-  max-width:900px !important;
-}
-.center-content{
-  margin: 0 auto !important;
-}
-.table-header tr td{
-  vertical-align: middle !important;
-}
+  .mid-panels th{
+    background: #D9EDF7;
+  }
+  .panels th{
+    width: 50%;
+    background: #D9EDF7;
+  }
+  @media print {
+    .hidden-print {
+      display: none !important;
+    }
+  }
+  .container{
+    max-width:900px !important;
+    overflow: hidden !important;
+  }
+  .center-content{
+    margin: 0 auto !important;
+  }
+  .table-header tr td{
+    vertical-align: middle !important;
+  }
+  .invoice-date{
+    padding-left: 20% !important;
+  }
+  .iapp-details h4{
+    font-size: 16px !important;
+    padding-left: 17px !important;
+  }
+  .invoice-no{
+    width: 50% !important;
+  }
 
 </style>
 </head>  
 <body>
-<div class="container {{($requestType != 'downloadPDF') ? 'center-content' : ''}}">
+<div id="container" class="container {{($requestType != 'downloadPDF') ? 'center-content' : ''}}">
   @if($requestType != 'downloadPDF')
   <div class="hidden-print">
-    <button class="pdf-print-btn">Print</button>
+    <button id="pdf-print-btn" class="pdf-print-btn">Print</button>
   </div>
   @endif
   <h2 style="text-align:center">Invoice</h2><br>
   <table class="table table-header">
     <tr>
-      <td><b>Invoice No:</b> {{$invoice->invoiceNumber}}</td>
-      <td><b>Invoice Date:</b> {{date('d/m/Y',strtotime($invoice->serviceDate))}}</td>
+      <td class="invoice-no"><b>Invoice No:</b> {{$invoice->invoiceNumber}}</td>
+      <td class="invoice-date"><b>Invoice Date:</b> {{date('d/m/Y',strtotime($invoice->serviceDate))}}</td>
     </tr>
   </table>
   <table class="table table-bordered panels">
@@ -230,8 +246,19 @@
   </table>
   <p></p>
   <div class="row col-xs-12 iapp-details">
-  	<h5 class="underline-text"><b >Note</b></h5>
-  	<pre>{{$invoice->keyNote}}</pre>
+  	<h4 class="underline-text"><b>Note</b></h4>
+  	<span>{{$invoice->keyNote}}</span>
   </div>
   <p></p>
 </div>
+<script type="text/javascript" src="{{url('js/jquery.min.js')}}"></script>
+<script type="text/javascript">
+  document.getElementById("pdf-print-btn").onclick = function () {
+    printElement(document.getElementById("container"));  
+    window.print();
+}
+
+function printElement(elem) {
+    var domClone = elem.cloneNode(true);
+}
+</script>

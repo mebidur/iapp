@@ -26,6 +26,7 @@ class CreateInvoicesTable extends Migration {
 			$table->string('bankDetails');
 			$table->string('keyNote');
 			$table->string('status');
+			$table->string('type');
 			$table->string('currency');
 			$table->timestamps();
 			$table->softDeletes();

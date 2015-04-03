@@ -5,10 +5,10 @@ var app = angular.module('iApp', [])
 		$interpolateProvider.endSymbol(']]');
 	}]);
 
-	app.directive('ensureUnique', function($http) {
+	app.directive('ensureUnique', function($http){
 		return {
 			require: 'ngModel',
-			link: function(scope, ele, attrs, c) {
+			link: function(scope, ele, attrs, c){
 				scope.$watch(attrs.ngModel, function(n) {
 					if (!n) return;
 					$http({

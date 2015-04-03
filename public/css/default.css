@@ -7,7 +7,8 @@ html,body{
 }
 .nav-icon{
 	border: 1px solid #dfdfdf !important;
-	border-top: 4px solid #EAEBEC !important;
+	border-top: 4px solid #B8B8B8 !important;
+	background: #C8DDD9;
 }
 .nav-icon a:hover{
 	text-decoration: none;
@@ -25,6 +26,7 @@ html,body{
 }
 .active-tab h5, .active-tab h6{
 	color: #fff !important;
+	font-weight: bold;
 }
 .title-line{
 	padding-bottom: 4px !important;
@@ -58,6 +60,12 @@ html,body{
 	border-bottom: 3px solid #034E8E;
 	font-size: 20px;
 }
+.iapp-lg-btn.disabled{
+	background-color: #337ab7;
+	border-color: #2e6da4;
+	border-bottom: 4px solid #2e6da4;
+}
+}
 .iapp-date{
 	  padding: 0px 8px !important;
 }
@@ -78,7 +86,40 @@ html,body{
 	text-decoration: none;
 	cursor: pointer;
 }
-
+.status-print-btn{
+	width: 70px;
+	padding: 6px 0px;
+	border-radius: 13px;
+	background: #0099C9;
+	border: 0px;
+	font-size: 13px;
+	border-color: #087A9D;
+	color: #fff; 
+}
+.pagination-view{
+	position: absolute;
+	right: 10%;
+	top: 27%;
+	font-weight: bold;
+}
+.iapp-ok{
+	color: #009CCE;
+	padding-left: 22px;
+}
+.iapp-badge{
+	display: inline-block;
+	min-width: 10px;
+	padding: 4px 18px;
+	font-size: 12px;
+	font-weight: bold;
+	color: #FFF;
+	line-height: 1;
+	vertical-align: baseline;
+	white-space: nowrap;
+	text-align: center;
+	background-color: #0099C9;
+	border-radius: 10px;
+}
 .datepicker:before {
 	border-left: 0px solid transparent !important; 
 	border-right: 0px solid transparent !important; 
@@ -89,4 +130,24 @@ input.ng-invalid, textarea.ng-invalid, select.ng-invalid {
 }
 input.ng-valid, textarea.ng-valid, select.ng-valid {
 border: 1px solid green;
+}
+.pagination>li>a, .pagination>li>span{
+	color: #337AB7 !important;
+	margin-right: 8px;
+	border-radius: 2px !important;
+	font-weight: bold;
+}
+.pagination>.active>a, .pagination>.active>span, .pagination>.active>a:hover, .pagination>.active>span:hover, .pagination>.active>a:focus, .pagination>.active>span:focus {
+	background-color: #337AB7 !important;
+	color: #fff!important;
+	border-radius: 2px !important;
+}
+.pagination>.disabled>span, .pagination>.disabled>span:hover, .pagination>.disabled>span:focus, .pagination>.disabled>a, .pagination>.disabled>a:hover, .pagination>.disabled>a:focus {
+	cursor: default !important;
+}
+.pagination>li:last-child>a, .pagination>li:last-child>span {
+	border-radius: 2px !important;
+}
+.pagination>li:first-child>a, .pagination>li:first-child>span{
+	border-radius: 2px !important;
 }

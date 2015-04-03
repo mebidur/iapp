@@ -5,7 +5,7 @@
 </div>
 <br>
 <div class="container container-bordered">
-	<h3 class="title-line">Working Hour Invoice</h3>
+	<h3 class="title-line">Service Receipt</h3>
 	<p></p>
 	@include('include.error-msg')
 	<p></p>

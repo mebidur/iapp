@@ -19,9 +19,10 @@ class ReceiptController extends Controller {
 	}
 	
 	public function getIndex(){
-		$receipts = Receipt::with('description')
+		$receipts = Receipt::with(['description'])
 							->where('organization_id', \Auth::user()->organization_id)
-							->get();
+							->paginate(10);
+							
 		return \View::make('receipt.view-receipt')->with(['current' => 'receipt',
 														  'receipts' => $receipts,]);
 	}
@@ -49,16 +50,23 @@ class ReceiptController extends Controller {
 				array_push($descArray, new Description(['receipt_id' => $receipt->id,
 														'workDescription' => $request->workDescription[$i],
 														'rate' => $request->rate[$i],
-														'hour' => $request->hour[$i] ]));
+														'hour' => $request->hour[$i],
+														'type'	=> '1',]));
 			}
 			$desc = $receipt->description()->saveMany($descArray);
 		}
 			 
 		if($request->requestType == 'workReceipt'){
-		    return \View::make('receipt.workReceiptPdf')->with(['receipt' => $receipt, 'description' => $desc,'currency' => $request->currency, 'requestType' => $request->requestType,])->render();
+		    return \View::make('receipt.workReceiptPdf')->with(['receipt' => $receipt,
+		    													'description' => $desc,
+		    													'currency' => $request->currency,
+		    													'requestType' => $request->requestType,])->render();
 
 		}else{
-			$html = \View::make('receipt.workReceiptPdf')->with(['receipt' => $receipt, 'description' => $desc,'currency' => $request->currency, 'requestType' => $request->requestType,])->render();
+			$html = \View::make('receipt.workReceiptPdf')->with(['receipt' => $receipt,
+																 'description' => $desc,
+																 'currency' => $request->currency, 
+																 'requestType' => $request->requestType,])->render();
 			return $pdf->load($html, 'A4', 'portrait')->download();
 		}
 	}
@@ -66,8 +74,7 @@ class ReceiptController extends Controller {
 	public function getService()
 	{
 		return View::make('receipt.service-receipt')
-					->with(['current' => 'service-receipt',
-							'receiptNumber'=> strtoupper(Str::random(14)),]);
+					->with(['current' => 'service-receipt',]);
 	}
 
 	public function postService(WorkReceipt $request, Receipt $receipt, PDF $pdf)
@@ -83,16 +90,23 @@ class ReceiptController extends Controller {
 			$receipt = $receipt->create(array_merge($request->all(),['organization_id' => \Auth::user()->organization_id]));	
 			
 			for($i = 0; $i < count($request->workDescription); $i++){
-				array_push($descArray, new Description(['receipt_id' => $receipt->id, 'workDescription' => $request->workDescription[$i],'amount' => $request->amount[$i],]));
+				array_push($descArray, new Description(['receipt_id' => $receipt->id,
+														'workDescription' => $request->workDescription[$i],
+														'amount' => $request->amount[$i],
+														'type'	=> '2',]));
 			}
 			$desc = $receipt->description()->saveMany($descArray);
 		}
 			
 		if($request->requestType == 'serviceReceipt'){
-		    return \View::make('receipt.serviceReceiptPdf')->with(['receipt' => $receipt, 'description' => $desc,'currency' => $request->currency , 'requestType' => $request->requestType])->render();
+		    return \View::make('receipt.serviceReceiptPdf')->with(['receipt' => $receipt, 
+		    														'description' => $desc, 
+		    														'requestType' => $request->requestType])->render();
 
 		}else{
-			$html = \View::make('receipt.serviceReceiptPdf')->with(['receipt' => $receipt, 'description' => $desc,'currency' => $request->currency , 'requestType' => $request->requestType])->render();
+			$html = \View::make('receipt.serviceReceiptPdf')->with(['receipt' => $receipt, 
+																	'description' => $desc, 
+																	'requestType' => $request->requestType])->render();
 			return $pdf->load($html, 'A4', 'portrait')->download();
 		}
 	}
