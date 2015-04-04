@@ -46,7 +46,7 @@
 	</div> 
 	<div class="iapp-footer">
        <center>
-          <p >&copy; 2015 | All rights reserved. <a href="javascript:void(0)" class="iapp-terms">Privacy Policy</a> - <a href="javascript:void(0)" class="iapp-policy">Terms &amp; Conditions.</a></p>
+          <p >&copy; 2015 | All rights reserved. <a href="javascript:void(0)" class="iapp-terms">Privacy</a>  <a href="javascript:void(0)" class="iapp-policy">Terms</a> <a href="" class="iapp-policy">Security</a></p>
           <input type="hidden" id="siteUrl" value="{{url('/')}}">
           <input type="hidden" value="{{csrf_token()}}" id="_token" name="_token">
        </center>
@@ -70,7 +70,7 @@
 		}
 	});
 	$(document).ready(function(){
-	     $(document).on("keydown", disableF5);
+	     // $(document).on("keydown", disableF5);
 	});
 	function disableF5(e){
 		if ((e.which || e.keyCode) != 116 || (e.which || e.keyCode) != 82){
