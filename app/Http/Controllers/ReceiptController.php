@@ -44,14 +44,14 @@ class ReceiptController extends Controller {
 
 		}else{
 			$descArray = [];
-			$receipt = $receipt->create(array_merge($request->all(),['organization_id' => \Auth::user()->organization_id]));	
+			$receipt = $receipt->create(array_merge($request->all(),['organization_id' => \Auth::user()->organization_id,'type' => '1']));	
 			
 			for($i = 0; $i < count($request->rate); $i++){
 				array_push($descArray, new Description(['receipt_id' => $receipt->id,
 														'workDescription' => $request->workDescription[$i],
 														'rate' => $request->rate[$i],
-														'hour' => $request->hour[$i],
-														'type'	=> '1',]));
+														'hour' => $request->hour[$i]
+														]));
 			}
 			$desc = $receipt->description()->saveMany($descArray);
 		}
@@ -59,13 +59,11 @@ class ReceiptController extends Controller {
 		if($request->requestType == 'workReceipt'){
 		    return \View::make('receipt.workReceiptPdf')->with(['receipt' => $receipt,
 		    													'description' => $desc,
-		    													'currency' => $request->currency,
 		    													'requestType' => $request->requestType,])->render();
 
 		}else{
 			$html = \View::make('receipt.workReceiptPdf')->with(['receipt' => $receipt,
 																 'description' => $desc,
-																 'currency' => $request->currency, 
 																 'requestType' => $request->requestType,])->render();
 			return $pdf->load($html, 'A4', 'portrait')->download();
 		}
@@ -87,13 +85,13 @@ class ReceiptController extends Controller {
 
 		}else{
 			$descArray = [];
-			$receipt = $receipt->create(array_merge($request->all(),['organization_id' => \Auth::user()->organization_id]));	
+			$receipt = $receipt->create(array_merge($request->all(),['organization_id' => \Auth::user()->organization_id,'type' => '2']));	
 			
 			for($i = 0; $i < count($request->workDescription); $i++){
 				array_push($descArray, new Description(['receipt_id' => $receipt->id,
 														'workDescription' => $request->workDescription[$i],
-														'amount' => $request->amount[$i],
-														'type'	=> '2',]));
+														'amount' => $request->amount[$i]
+														]));
 			}
 			$desc = $receipt->description()->saveMany($descArray);
 		}
@@ -113,11 +111,12 @@ class ReceiptController extends Controller {
 	
 	public function postCheck()
 	{
-		$data = Receipt::where('receiptNumber',\Input::get('receiptId'))->first();
+		$data = Receipt::whereReceiptnumber(\Input::get('field'))->first();
 		if(!empty($data)){
-			return true;
+			return ['isUnique' => false ];
+		}else{
+			return ['isUnique' => true ];
 		}
-		return false;
 	}
 
 }

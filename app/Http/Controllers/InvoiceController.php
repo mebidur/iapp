@@ -108,12 +108,14 @@ class InvoiceController extends Controller {
 	}
 
 	public function postCheck()
-	{
-		$data = Invoice::where('invoiceNumber',\Input::get('invoiceNumber'))->first();
+	{		
+		$data = Invoice::whereInvoicenumber(\Input::get('field'))->first();
 		if(!empty($data)){
-			return true;
+			return ['isUnique' => false ];
+		}else{
+			return ['isUnique' => true ];
 		}
-		return json_encode(['isUnique' => true]);
+		
 	}
 
 }
