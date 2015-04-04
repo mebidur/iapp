@@ -252,6 +252,7 @@
   <p></p>
 </div>
 <script type="text/javascript" src="{{url('js/jquery.min.js')}}"></script>
+<script type="text/javascript" src="{{url('js/printPdf.js')}}"></script>
 <script type="text/javascript">
   document.getElementById("pdf-print-btn").onclick = function () {
     printElement(document.getElementById("container"));  
