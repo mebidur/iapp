@@ -211,13 +211,13 @@
         <td>{{$each['workDescription']}}</td>
         <td>{{$each['hour']}}</td>
         <?php $subTotal += $each['rate'] * $each['hour'];?>
-        <td>{{$currency . ' '.$each['rate']}}</td>
-        <td>{{$currency . ' '.$each['rate'] * $each['hour']}}</td>
+        <td>{{$invoice->currency . ' '.$each['rate']}}</td>
+        <td>{{$invoice->currency . ' '.$each['rate'] * $each['hour']}}</td>
       </tr>
       @endforeach
       <tr>
         <td colspan="3" style="text-align:right"><b>Total:</b></td>
-        <td><b>{{$currency . ' '.round($subTotal,2)}}</b></td>
+        <td><b>{{$invoice->currency . ' '.round($subTotal,2)}}</b></td>
       </tr>
     </tbody>
   </table>
@@ -250,16 +250,7 @@
   <p></p>
 </div>
 <script type="text/javascript" src="{{url('js/jquery.min.js')}}"></script>
-<script type="text/javascript">
-  document.getElementById("pdf-print-btn").onclick = function () {
-    printElement(document.getElementById("container"));  
-    window.print();
-}
-
-function printElement(elem) {
-    var domClone = elem.cloneNode(true);
-}
-</script>
+<script type="text/javascript" src="{{url('js/printPdf.js')}}"></script>
 
 
 

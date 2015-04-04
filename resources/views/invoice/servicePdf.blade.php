@@ -218,7 +218,7 @@
       @endforeach
       <tr>
         <td colspan="2" style="text-align:right"><b>Total:</b></td>
-        <td><b>{{$currency . ' '.round($subTotal,2)}}</b></td>
+        <td><b>{{$invoice->currency . ' '.round($subTotal,2)}}</b></td>
       </tr>
     </tbody>
   </table>

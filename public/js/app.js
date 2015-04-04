@@ -1,24 +1,45 @@
-// var url = $('.siteUrl').val();
+var baseUrl = document.getElementById('siteUrl').value;
+var _token = document.getElementById('_token').value;
 var app = angular.module('iApp', [])
 	.config(['$interpolateProvider',function($interpolateProvider){
 		$interpolateProvider.startSymbol('[[');
 		$interpolateProvider.endSymbol(']]');
 	}]);
 
-	app.directive('ensureUnique', function($http){
+
+	app.directive('ensureUnique', function($http) {
 		return {
-			require: 'ngModel',
-			link: function(scope, ele, attrs, c){
-				scope.$watch(attrs.ngModel, function(n) {
-					if (!n) return;
-					$http({
+		require: 'ngModel',
+			link: function(scope, ele, attrs, c) {
+			scope.$watch(attrs.ngModel, function(n) {
+			if (!n) return;
+				$http({
 					method: 'POST',
-					url: '/invoice/check/',
-					data: {'invoiceId': scope.ensureUnique}
-					}).success(function(data){
-						c.$setValidity('unique', data.isUnique);
-					}).error(function(data){
+					url: baseUrl+'/invoice/check',
+					data: {"field": n, "_token" : _token}
+				}).success(function(data) {
+					c.$setValidity('unique', data.isUnique);
+				}).error(function(data) {
 						c.$setValidity('unique', false);
+					});
+				});
+			}
+		}
+	});
+	app.directive('isUnique', function($http) {
+		return {
+		require: 'ngModel',
+			link: function(scope, ele, attrs, c) {
+			scope.$watch(attrs.ngModel, function(n) {
+			if (!n) return;
+				$http({
+					method: 'POST',
+					url: baseUrl+'/receipt/check',
+					data: {"field": n, "_token" : _token}
+				}).success(function(data) {
+					c.$setValidity('isunique', data.isUnique);
+				}).error(function(data) {
+						c.$setValidity('isunique', false);
 					});
 				});
 			}

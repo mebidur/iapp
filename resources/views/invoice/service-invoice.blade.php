@@ -20,8 +20,7 @@
 			type="text"
 			placeholder="Invoice Number" 
 			name="invoiceNumber" 
-			ng-model="serviceInvoice.invoiceNumber"
-			value="{{old('invoiceNumber')}}" 
+			ng-model="invoiceNumber"
             ng-minlength="5" 
             ng-maxlength="20"
             ensure-unique="invoiceNumber"
@@ -30,19 +29,19 @@
 
 		<div ng-show="serviceInvoiceForm.invoiceNumber.$dirty && serviceInvoiceForm.invoiceNumber.$invalid && !serviceInvoiceForm.invoiceNumber.$focused">
         <small class="text-danger" ng-show="serviceInvoiceForm.invoiceNumber.$error.required">
-           Invoice no# is required.
+           Invoice no is required field.
         </small>
         <small class="text-danger" 
                 ng-show="serviceInvoiceForm.invoiceNumber.$error.minlength">
-                Your Invoice no# is required to be at least 5 characters
+                The invoice no is required to be at least 5 characters
         </small>
         <small class="text-danger" 
                 ng-show="serviceInvoiceForm.invoiceNumber.$error.maxlength">
                 Your name cannot be longer than 20 characters
         </small>
         <small class="text-danger"
-				ng-show="serviceInvoiceForm.invoiceNumber.$error.unique">
-				That invoice number provided is  already taken, please try another.
+				ng-show="serviceInvoiceForm.invoiceNumber.$error.unique" ng-hide="serviceInvoiceForm.invoiceNumber.$error">
+				The invoice number provided is  already taken, please try another.
 		</small>
       </div>
 
@@ -52,13 +51,12 @@
 			<!-- datepicker -->
 			<input type="date" class="form-control iapp-date" 
 			name="serviceDate" 
-			placeholder="DD/MM/YYYY" 
-			value="{{old('serviceDate')}}"
-			ng-model="serviceInvoice.serviceDate"
+			placeholder="DD/MM/YYYY"
+			ng-model="serviceDate"
 			required/>
-			<div class="" ng-show="serviceInvoiceForm.serviceDate.$dirty && serviceInvoiceForm.serviceDate.$invalid">
+			<div class="" ng-show="serviceInvoiceForm.serviceDate.$dirty && serviceInvoiceForm.serviceDate.$invalid" ng-hide="serviceInvoiceForm.serviceDate.$pristine">
 		        <small class="text-danger" ng-show="serviceInvoiceForm.serviceDate.$error.required">
-		           Invoice Date is required.
+		           Invoice date is required field.
 		        </small>
 		      </div>
 		</div>
@@ -69,29 +67,29 @@
 			<label><b>Service Provider</b></label>
 			<input type="text" class="form-control" 
 			name="serviceProvider" 
-			ng-model="serviceInvoice.serviceProvider"
+			ng-model="serviceProvider"
 			placeholder="Company Name" 
 			ng-minlength="3" 
 			value="{{old('serviceProvider')}}"
 			required />
 			<div ng-show="serviceInvoiceForm.serviceProvider.$dirty && serviceInvoiceForm.serviceProvider.$invalid">
 		        <small class="text-danger" ng-show="serviceInvoiceForm.serviceProvider.$error.required">
-		           Service Provide name is required.
+		           Service provide name is required field
 		        </small>
 		        <small class="text-danger" ng-show="serviceInvoiceForm.serviceProvider.$error.minlength">
-		        	Service Provider name is required to be at least 3 characters
+		        	Service provider name is required to be at least 3 characters
 		        </small>
 		      </div>
 		</div>
 		<div class="col-md-6">
 			<label><b>Customer Name</b></label>
-			{!!Form::text('serviceReceiver',old('serviceReceiver'),['placeholder' => 'Customer Name', 'class'=> 'form-control','ng-model' =>'serviceInvoice.serviceReceiver','ng-minlength' => '3','required'])!!}
+			{!!Form::text('serviceReceiver',old('serviceReceiver'),['placeholder' => 'Customer Name', 'class'=> 'form-control','ng-model' =>'serviceReceiver','ng-minlength' => '3','required'])!!}
 			<div ng-show="serviceInvoiceForm.serviceReceiver.$dirty && serviceInvoiceForm.serviceReceiver.$invalid">
 		        <small class="text-danger" ng-show="serviceInvoiceForm.serviceReceiver.$error.required">
-		           Client's name is required.
+		           Customer name is required field
 		        </small>
 		        <small class="text-danger" ng-show="serviceInvoiceForm.serviceReceiver.$error.minlength">
-		        	Client's name is required to be at least 3 characters
+		        	Customer name is required to be at least 3 characters
 		        </small>
 		      </div>
 		</div>
@@ -104,15 +102,15 @@
 			rows="5" 
 			name="companyAddress" 
 			placeholder="Company Location"
-			ng-model="serviceInvoice.companyAddress"
+			ng-model="companyAddress"
 			ng-minlength="5"
 			required></textarea>
 			<div ng-show="serviceInvoiceForm.companyAddress.$dirty && serviceInvoiceForm.companyAddress.$invalid">
 		        <small class="text-danger" ng-show="serviceInvoiceForm.companyAddress.$error.required">
-		           Service Provider Address is required.
+		           Service provider address is required.
 		        </small>
 		        <small class="text-danger" ng-show="serviceInvoiceForm.companyAddress.$error.minlength">
-		        	Service Provider Address provided is required to be at least 5 characters
+		        	Service provider address provided is required to be at least 5 characters
 		        </small>
 		    </div>
 		</div>
@@ -122,14 +120,14 @@
 			rows="5" name="clientAddress" 
 			placeholder="Customer Address"
 			ng-minlength="5"
-			ng-model="serviceInvoice.clientAddress"
+			ng-model="clientAddress"
 			required></textarea>
 			<div ng-show="serviceInvoiceForm.clientAddress.$dirty && serviceInvoiceForm.clientAddress.$invalid">
 		        <small class="text-danger" ng-show="serviceInvoiceForm.clientAddress.$error.required">
-		           Customer Address is required.
+		           Customer address is required field
 		        </small>
 		        <small class="text-danger" ng-show="serviceInvoiceForm.clientAddress.$error.minlength">
-		        	Customer Address provided is required to be at least 5 characters
+		        	Customer address provided is required to be at least 5 characters
 		        </small>
 		    </div>
 		</div>
@@ -138,7 +136,7 @@
 	<div class="row">
 		<div class="col-md-6">
 			<label><b>Currency</b></label>
-			<select class="form-control" name="currency" ng-model="serviceInvoice.currency" required>
+			<select class="form-control" name="currency" ng-model="currency" required>
 				<option selected disabled value="">Select Currency</option>
 				<option value="NPR">Nepalse Rupee</option>
 				<option value="IC">Indian Rupee</option>
@@ -148,7 +146,7 @@
 			</select>
 			<div ng-show="serviceInvoiceForm.currency.$dirty && serviceInvoiceForm.currency.$invalid">
 		        <small class="text-danger" ng-show="serviceInvoiceForm.currency.$error.required">
-		           The Currency field is required.
+		           The currency field is required field
 		        </small>
 		      </div>
 		</div>
@@ -179,17 +177,17 @@
 			rows="10" name="termsCondition" 
 			ng-minlength="20"
 			ng-maxlength="250"
-			ng-model="workInvoice.termsCondition"
+			ng-model="termsCondition"
 			placeholder="Terms of Services" required></textarea>
-			<div ng-show="workInvoiceForm.termsCondition.$dirty && workInvoiceForm.termsCondition.$invalid">
-		        <small class="text-danger" ng-show="workInvoiceForm.termsCondition.$error.required">
-		           The Terms &amp; Conditions field is required.
+			<div ng-show="serviceInvoiceForm.termsCondition.$dirty && serviceInvoiceForm.termsCondition.$invalid">
+		        <small class="text-danger" ng-show="serviceInvoiceForm.termsCondition.$error.required">
+		           The terms &amp; conditions field is required field
 		        </small>			        
-		        <small class="text-danger" ng-show="workInvoiceForm.termsCondition.$error.minlength">
-		        	Terms &amp; Condition provided is required to be at least 20 characters
+		        <small class="text-danger" ng-show="serviceInvoiceForm.termsCondition.$error.minlength">
+		        	Terms &amp; condition provided is required to be at least 20 characters
 		        </small>
-		        <small class="text-danger" ng-show="workInvoiceForm.termsCondition.$error.maxlength">
-		        	Terms &amp; Condition provided is required to be at maximum 250 characters
+		        <small class="text-danger" ng-show="serviceInvoiceForm.termsCondition.$error.maxlength">
+		        	Terms &amp; condition provided is required to be at maximum 250 characters
 		        </small>
 			</div>
 			</div>
@@ -198,11 +196,11 @@
 			<textarea class="form-control" 
 			rows="5" name="bankDetails" 
 			placeholder="Bank Account Detail Information ..."
-			ng-model="workInvoice.bankDetails"
+			ng-model="bankDetails"
 			required></textarea>
-			<div ng-show="workInvoiceForm.bankDetails.$dirty && workInvoiceForm.bankDetails.$invalid">
-		        <small class="text-danger" ng-show="workInvoiceForm.bankDetails.$error.required">
-		           The Bank Details field is required.
+			<div ng-show="serviceInvoiceForm.bankDetails.$dirty && serviceInvoiceForm.bankDetails.$invalid">
+		        <small class="text-danger" ng-show="serviceInvoiceForm.bankDetails.$error.required">
+		           The bank details field is required field
 		        </small>
 			</div>
 		</div>
@@ -214,9 +212,9 @@
 			<textarea class="form-control" 
 			rows="5" name="keyNote" 
 			placeholder="Special note from service provider"
-			ng-model="serviceInvoice.keyNote"
+			ng-model="keyNote"
 			ng-minlength="20"
-			required>{{old('keyNote')}}
+			required>
 			</textarea>
 			<div class="" ng-show="serviceInvoiceForm.keyNote.$dirty && serviceInvoiceForm.keyNote.$invalid">
 		        <small class="text-danger" ng-show="serviceInvoiceForm.keyNote.$error.required">

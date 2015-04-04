@@ -6,7 +6,7 @@ html,body{
 	color: #fff !important;
 }
 .nav-icon{
-	border: 1px solid #dfdfdf !important;
+	border: 1px solid #ACC7C1 !important;
 	border-top: 4px solid #B8B8B8 !important;
 	background: #C8DDD9;
 }
@@ -17,9 +17,9 @@ html,body{
 	margin-bottom: 6px !important;
 }
 .active-tab{
-	background-color: #337ab7;
-	border: 1px solid #337ab7 !important;
-	border-top: 4px solid #1A5D96 !important;
+	background-color: #0099C9;
+	border: 1px solid #0099C9 !important;
+	border-top: 4px solid #117696 !important;
 }
 .active-tab a{
 	color: #fff !important;
@@ -35,6 +35,7 @@ html,body{
 .container-bordered{
 	border:1px solid #dfdfdf !important;
 	border-top: 3px solid #EAEBEC !important;
+	position: relative !important
 }
 .iapp-footer{
 	background-color: #F8F8F8;
@@ -98,8 +99,8 @@ html,body{
 }
 .pagination-view{
 	position: absolute;
-	right: 10%;
-	top: 27%;
+	right: 3%;
+	top: 10%;
 	font-weight: bold;
 }
 .iapp-ok{
@@ -129,7 +130,8 @@ input.ng-invalid, textarea.ng-invalid, select.ng-invalid {
 /*border: 1px solid #a94442;*/
 }
 input.ng-valid, textarea.ng-valid, select.ng-valid {
-border: 1px solid green;
+  border: 1px solid rgb(195, 201, 202);
+  /*border: 1px solid green;*/
 }
 .pagination>li>a, .pagination>li>span{
 	color: #337AB7 !important;

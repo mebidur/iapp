@@ -210,13 +210,13 @@
         <td>{{$each['workDescription']}}</td>
         <td>{{$each['hour']}}</td>
         <?php $subTotal += $each['rate'] * $each['hour'];?>
-        <td>{{$currency . ' '.$each['rate']}}</td>
-        <td>{{$currency . ' '.$each['rate'] * $each['hour']}}</td>
+        <td>{{$receipt->currency . ' '.$each['rate']}}</td>
+        <td>{{$receipt->currency . ' '.$each['rate'] * $each['hour']}}</td>
       </tr>
       @endforeach
       <tr>
         <td colspan="3" style="text-align:right"><b>Total:</b></td>
-        <td><b>{{$currency . ' '.round($subTotal,2)}}</b></td>
+        <td><b>{{$receipt->currency . ' '.round($subTotal,2)}}</b></td>
       </tr>
     </tbody>
   </table>

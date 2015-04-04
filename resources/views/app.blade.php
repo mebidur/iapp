@@ -4,6 +4,7 @@
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="csrf-token" content="{{ csrf_token() }}" />
 	<title>Invoice App</title>
 
 	<link href="{{ asset('/css/app.css') }}" rel="stylesheet">
@@ -46,7 +47,8 @@
 	<div class="iapp-footer">
        <center>
           <p >&copy; 2015 | All rights reserved. <a href="javascript:void(0)" class="iapp-terms">Privacy Policy</a> - <a href="javascript:void(0)" class="iapp-policy">Terms &amp; Conditions.</a></p>
-          <input type="hidden" class="siteUrl" value="{{url('/')}}">
+          <input type="hidden" id="siteUrl" value="{{url('/')}}">
+          <input type="hidden" value="{{csrf_token()}}" id="_token" name="_token">
        </center>
              
   </div>
@@ -62,9 +64,14 @@
 	{!!HTML::script('js/printPage.js')!!}
 
 <script type="text/javascript">
-	// $(document).ready(function(){
-	//      $(document).on("keydown", disableF5);
-	// });
+	$.ajaxSetup({
+		headers: {
+			'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+		}
+	});
+	$(document).ready(function(){
+	     $(document).on("keydown", disableF5);
+	});
 	function disableF5(e){
 		if ((e.which || e.keyCode) != 116 || (e.which || e.keyCode) != 82){
 			window.onbeforeunload = function(){
