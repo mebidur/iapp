@@ -66,3 +66,28 @@ var app = angular.module('iApp', [])
 			}
 		}
 	}]);
+
+      
+	app.directive('ngDatepicker', function ($parse){
+	    return function (scope, element, attrs, controller) {
+	        var ngModel = $parse(attrs.ngModel);
+	        $(function(){
+	            element.datepicker({
+	                showOn:"both",
+	                changeYear:true,
+	                changeMonth:true,
+	                dateFormat:'dd-mm-yy',
+	                maxDate: new Date(),	                
+	                onSelect:function (dateText, inst) {
+	                    scope.$apply(function(scope){
+	                        ngModel.assign(scope, dateText);
+	                    });
+	                }
+	            });
+	        });
+	    }
+	});
+
+	app.controller('DateController',function($scope){
+		$scope.serviceDate = new Date();
+	});

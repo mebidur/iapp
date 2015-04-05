@@ -48,10 +48,10 @@
 		</div>
 		<div class="col-md-6">
 			<label><b>Receipt Date</b></label>
-			<!-- datepicker -->
-			<input type="date" class="form-control iapp-date" 
+			<!--  -->
+			<input type="text" class="form-control iapp-date datepicker" 
 			name="receiptDate" 
-			placeholder="DD/MM/YYYY" 
+			placeholder="YYYY/MM/DD" 
 			ng-model="receiptDate"
 			required>
 			<div class="" ng-show="serviceReceiptForm.receiptDate.$dirty && serviceReceiptForm.receiptDate.$invalid">

@@ -47,16 +47,18 @@
       </div>
 
 		</div>
-		<div class="col-md-6">
+		<div class="col-md-6" ng-controller="DateController">
 			<label><b>Invoice Date</b></label>
-			<!-- datepicker -->
-			<input type="date" class="form-control iapp-date" 
+			<input type="text" class="form-control iapp-date" 
+			ng-maxlength="10"
+
 			name="serviceDate" 
-			placeholder="DD/MM/YYYY" 
-			value="{{old('serviceDate')}}"
+			placeholder="YYYY/MM/DD"
 			ng-model="serviceDate"
+			ng-datepicker
 			required/>
-			<div class="" ng-show="workInvoiceForm.serviceDate.$dirty && workInvoiceForm.serviceDate.$invalid">
+			
+			<div ng-show="workInvoiceForm.serviceDate.$dirty && workInvoiceForm.serviceDate.$invalid">
 		        <small class="text-danger" ng-show="workInvoiceForm.serviceDate.$error.required">
 		           Invoice date is required field.
 		        </small>
@@ -72,7 +74,6 @@
 			ng-model="serviceProvider"
 			placeholder="Company Name" 
 			ng-minlength="3" 
-			value="{{old('serviceProvider')}}"
 			required />
 			<div ng-show="workInvoiceForm.serviceProvider.$dirty && workInvoiceForm.serviceProvider.$invalid">
 		        <small class="text-danger" ng-show="workInvoiceForm.serviceProvider.$error.required">
@@ -232,13 +233,17 @@
 		      </div>
 		</div>
 		<div class="col-md-6">
-			<br>
-				<div class="choices-holder">
-					<input type="radio" id="downloadPDF" name="requestType" value="downloadPDF"> <label for="downloadPDF"><b>Download PDF</b></label>&nbsp;	&nbsp;
-					<input type="radio" id="printInvoice" name="requestType" value="workInvoice" checked> <label for="printInvoice"><b>Print Invoice</b></label>
-				</div>				
-			<br>
-			<button type="submit" ng-disabled="workInvoiceForm.$invalid" class="btn btn-primary btn-block input-lg work-invoice-btn iapp-lg-btn" data-loading-text="Please wait ...">Continue ...</button>
+			<div class="row">
+				<div class="col-md-6">
+					<div class="choices-holder">
+						<input type="radio" id="downloadPDF" name="requestType" value="downloadPDF"> <label for="downloadPDF"><b>Download PDF</b></label>&nbsp;	&nbsp;<br>
+						<input type="radio" id="printInvoice" name="requestType" value="workInvoice" checked> <label for="printInvoice"><b>Print Invoice</b></label>
+					</div>
+				</div>
+				<div class="col-md-6">
+					<button type="submit" ng-disabled="workInvoiceForm.$invalid" class="btn btn-primary btn-block input-lg work-invoice-btn iapp-lg-btn" data-loading-text="Please wait ...">Continue ...</button>
+				</div>
+			</div>
 		</div>
 	</div>
 	<p></p>

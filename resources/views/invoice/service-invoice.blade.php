@@ -49,12 +49,12 @@
 		<div class="col-md-6">
 			<label><b>Invoice Date</b></label>
 			<!-- datepicker -->
-			<input type="date" class="form-control iapp-date" 
+			<input type="text" class="form-control iapp-date" 
 			name="serviceDate" 
-			placeholder="DD/MM/YYYY"
+			placeholder="YYYY/MM/DD"
 			ng-model="serviceDate"
 			required/>
-			<div class="" ng-show="serviceInvoiceForm.serviceDate.$dirty && serviceInvoiceForm.serviceDate.$invalid" ng-hide="serviceInvoiceForm.serviceDate.$pristine">
+			<div ng-show="serviceInvoiceForm.serviceDate.$dirty && serviceInvoiceForm.serviceDate.$invalid" ng-hide="serviceInvoiceForm.serviceDate.$pristine">
 		        <small class="text-danger" ng-show="serviceInvoiceForm.serviceDate.$error.required">
 		           Invoice date is required field.
 		        </small>

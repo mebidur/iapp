@@ -18,7 +18,7 @@
 			ng-class="{
 						error: workReceiptForm.receiptNumber.$dirty &&
 						workReceiptForm.receiptNumber.$invalid}"
-			placeholder="Invoice Number" 
+			placeholder="Receipt Number" 
 			name="receiptNumber" 
 			ng-model="receiptNumber"
             ng-minlength="5"
@@ -49,9 +49,9 @@
 		<div class="col-md-6">
 			<label><b>Receipt Date</b></label>
 			<!-- datepicker -->
-			<input type="date" class="form-control iapp-date" 
+			<input type="text" class="form-control iapp-date datepicker" 
 			name="receiptDate" 
-			placeholder="DD/MM/YYYY" 
+			placeholder="YYYY/MM/DD" 
 			ng-model="receiptDate"
 			required>
 			<div ng-show="workReceiptForm.receiptDate.$dirty && workReceiptForm.receiptDate.$invalid">

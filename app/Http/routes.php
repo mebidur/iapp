@@ -1,7 +1,4 @@
 <?php
-	// \Blade::setRawTags('{{', '}}');
-	// \Blade::setContentTags('{{{', '}}}');
-	// \Blade::setEscapedContentTags('{{{', '}}}');
 
 	Route::get('/', 'Auth\AuthController@getLogin');
 
@@ -13,7 +10,6 @@
 	Route::group(['middleware' => 'auth'], function()
 	{
 		Route::controllers([
-			// 'home' => 'HomeController',
 			'invoice' => 'InvoiceController',
 			'receipt' => 'ReceiptController',
 		]);

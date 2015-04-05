@@ -10,6 +10,7 @@
 	<link href="{{ asset('/css/app.css') }}" rel="stylesheet">
 	<link rel="stylesheet" type="text/css" href="{{url('css/default.css')}}">
 	<link rel="stylesheet" type="text/css" href="{{url('css/datepicker.css')}}">
+	<link rel="stylesheet" type="text/css" href="{{url('css/login.css')}}">
 </head>
 <body>
 	<div class="wrapper">
@@ -62,24 +63,6 @@
 	{!!HTML::script('js/CreateElement.js')!!}
 	{!!HTML::script('js/CreateElementService.js')!!}
 	{!!HTML::script('js/printPage.js')!!}
-
-<script type="text/javascript">
-	$.ajaxSetup({
-		headers: {
-			'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-		}
-	});
-	$(document).ready(function(){
-	     // $(document).on("keydown", disableF5);
-	});
-	function disableF5(e){
-		if ((e.which || e.keyCode) != 116 || (e.which || e.keyCode) != 82){
-			window.onbeforeunload = function(){
-		        return 'Really, want to reload ?';
-			}
-		}
-	};
-</script>
 	@yield('script')
 </body>
 </html>
