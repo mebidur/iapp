@@ -89,5 +89,30 @@ var app = angular.module('iApp', [])
 	});
 
 	app.controller('DateController',function($scope){
-		$scope.serviceDate = new Date();
+		var date = new Date(),
+			month = (date.getMonth() + 1),
+			day = date.getDate();
+			
+			if(month < 10){
+				month = '0'+month;
+			}
+			if(day < 10){
+				day = '0'+day;
+			}
+		$scope.serviceDate = fd = month + '/' + day + '/' +  date.getFullYear();
+		
+	});
+
+	app.controller('DatesController',function($scope){
+		var date = new Date(),
+			month = (date.getMonth() + 1),
+			day = date.getDate();
+			
+			if(month < 10){
+				month = '0'+month;
+			}
+			if(day < 10){
+				day = '0'+day;
+			}
+		$scope.receiptDate = fd = month + '/' + day + '/' +  date.getFullYear();;
 	});

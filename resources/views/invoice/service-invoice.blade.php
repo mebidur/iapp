@@ -23,6 +23,7 @@
 			ng-model="invoiceNumber"
             ng-minlength="5" 
             ng-maxlength="20"
+            maxlength="20" 
             ensure-unique="invoiceNumber"
 			required
 			ng-focus />
@@ -46,17 +47,22 @@
       </div>
 
 		</div>
-		<div class="col-md-6">
-			<label><b>Invoice Date</b></label>
-			<!-- datepicker -->
+		<div class="col-md-6" ng-controller="DateController">
+			<label><b>Invoice Date</b></label>			
 			<input type="text" class="form-control iapp-date" 
 			name="serviceDate" 
+			ng-maxlength="10"
+			maxlength="10"
 			placeholder="YYYY/MM/DD"
 			ng-model="serviceDate"
+			ng-datepicker
 			required/>
 			<div ng-show="serviceInvoiceForm.serviceDate.$dirty && serviceInvoiceForm.serviceDate.$invalid" ng-hide="serviceInvoiceForm.serviceDate.$pristine">
 		        <small class="text-danger" ng-show="serviceInvoiceForm.serviceDate.$error.required">
 		           Invoice date is required field.
+		        </small>
+				<small class="text-danger" ng-show="serviceInvoiceForm.serviceDate.$error.maxlength">
+		        	Date format provided is invalid.
 		        </small>
 		      </div>
 		</div>
@@ -177,6 +183,7 @@
 			rows="10" name="termsCondition" 
 			ng-minlength="20"
 			ng-maxlength="250"
+			maxlength="250"
 			ng-model="termsCondition"
 			placeholder="Terms of Services" required></textarea>
 			<div ng-show="serviceInvoiceForm.termsCondition.$dirty && serviceInvoiceForm.termsCondition.$invalid">

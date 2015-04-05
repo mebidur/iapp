@@ -23,6 +23,7 @@
 			ng-model="invoiceNumber"
             ng-minlength="5" 
             ng-maxlength="20"
+            maxlength="20" 
             ng-focus
             ensure-unique="invoiceNumber"
 			required />
@@ -51,7 +52,7 @@
 			<label><b>Invoice Date</b></label>
 			<input type="text" class="form-control iapp-date" 
 			ng-maxlength="10"
-
+			maxlength="10"
 			name="serviceDate" 
 			placeholder="YYYY/MM/DD"
 			ng-model="serviceDate"
@@ -61,6 +62,9 @@
 			<div ng-show="workInvoiceForm.serviceDate.$dirty && workInvoiceForm.serviceDate.$invalid">
 		        <small class="text-danger" ng-show="workInvoiceForm.serviceDate.$error.required">
 		           Invoice date is required field.
+		        </small>
+		        <small class="text-danger" ng-show="workInvoiceForm.serviceDate.$error.maxlength">
+		        	Date format is invalid
 		        </small>
 		      </div>
 		</div>
@@ -184,6 +188,7 @@
 			rows="10" name="termsCondition" 
 			ng-minlength="20"
 			ng-maxlength="250"
+			maxlength="250"
 			ng-model="termsCondition"
 			placeholder="Terms of Services" required></textarea>
 			<div ng-show="workInvoiceForm.termsCondition.$dirty && workInvoiceForm.termsCondition.$invalid">

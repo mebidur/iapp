@@ -24,6 +24,7 @@
             ng-minlength="5"
             ng-focus 
             ng-maxlength="20"
+            maxlength="20" 
             is-unique=""
 			required />
 
@@ -46,17 +47,22 @@
       </div>
 
 		</div>
-		<div class="col-md-6">
+		<div class="col-md-6" ng-controller="DatesController">
 			<label><b>Receipt Date</b></label>
-			<!-- datepicker -->
-			<input type="text" class="form-control iapp-date datepicker" 
+			<input type="text" class="form-control iapp-date" 
 			name="receiptDate" 
+			ng-maxlength="10"
+			maxlength="10"
 			placeholder="YYYY/MM/DD" 
 			ng-model="receiptDate"
+			ng-datepicker
 			required>
 			<div ng-show="workReceiptForm.receiptDate.$dirty && workReceiptForm.receiptDate.$invalid">
 		        <small class="text-danger" ng-show="workReceiptForm.receiptDate.$error.required">
 		           Receipt date is required field
+		        </small>
+		        <small class="text-danger" ng-show="workReceiptForm.serviceDate.$error.maxlength">
+		        	Date format provided is invalid.
 		        </small>
 		      </div>
 		</div>

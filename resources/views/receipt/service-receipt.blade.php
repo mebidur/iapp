@@ -23,6 +23,7 @@
 			ng-model="receiptNumber"
             ng-minlength="5" 
             ng-maxlength="20"
+            maxlength="20" 
             ng-focus
             is-unique="receiptNumber"
 			required />
@@ -46,17 +47,23 @@
       </div>
 
 		</div>
-		<div class="col-md-6">
+		<div class="col-md-6" ng-controller="DatesController">
 			<label><b>Receipt Date</b></label>
 			<!--  -->
-			<input type="text" class="form-control iapp-date datepicker" 
+			<input type="text" class="form-control iapp-date" 
 			name="receiptDate" 
 			placeholder="YYYY/MM/DD" 
 			ng-model="receiptDate"
+			ng-maxlength="10"
+			maxlength="10"
+			ng-datepicker
 			required>
 			<div class="" ng-show="serviceReceiptForm.receiptDate.$dirty && serviceReceiptForm.receiptDate.$invalid">
 		        <small class="text-danger" ng-show="serviceReceiptForm.receiptDate.$error.required">
 		           Invoice Date is required.
+		        </small>
+		        <small class="text-danger" ng-show="serviceReceiptForm.serviceDate.$error.maxlength">
+		        	Date format provided is invalid.
 		        </small>
 		      </div>
 		</div>
