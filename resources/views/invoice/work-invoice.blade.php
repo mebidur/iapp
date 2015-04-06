@@ -145,7 +145,7 @@
 			<label><b>Currency</b></label>
 			<select class="form-control" name="currency" ng-model="currency" required>
 				<option selected disabled value="">Select Currency</option>
-				<option value="NPR">Nepalse Rupee</option>
+				<option value="NPR">Nepalese Rupee</option>
 				<option value="IC">Indian Rupee</option>
 				<option value="EUR">Euro</option>				
 				<option value="GBP">Pound Sterling</option>			
@@ -176,7 +176,7 @@
 			</div>
 			<div class="col-md-1">
 				<br>
-				<button type="button"class="btn btn-primary add-more-field" ng-click="add()" style="float: right;  position: relative; top: 6px;"><b>+</b> More</button>
+				<button type="button"class="btn btn-primary add-more-field btn-more" ng-click="add()" style="float: right;  position: relative; top: 6px;"><b>+</b> More</button>
 			</div>
 		</div>
 	</div>
@@ -196,10 +196,10 @@
 		           The terms &amp; conditions field is required.
 		        </small>			        
 		        <small class="text-danger" ng-show="workInvoiceForm.termsCondition.$error.minlength">
-		        	Terms &amp; Condition provided is required to be at least 20 characters
+		        	Terms &amp; condition provided is required to be at least 20 characters
 		        </small>
 		        <small class="text-danger" ng-show="workInvoiceForm.termsCondition.$error.maxlength">
-		        	Terms &amp; Condition provided is required to be at maximum 250 characters
+		        	Terms &amp; condition provided is required to be at maximum 250 characters
 		        </small>
 			</div>
 			</div>
@@ -223,7 +223,7 @@
 			<label><b>Note</b></label>
 			<textarea class="form-control" 
 			rows="5" name="keyNote" 
-			placeholder="Special note from service provider"
+			placeholder="Note from service provider"
 			ng-model="keyNote"
 			ng-minlength="20"
 			required />
@@ -237,16 +237,16 @@
 		        </small>
 		      </div>
 		</div>
-		<div class="col-md-6">
+		<div class="col-md-6"><br>
 			<div class="row">
-				<div class="col-md-6">
+				<div class="col-md-6 col-md-6 col-xs-6 col-sm-6">
 					<div class="choices-holder">
-						<input type="radio" id="downloadPDF" name="requestType" value="downloadPDF"> <label for="downloadPDF"><b>Download PDF</b></label>&nbsp;	&nbsp;<br>
+						<input type="radio" id="downloadPDF" name="requestType" value="downloadPDF"> <label for="downloadPDF"><b>Download PDF</b></label><br>
 						<input type="radio" id="printInvoice" name="requestType" value="workInvoice" checked> <label for="printInvoice"><b>Print Invoice</b></label>
 					</div>
 				</div>
-				<div class="col-md-6">
-					<button type="submit" ng-disabled="workInvoiceForm.$invalid" class="btn btn-primary btn-block input-lg work-invoice-btn iapp-lg-btn" data-loading-text="Please wait ...">Continue ...</button>
+				<div class="col-md-6 col-md-6 col-xs-6 col-sm-6"><p></p>
+					<button type="submit" ng-disabled="workInvoiceForm.$invalid" class="btn btn-primary btn-block input-lg work-invoice-btn iapp-lg-btn choices-holder" data-loading-text="Please wait ...">Continue ...</button>
 				</div>
 			</div>
 		</div>

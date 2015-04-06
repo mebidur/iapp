@@ -8,7 +8,7 @@ class Receipt extends Model {
 	use SoftDeletes;
     protected $dates = ['deleted_at'];
 	protected $table = 'receipts';
-	protected $fillable = ['receiptNumber','organization_id','serviceProvider','serviceDate','serviceReceiver','companyAddress','clientAddress','currency','keyNote'];
+	protected $fillable = ['receiptNumber','organization_id','serviceProvider','serviceDate','serviceReceiver','companyAddress','clientAddress','currency','keyNote','type'];
 
 
 	public function description(){

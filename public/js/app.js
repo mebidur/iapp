@@ -1,5 +1,6 @@
 var baseUrl = document.getElementById('siteUrl').value;
 var _token = document.getElementById('_token').value;
+var _date = document.getElementById('_date').value;
 var app = angular.module('iApp', [])
 	.config(['$interpolateProvider',function($interpolateProvider){
 		$interpolateProvider.startSymbol('[[');
@@ -76,43 +77,25 @@ var app = angular.module('iApp', [])
 	                showOn:"both",
 	                changeYear:true,
 	                changeMonth:true,
-	                dateFormat:'dd-mm-yy',
+	                format:'yyyy-mm-dd',
 	                maxDate: new Date(),	                
 	                onSelect:function (dateText, inst) {
 	                    scope.$apply(function(scope){
 	                        ngModel.assign(scope, dateText);
 	                    });
 	                }
-	            });
+	            }).on('changeDate', function(ev){
+				        $(this).datepicker('hide');
+				    });
 	        });
 	    }
 	});
 
 	app.controller('DateController',function($scope){
-		var date = new Date(),
-			month = (date.getMonth() + 1),
-			day = date.getDate();
-			
-			if(month < 10){
-				month = '0'+month;
-			}
-			if(day < 10){
-				day = '0'+day;
-			}
-		$scope.serviceDate = fd = month + '/' + day + '/' +  date.getFullYear();
+		$scope.serviceDate = _date;
 		
 	});
 
-	app.controller('DatesController',function($scope){
-		var date = new Date(),
-			month = (date.getMonth() + 1),
-			day = date.getDate();
-			
-			if(month < 10){
-				month = '0'+month;
-			}
-			if(day < 10){
-				day = '0'+day;
-			}
-		$scope.receiptDate = fd = month + '/' + day + '/' +  date.getFullYear();;
+	app.controller('ServiceController',function($scope){
+		$scope.receiptDate = _date;
 	});

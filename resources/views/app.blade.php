@@ -50,6 +50,7 @@
           <p >&copy; 2015 | All rights reserved. <a href="javascript:void(0)" class="iapp-terms">Privacy</a>  <a href="javascript:void(0)" class="iapp-policy">Terms</a> <a href="" class="iapp-policy">Security</a></p>
           <input type="hidden" id="siteUrl" value="{{url('/')}}">
           <input type="hidden" value="{{csrf_token()}}" id="_token" name="_token">
+          <input type="hidden" value="{{date('Y-m-m')}}" id="_date">
        </center>
              
   </div>

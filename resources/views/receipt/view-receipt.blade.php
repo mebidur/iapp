@@ -23,7 +23,7 @@
 				<th>Receipt Date</th>
 				<th>Amount</th>
 			</tr>
-			<?php $wtotal = 0; $stotal = 0; $sn = $receipts->firstItem();?>
+			<?php $sn = $receipts->firstItem();?>
 			@if(!empty($receipts))
 				@foreach($receipts as $receipt)
 					<tr>
@@ -32,14 +32,15 @@
 						<td>{{$receipt->serviceReceiver}}</td>
 						<td>{{date('d/m/Y H:i:s',strtotime($receipt->created_at))}}</td>
 						<td>{{date('d/m/Y',strtotime($receipt->serviceDate))}}</td>
+						<?php $workTotal = 0; $serviceTotal = 0; ?>
 						@foreach($receipt['description'] as $each)
 							@if($receipt->type == 1)
-							<?php $wtotal += ($each->rate * $each->hour) ?>
+							<?php $workTotal += ($each->rate * $each->hour)?>
 							@else
-								<?php $stotal += $each->amount;?>
+								<?php $serviceTotal += $each->amount;?>
 							@endif
-						@endforeach
-						<td><span>{{$receipt->currency}} </span>{{($receipt->type == 1) ? $wtotal : $stotal}}</td>
+						@endforeach						
+						<td><span>{{$receipt->currency}} </span>{{($receipt->type == 1) ? $workTotal : $serviceTotal}}</td>
 					</tr>
 					<?php $sn++;?>
 				@endforeach

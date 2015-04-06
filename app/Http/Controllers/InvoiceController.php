@@ -40,17 +40,22 @@ class InvoiceController extends Controller {
 			$desc = $invoice['description'];
 
 		}else{
-			$descArray = [];
-			$invoice = $invoice->create(array_merge($request->all(),['organization_id' => \Auth::user()->organization_id, 'type' => '1']));	
+
+			$invoiceData = array_merge($request->all(),['organization_id' => \Auth::user()->organization_id, 'type' => 1]);
+			$fillInvoice = array_except($invoiceData, ['workDescription','hour','rate']);
+			$descOnly = array_only($invoiceData, ['workDescription','hour','rate']);
+
+			$invoice = $invoice->create($fillInvoice);
+			$allDesc = [];
 			
-			for($i = 0; $i < count($request->rate); $i++){
-				array_push($descArray, new Description(['invoice_id' => $invoice->id,
-														'workDescription' => $request->workDescription[$i],
-														'rate' => $request->rate[$i],
-														'hour' => $request->hour[$i],
+			for($i = 0; $i < count($descOnly['rate']); $i++){
+				array_push($allDesc, new Description(['invoice_id' => $invoice->id,
+														'workDescription' => $descOnly['workDescription'][$i],
+														'rate' => $descOnly['rate'][$i],
+														'hour' => $descOnly['hour'][$i],
 														]));
 			}
-			$desc = $invoice->description()->saveMany($descArray);
+			$desc = $invoice->description()->saveMany($allDesc);
 		}
 		
 		if($request->requestType == 'workInvoice'){

@@ -47,7 +47,7 @@
       </div>
 
 		</div>
-		<div class="col-md-6" ng-controller="DatesController">
+		<div class="col-md-6" ng-controller="ServiceController">
 			<label><b>Receipt Date</b></label>
 			<!--  -->
 			<input type="text" class="form-control iapp-date" 
@@ -144,9 +144,8 @@
 			<label><b>Currency</b></label>
 			<select class="form-control" name="currency" ng-model="currency" required>
 				<option selected disabled value="">Select Currency</option>
-				<option value="NPR">Nepalse Rupee</option>
-				<option value="IC">Indian Rupee</option>
-				<option value="EUR">Euro</option>				
+				<option value="Rs.">Nepalese Rupee</option>
+				<option value="&euro;.">Euro</option>				
 				<option value="GBP">Pound Sterling</option>			
 				<option value="USD">U.S. Dollar</option>
 			</select>
@@ -171,7 +170,7 @@
 			</div>
 			<div class="col-md-2">
 				<br>
-				<button type="button"class="btn btn-primary add-more-service" ng-click="add()" style="float: right;"><b>+</b> More</button>
+				<button type="button"class="btn btn-primary add-more-service btn-more" ng-click="add()" style="float: right;"><b>+</b> More</button>
 			</div>
 		</div>
 	</div>
@@ -181,7 +180,7 @@
 			<label><b>Note</b></label>
 			<textarea class="form-control" 
 			rows="5" name="keyNote" 
-			placeholder="Special note from service provider"
+			placeholder="Note from service provider"
 			ng-model="keyNote"
 			ng-minlength="20"
 			required>{{old('keyNote')}}
@@ -195,14 +194,18 @@
 		        </small>
 		      </div>
 		</div>
-		<div class="col-md-6">
-			<br>
-				<div class="choices-holder">
-					<input type="radio" id="downloadPDF" name="requestType" value="downloadPDF"> <label for="downloadPDF"><b>Download PDF</b></label>&nbsp;	&nbsp;
-					<input type="radio" id="printInvoice" name="requestType" value="serviceReceipt" checked> <label for="printInvoice"><b>Print Invoice</b></label>
-				</div>				
-			<br>
-			<button type="submit" ng-disabled="serviceReceiptForm.$invalid" class="btn btn-primary btn-block input-lg work-invoice-btn iapp-lg-btn" data-loading-text="Please wait ...">Continue ...</button>
+		<div class="col-md-6"><br>
+			<div class="row">
+				<div class="col-md-6 col-md-6 col-xs-6 col-sm-6">
+					<div class="choices-holder">
+						<input type="radio" id="downloadPDF" name="requestType" value="downloadPDF"> <label for="downloadPDF"><b>Download PDF</b></label><br>
+						<input type="radio" id="printInvoice" name="requestType" value="serviceReceipt" checked> <label for="printInvoice"><b>Print Invoice</b></label>
+					</div>
+				</div>
+				<div class="col-md-6 col-md-6 col-xs-6 col-sm-6"><p></p>
+					<button type="submit" ng-disabled="serviceReceiptForm.$invalid" class="btn btn-primary btn-block input-lg work-invoice-btn iapp-lg-btn choices-holder" data-loading-text="Please wait ...">Continue ...</button>
+				</div>
+			</div>
 		</div>
 	</div>
 	<p></p>

@@ -8,7 +8,7 @@ class Invoice extends Model {
 	use SoftDeletes;
     protected $dates = ['deleted_at'];
 	protected $table = 'invoices';
-	protected $fillable = ['invoiceNumber', 'organization_id', 'serviceProvider','serviceDate','serviceReceiver','companyAddress','clientAddress','termsCondition','bankDetails','keyNote','currency'];
+	protected $fillable = ['invoiceNumber', 'organization_id', 'serviceProvider','serviceDate','serviceReceiver','companyAddress','clientAddress','termsCondition','bankDetails','keyNote','currency','type'];
 
 	public function organization()
 	{
