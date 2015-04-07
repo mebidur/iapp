@@ -103,6 +103,7 @@
   }
   .ipp-details{
     max-width: 900px !important;
+    padding: 9px !important;
   }
   .iapp-details pre{
     background: #fff !important;
@@ -118,7 +119,7 @@
     padding: 6px 0px;
     border-radius: 13px;
     background: #0099C9;
-    margin: 10px 86% !important;
+    /*margin: 10px 86% !important;*/
     border: 0px;
     font-size: 13px;
     border-color: #087A9D;
@@ -151,24 +152,50 @@
     vertical-align: middle !important;
   }
   .invoice-date{
-    padding-left: 20% !important;
+    padding-left: 25% !important;
+    vertical-align: middle !important;
   }
   .invoice-no{
     width: 50% !important;
+    vertical-align: middle !important;
   }
   .iapp-details h4{
     font-size: 16px !important;
-    padding-left: 17px !important;
+    padding-left: 9px !important;
   }
+  .btn-download-pdf{
+    padding: 6px 0px;
+    width: 120px;
+    border-radius: 13px;
+    background: #0099C9;
+    border: 0px;
+    font-size: 13px;
+    border-color: #087A9D;
+    color: #fff;
+  }
+  .button-content{
+    position:absolute;
+    margin-top: 10px !important;
+  }
+.currency-view{
+  padding-right: 2px !important;
+}
 
 </style>
 </head>  
 <body>
 
-<div id="container" class="container {{($requestType != 'downloadPDF') ? 'center-content' : ''}}">
-  @if($requestType != 'downloadPDF')
+<div id="container" class="container {{($requestType != 'downloadWorkPDF') ? 'center-content' : ''}}">
+  @if($requestType != 'downloadWorkPDF')
   <div class="hidden-print">
-    <button id="pdf-print-btn" class="pdf-print-btn">Print</button>
+    {!!Form::open(['url' => '/invoice/download'])!!}
+    <input type="hidden" name="requestType" value="downloadWorkPDF">
+    <input type="hidden" name="invoiceId" value="{{$invoice->id}}">
+    <div class="pdf-buttons button-content">
+      <button type="submit" class="btn-download-pdf">Download PDF</button>
+      <button id="pdf-print-btn" class="pdf-print-btn">Print</button>
+    </div>  
+  {!!Form::close()!!}
   </div>
   @endif
   <h2 style="text-align:center">Invoice</h2><br>
@@ -211,13 +238,13 @@
         <td>{{$each['workDescription']}}</td>
         <td>{{$each['hour']}}</td>
         <?php $subTotal += $each['rate'] * $each['hour'];?>
-        <td>{{$invoice->currency . ' '.$each['rate']}}</td>
-        <td>{{$invoice->currency . ' '.$each['rate'] * $each['hour']}}</td>
+        <td><span class="currency-view" style="vertical-align: top !important;">{{$invoice->currency}}</span>{{$each['rate']}}</td>
+        <td><span class="currency-view" style="vertical-align: top !important;">{{$invoice->currency}}</span>{{$each['rate'] * $each['hour']}}</td>
       </tr>
       @endforeach
       <tr>
         <td colspan="3" style="text-align:right"><b>Total:</b></td>
-        <td><b>{{$invoice->currency . ' '.round($subTotal,2)}}</b></td>
+        <td><b><span class="currency-view">{{$invoice->currency}}</span>{{round($subTotal,2)}}</b></td>
       </tr>
     </tbody>
   </table>

@@ -3,6 +3,9 @@
 <div class="container-fluid">
 <div class="container">
 	<div class="login-container">
+	<div class="legend">
+		<h3>Sign In</h3>
+	</div>
 	<div id="output"></div>
 	<div class="avatar"></div>
 	<div class="form-box">

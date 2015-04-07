@@ -22,8 +22,8 @@ class WorkReceipt extends Request {
 	public function rules()
 	{
 		$rules = [
-			'receiptNumber' 		=> 'required',
-			'receiptDate' 			=> 'required',
+			'receiptNumber' 		=> 'required|max:20',
+			'serviceDate' 			=> 'required',
 			'serviceProvider' 		=> 'required',
 			'serviceReceiver' 		=> 'required',
 			'companyAddress' 		=> 'required',
@@ -39,12 +39,12 @@ class WorkReceipt extends Request {
 
 		foreach($this->request->get('rate') as $key => $val)
 		{
-			$rules['rate.'.$key] = 'required';
+			$rules['rate.'.$key] = 'required|numeric';
 		}
 
 		foreach($this->request->get('hour') as $key => $val)
 		{
-			$rules['hour.'.$key] = 'required';
+			$rules['hour.'.$key] = 'required|numeric';
 		}
 
 		return $rules;
@@ -55,17 +55,19 @@ class WorkReceipt extends Request {
 		$messages = [];
 		foreach($this->request->get('workDescription') as $key => $val)
 		{
-			$messages['workDescription.'.$key.'.required'] = 'The field labeled "Description of Work '.$key.' is required.';
+			$messages['workDescription.'.$key.'.required'] = 'The field description '.$key.' is required.';
 		}
 
 		foreach($this->request->get('rate') as $key => $val)
 		{			
-			$messages['rate.'.$key.'.required'] = 'The field labeled "Rate '.$key.' is required.';
+			$messages['rate.'.$key.'.required'] = 'The field rate '.$key.' is required.';
+			$messages['rate.'.$key.'.numeric'] = 'The field rate '.$key.' must be numeric value.';
 		}
 
 		foreach($this->request->get('hour') as $key => $val)
 		{
-			$messages['hour.'.$key.'.required'] = 'The field labeled "Hour '.$key.' is required.';
+			$messages['hour.'.$key.'.required'] = 'The field hour '.$key.' is required.';
+			$messages['hour.'.$key.'.numeric'] = 'The field hour '.$key.' must be numeric value.';
 		}
 
 	  return $messages;

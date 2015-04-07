@@ -28,7 +28,7 @@
 				@foreach($receipts as $receipt)
 					<tr>
 						<td>{{$sn}}</td>
-						<td>{{$receipt->receiptNumber}}</td>
+						<td><a href="{{url('receipt/view?secret='.$receipt->id.'&secure='.$receipt->type)}}">{{$receipt->receiptNumber}}</a></td>
 						<td>{{$receipt->serviceReceiver}}</td>
 						<td>{{date('d/m/Y H:i:s',strtotime($receipt->created_at))}}</td>
 						<td>{{date('d/m/Y',strtotime($receipt->serviceDate))}}</td>
@@ -40,7 +40,7 @@
 								<?php $serviceTotal += $each->amount;?>
 							@endif
 						@endforeach						
-						<td><span>{{$receipt->currency}} </span>{{($receipt->type == 1) ? $workTotal : $serviceTotal}}</td>
+						<td><span class="currency-view">{{$receipt->currency}}</span>{{($receipt->type == 1) ? $workTotal : $serviceTotal}}</td>
 					</tr>
 					<?php $sn++;?>
 				@endforeach

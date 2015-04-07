@@ -145,11 +145,10 @@
 			<label><b>Currency</b></label>
 			<select class="form-control" name="currency" ng-model="currency" required>
 				<option selected disabled value="">Select Currency</option>
-				<option value="NPR">Nepalese Rupee</option>
-				<option value="IC">Indian Rupee</option>
-				<option value="EUR">Euro</option>				
-				<option value="GBP">Pound Sterling</option>			
-				<option value="USD">U.S. Dollar</option>
+				<option value="Rs">Nepalese Rupee</option>
+				<option value="&euro;">Euro</option>				
+				<option value="&pound;" selected>Pound Sterling</option>			
+				<option value="&dollar;">US Dollar</option>
 			</select>
 			<div ng-show="workInvoiceForm.currency.$dirty && workInvoiceForm.currency.$invalid">
 		        <small class="text-danger" ng-show="workInvoiceForm.currency.$error.required">
@@ -168,11 +167,11 @@
 			</div>
 			<div class="col-md-2">
 				<label><b>Rate</b></label>
-				<input type="text" class="form-control" name="rate[]" placeholder="Rate">
+				<input type="text" class="form-control" ng-pattern="/0-9/" name="rate[]" placeholder="Rate">
 			</div>
 			<div class="col-md-3">
 				<label><b>Hour</b></label>
-				<input type="text" class="form-control" name="hour[]" placeholder="Worked Hour">
+				<input type="text" class="form-control" name="hour[]" ng-pattern="/0-9/" placeholder="Worked Hour">
 			</div>
 			<div class="col-md-1">
 				<br>
@@ -241,8 +240,9 @@
 			<div class="row">
 				<div class="col-md-6 col-md-6 col-xs-6 col-sm-6">
 					<div class="choices-holder">
-						<input type="radio" id="downloadPDF" name="requestType" value="downloadPDF"> <label for="downloadPDF"><b>Download PDF</b></label><br>
-						<input type="radio" id="printInvoice" name="requestType" value="workInvoice" checked> <label for="printInvoice"><b>Print Invoice</b></label>
+						<!-- <input type="radio" id="downloadPDF" name="requestType" value="downloadPDF"> <label for="downloadPDF"><b>Download PDF</b></label><br> -->
+						<!-- <input type="radio" id="printInvoice" name="requestType" value="workInvoice" checked> <label for="printInvoice"><b>Print Invoice</b></label> -->
+						<input type="hidden" name="requestType" value="default">						
 					</div>
 				</div>
 				<div class="col-md-6 col-md-6 col-xs-6 col-sm-6"><p></p>

@@ -30,7 +30,7 @@
 				@foreach($invoices as $invoice)
 					<tr>
 						<td>{{$sn}}</td>
-						<td>{{$invoice->invoiceNumber}}</td>
+						<td><a href="{{url('invoice/view?secret='.$invoice->id.'&secure='.$invoice->type)}}">{{$invoice->invoiceNumber}}</a></td>
 						<td>{{$invoice->serviceReceiver}}</td>
 						<td>{{date('d/m/Y H:i:s',strtotime($invoice->created_at))}}</td>
 						<td>{{date('d/m/Y',strtotime($invoice->serviceDate))}}</td>
@@ -42,7 +42,7 @@
 								<?php $serviceTotal += $each->amount;?>
 							@endif
 						@endforeach
-						<td><span>{{$invoice->currency}} </span>{{($invoice->type == 1) ? $workTotal : $serviceTotal}}</td>
+						<td><span class="currency-view">{{$invoice->currency}}</span>{{($invoice->type == 1) ? $workTotal : $serviceTotal}}</td>
 						
 						<td>{!! ($invoice->status == 0) ? '<span class="iapp-badge">Pending</span>': '<span class="iapp-badge">Paid</span>' !!}</td>
 						<td>{!! ($invoice->status == 0) ? '<button class="status-print-btn">Paid</button>': '<span class="glyphicon glyphicon-ok iapp-ok"></span>' !!}</td>

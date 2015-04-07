@@ -95,7 +95,3 @@ var app = angular.module('iApp', [])
 		$scope.serviceDate = _date;
 		
 	});
-
-	app.controller('ServiceController',function($scope){
-		$scope.receiptDate = _date;
-	});

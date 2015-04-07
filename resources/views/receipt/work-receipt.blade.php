@@ -47,18 +47,18 @@
       </div>
 
 		</div>
-		<div class="col-md-6" ng-controller="ServiceController">
+		<div class="col-md-6" ng-controller="DateController">
 			<label><b>Receipt Date</b></label>
 			<input type="text" class="form-control iapp-date" 
-			name="receiptDate" 
+			name="serviceDate" 
 			ng-maxlength="10"
 			maxlength="10"
 			placeholder="YYYY/MM/DD" 
-			ng-model="receiptDate"
+			ng-model="serviceDate"
 			ng-datepicker
 			required>
-			<div ng-show="workReceiptForm.receiptDate.$dirty && workReceiptForm.receiptDate.$invalid">
-		        <small class="text-danger" ng-show="workReceiptForm.receiptDate.$error.required">
+			<div ng-show="workReceiptForm.serviceDate.$dirty && workReceiptForm.serviceDate.$invalid">
+		        <small class="text-danger" ng-show="workReceiptForm.serviceDate.$error.required">
 		           Receipt date is required field
 		        </small>
 		        <small class="text-danger" ng-show="workReceiptForm.serviceDate.$error.maxlength">
@@ -143,11 +143,11 @@
 			<label><b>Currency</b></label>
 			<select class="form-control" name="currency" ng-model="currency" required>
 				<option selected disabled value="">Select Currency</option>
-				<option value="NPR">Nepalese Rupee</option>
-				<option value="IC">Indian Rupee</option>
-				<option value="EUR">Euro</option>				
-				<option value="GBP">Pound Sterling</option>			
-				<option value="USD">U.S. Dollar</option>
+				<option selected disabled value="">Select Currency</option>
+				<option value="Rs">Nepalese Rupee</option>
+				<option value="&euro;">Euro</option>				
+				<option value="&pound;" selected>Pound Sterling</option>			
+				<option value="&dollar;">US Dollar</option>
 			</select>
 			<div ng-show="workReceiptForm.currency.$dirty && workReceiptForm.currency.$invalid">
 		        <small class="text-danger" ng-show="workReceiptForm.currency.$error.required">
@@ -202,8 +202,9 @@
 			<div class="row">
 				<div class="col-md-6 col-md-6 col-xs-6 col-sm-6">
 					<div class="choices-holder">
-						<input type="radio" id="downloadPDF" name="requestType" value="downloadPDF"> <label for="downloadPDF"><b>Download PDF</b></label><br>
-						<input type="radio" id="printInvoice" name="requestType" value="workReceipt" checked> <label for="printInvoice"><b>Print Invoice</b></label>
+						<!-- <input type="radio" id="downloadPDF" name="requestType" value="downloadPDF"> <label for="downloadPDF"><b>Download PDF</b></label><br> -->
+						<!-- <input type="radio" id="printInvoice" name="requestType" value="workReceipt" checked> <label for="printInvoice"><b>Print Invoice</b></label> -->
+						<input type="hidden" name="requestType" value="default">
 					</div>
 				</div>
 				<div class="col-md-6 col-md-6 col-xs-6 col-sm-6"><p></p>

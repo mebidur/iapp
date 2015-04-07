@@ -34,39 +34,40 @@ class ReceiptController extends Controller {
 
 	public function postWork(WorkReceipt $request, Receipt $receipt, PDF $pdf)
 	{
-		$data = Receipt::with('description')
-						->where('receiptNumber',$request->receiptNumber)
-						->first();
-		
-		if(!empty($data)){
-			$receipt = $data;
-			$desc = $receipt['description'];
-
-		}else{
-			$descArray = [];
-			$receipt = $receipt->create(array_merge($request->all(),['organization_id' => \Auth::user()->organization_id,'type' => '1']));	
+		if($request->requestType == 'default')
+		{
+			$data = Receipt::with('description')
+							->where('receiptNumber',$request->receiptNumber)
+							->first();
 			
-			for($i = 0; $i < count($request->rate); $i++){
-				array_push($descArray, new Description(['receipt_id' => $receipt->id,
-														'workDescription' => $request->workDescription[$i],
-														'rate' => $request->rate[$i],
-														'hour' => $request->hour[$i]
-														]));
-			}
-			$desc = $receipt->description()->saveMany($descArray);
-		}
-			 
-		if($request->requestType == 'workReceipt'){
-		    return \View::make('receipt.workReceiptPdf')->with(['receipt' => $receipt,
-		    													'description' => $desc,
-		    													'requestType' => $request->requestType,])->render();
+			if(!empty($data)){
+				$receipt = $data;
+				$desc = $receipt['description'];
 
-		}else{
-			$html = \View::make('receipt.workReceiptPdf')->with(['receipt' => $receipt,
-																 'description' => $desc,
-																 'requestType' => $request->requestType,])->render();
-			return $pdf->load($html, 'A4', 'portrait')->download();
-		}
+			}else{
+				$descAll = [];
+				$allInput = array_merge($request->all(),['organization_id' => \Auth::user()->organization_id,'type' => '1']);
+				$receiptData = array_except($allInput, ['workDescription','rate','hour']);
+				$descOnly = array_only($allInput, ['workDescription','rate','hour']);
+
+				$receipt = $receipt->create($receiptData);	
+				
+				for($i = 0; $i < count($descOnly['rate']); $i++){
+					array_push($descAll, new Description(['receipt_id' => $receipt->id,
+														  'workDescription' => $descOnly['workDescription'][$i],
+														  'rate' => $descOnly['rate'][$i],
+														  'hour' => $descOnly['hour'][$i]
+															]));
+				}
+				$desc = $receipt->description()->saveMany($descAll);
+			}
+		
+	    	return \View::make('receipt.workReceiptPdf')->with(['receipt' => $receipt,
+															'description' => $desc,
+															'requestType' => $request->requestType,])
+	    											->render();
+	    }
+	    return 'Bad request!';
 	}
 
 	public function getService()
@@ -75,38 +76,90 @@ class ReceiptController extends Controller {
 					->with(['current' => 'service-receipt',]);
 	}
 
-	public function postService(WorkReceipt $request, Receipt $receipt, PDF $pdf)
+	public function getView()
 	{
-		$data = Receipt::with('description')->where('receiptNumber',$request->receiptNumber)->first();
-		
-		if(!empty($data)){
-			$receipt = $data;
-			$desc = $receipt['description'];
-
-		}else{
-			$descArray = [];
-			$receipt = $receipt->create(array_merge($request->all(),['organization_id' => \Auth::user()->organization_id,'type' => '2']));	
-			
-			for($i = 0; $i < count($request->workDescription); $i++){
-				array_push($descArray, new Description(['receipt_id' => $receipt->id,
-														'workDescription' => $request->workDescription[$i],
-														'amount' => $request->amount[$i]
-														]));
+		if(\Input::has('secret') && \Input::has('secure'))
+		{
+			$receiptData = Receipt::whereId(\Input::get('secret'))->with('description')->first();
+			if(\Input::get('secure') == '1')
+			{
+				return \View::make('receipt.workReceiptPdf')->with(['receipt' => $receiptData,
+			 												'description' => $receiptData['description'],
+		    												'requestType' => 'viewAgain',])
+			 											->render();		
 			}
-			$desc = $receipt->description()->saveMany($descArray);
+			if(\Input::get('secure') == '2')
+			{
+				return \View::make('receipt.serviceReceiptPdf')->with(['receipt' => $receiptData,
+			 												'description' => $receiptData['description'],
+		    												'requestType' => 'viewAgain',])
+			 											->render();
+			}
 		}
-			
-		if($request->requestType == 'serviceReceipt'){
-		    return \View::make('receipt.serviceReceiptPdf')->with(['receipt' => $receipt, 
-		    														'description' => $desc, 
-		    														'requestType' => $request->requestType])->render();
+		return 'Bad request!';
+	}
+	
+	public function postDownload(PDF $pdf){
+		$receiptData = Receipt::with('description')
+							  ->whereId(\Input::get('receiptId'))
+							  ->whereOrganizationId(\Auth::user()->organization_id)
+							  ->first();
+		if(\Input::get('requestType') == 'downloadServicePDF')
+		{
+			$html = \View::make('receipt.serviceReceiptPdf')
+						->with(['receipt' => $receiptData,
+						 		'description' => $receiptData['description'],
+						 		'requestType' => 'downloadServicePDF'])
+						->render();
 
-		}else{
-			$html = \View::make('receipt.serviceReceiptPdf')->with(['receipt' => $receipt, 
-																	'description' => $desc, 
-																	'requestType' => $request->requestType])->render();
 			return $pdf->load($html, 'A4', 'portrait')->download();
 		}
+		if(\Input::get('requestType') == 'downloadWorkPDF')
+		{
+			$html = \View::make('receipt.workReceiptPdf')->with(['receipt' => $receiptData,
+																 'description' => $receiptData['description'],
+																 'requestType' => 'downloadWorkPDF',])
+														->render();
+			return $pdf->load($html, 'A4', 'portrait')->download();
+		}
+		return 'Bad Request!';
+	}
+
+	public function postService(ServiceReceipt $request, Receipt $receipt, PDF $pdf)
+	{	
+
+		if($request->requestType == 'default'){
+			$data = Receipt::with('description')->whereReceiptnumber($request->receiptNumber)->first();
+		
+			if(!empty($data)){
+				$receipt = $data;
+				$desc = $receipt['description'];
+
+			}else{
+				$descAll = [];
+				$allData = array_merge($request->all(),['organization_id' => \Auth::user()->organization_id,'type' => '2']);
+				$receiptData = array_except($allData, ['workDescription','amount']);
+				$descOnly = array_only($allData, ['workDescription','amount']);
+				
+				$receipt = $receipt->create($receiptData);	
+				
+				for($i = 0; $i < count($descOnly['workDescription']); $i++){
+					array_push($descAll, new Description(['receipt_id' => $receipt->id,
+															'workDescription' => $descOnly['workDescription'][$i],
+															'amount' => $descOnly['amount'][$i],
+															]));
+				}
+				$desc = $receipt->description()->saveMany($descAll);
+			}
+			
+		    return \View::make('receipt.serviceReceiptPdf')
+		    			->with(['receipt' => $receipt, 
+								'description' => $desc, 
+								'requestType' => $request->requestType])
+		    			->render();
+		}
+		return 'Bad Request!';
+
 	}
 	
 	public function postCheck()

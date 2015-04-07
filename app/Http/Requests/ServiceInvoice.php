@@ -21,8 +21,8 @@ class ServiceInvoice extends Request {
 	 */
 	public function rules()
 	{
-		return [
-			'invoiceNumber' 		=> 'required',
+		$rules = [
+			'invoiceNumber' 		=> 'required|max:20',
 			'serviceDate' 			=> 'required',
 			'serviceProvider' 		=> 'required',
 			'serviceReceiver' 		=> 'required',
@@ -33,6 +33,28 @@ class ServiceInvoice extends Request {
 			'termsCondition'		=> 'required',
 			'keyNote' 				=> 'required'
 		];
+
+		foreach ($this->request->get('workDescription') as $key => $value) {
+			$rules['workDescription.'.$key] = 'required';
+		}
+		foreach ($this->request->get('amount') as $key => $value) {
+			$rules['amount.'.$key] = 'required|numeric';
+		}
+
+		return $rules;
+	}
+
+	public function messages()
+	{
+		$messages = [];
+		foreach ($this->request->get('workDescription') as $key => $value) {
+			$messages['workDescription.'.$key.'.required'] =' The field work description '.$key.' is required.';
+		}
+		foreach ($this->request->get('amount') as $key => $value) {
+			$messages['amount.'.$key.'.required'] = 'The field amount '.$key.' is required';
+			$messages['amount.'.$key.'.numeric'] = 'The field amount '.$key.' should be numeric value';
+		}
+		return $messages;
 	}
 
 }

@@ -47,19 +47,19 @@
       </div>
 
 		</div>
-		<div class="col-md-6" ng-controller="ServiceController">
+		<div class="col-md-6" ng-controller="DateController">
 			<label><b>Receipt Date</b></label>
 			<!--  -->
 			<input type="text" class="form-control iapp-date" 
-			name="receiptDate" 
+			name="serviceDate" 
 			placeholder="YYYY/MM/DD" 
-			ng-model="receiptDate"
+			ng-model="serviceDate"
 			ng-maxlength="10"
 			maxlength="10"
 			ng-datepicker
 			required>
-			<div class="" ng-show="serviceReceiptForm.receiptDate.$dirty && serviceReceiptForm.receiptDate.$invalid">
-		        <small class="text-danger" ng-show="serviceReceiptForm.receiptDate.$error.required">
+			<div class="" ng-show="serviceReceiptForm.serviceDate.$dirty && serviceReceiptForm.serviceDate.$invalid">
+		        <small class="text-danger" ng-show="serviceReceiptForm.serviceDate.$error.required">
 		           Invoice Date is required.
 		        </small>
 		        <small class="text-danger" ng-show="serviceReceiptForm.serviceDate.$error.maxlength">
@@ -144,10 +144,10 @@
 			<label><b>Currency</b></label>
 			<select class="form-control" name="currency" ng-model="currency" required>
 				<option selected disabled value="">Select Currency</option>
-				<option value="Rs.">Nepalese Rupee</option>
-				<option value="&euro;.">Euro</option>				
-				<option value="GBP">Pound Sterling</option>			
-				<option value="USD">U.S. Dollar</option>
+				<option value="Rs">Nepalese Rupee</option>
+				<option value="&euro;">Euro</option>				
+				<option value="&pound;" selected>Pound Sterling</option>			
+				<option value="&dollar;">US Dollar</option>
 			</select>
 			<div ng-show="serviceReceiptForm.currency.$dirty && serviceReceiptForm.currency.$invalid">
 		        <small class="text-danger" ng-show="serviceReceiptForm.currency.$error.required">
@@ -164,13 +164,13 @@
 				<label><b>Description of Work</b></label>
 				<textarea class="form-control" rows="3" name="workDescription[]" placeholder="Description of Work"></textarea>
 			</div>
-			<div class="col-md-4">
+			<div class="col-md-5">
 				<label><b>Amount</b></label>
 				<input type="text" class="form-control" name="amount[]" placeholder="Amount">
 			</div>
-			<div class="col-md-2">
+			<div class="col-md-1">
 				<br>
-				<button type="button"class="btn btn-primary add-more-service btn-more" ng-click="add()" style="float: right;"><b>+</b> More</button>
+				<button type="button"class="btn btn-primary add-more-service btn-more btn-block" ng-click="add()" style="float: right; margin-top:5px;"><b>+</b> More</button>
 			</div>
 		</div>
 	</div>
@@ -183,7 +183,7 @@
 			placeholder="Note from service provider"
 			ng-model="keyNote"
 			ng-minlength="20"
-			required>{{old('keyNote')}}
+			required ng-init="keyNote='{{old('keyNote')}}'">
 			</textarea>
 			<div class="" ng-show="serviceReceiptForm.keyNote.$dirty && serviceReceiptForm.keyNote.$invalid">
 		        <small class="text-danger" ng-show="serviceReceiptForm.keyNote.$error.required">
@@ -198,8 +198,10 @@
 			<div class="row">
 				<div class="col-md-6 col-md-6 col-xs-6 col-sm-6">
 					<div class="choices-holder">
-						<input type="radio" id="downloadPDF" name="requestType" value="downloadPDF"> <label for="downloadPDF"><b>Download PDF</b></label><br>
-						<input type="radio" id="printInvoice" name="requestType" value="serviceReceipt" checked> <label for="printInvoice"><b>Print Invoice</b></label>
+						<!-- <input type="radio" id="downloadPDF" name="requestType" value="downloadPDF"> <label for="downloadPDF"><b>Download PDF</b></label><br> -->
+						<input type="hidden" name="requestType" value="default">
+
+						<!-- <input type="radio" id="printInvoice" name="requestType" value="serviceReceipt" checked> <label for="printInvoice"><b>Print Invoice</b></label> -->
 					</div>
 				</div>
 				<div class="col-md-6 col-md-6 col-xs-6 col-sm-6"><p></p>
