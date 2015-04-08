@@ -53,6 +53,7 @@
 							<li class="dropdown">
 								<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">{{ Auth::user()->email }} <span class="caret"></span></a>
 								<ul class="dropdown-menu" role="menu">
+									<div class="triangle-up"></div>
 									<li><a href="{{URL::to('/auth/logout')}}"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
 								</ul>
 							</li>
