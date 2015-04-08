@@ -23,12 +23,17 @@ html,body{
 .title-line{
 	padding-bottom: 4px !important;
 	border-bottom: 1px solid #dfdfdf;
+	color: rgb(0, 153, 201);
+	font-size: 20px;
+}
+.title-text{
+	color: rgb(0, 153, 201);
+	font-size: 20px;
 }
 .container-bordered{
 	border:1px solid #dfdfdf !important;
 	border-top: 1px solid #EAEBEC !important;
 	position: relative !important;
-	/*margin-top: 60px !important;*/
 }
 .iapp-footer{
 	background-color: #F8F8F8;
@@ -147,7 +152,6 @@ input.ng-valid, textarea.ng-valid, select.ng-valid {
 	border-radius: 2px !important;
 	border-top: 2px solid #D2D2D2 !important;
 	width: 30px !important;
-	/*border-radius:10px !important;*/
 	text-align: center !important;
 	padding: 5px 0px 6px;
 	color: #907F7F !important;
@@ -159,7 +163,6 @@ input.ng-valid, textarea.ng-valid, select.ng-valid {
 	color: #fff!important;
 	border-radius: 2px !important;
 	width: px !important;
-	/*border-radius:10px !important;*/
 	text-align: center !important;
 	padding: 5px 0px 6px;
 	color: #FFFFFF !important;
@@ -169,14 +172,12 @@ input.ng-valid, textarea.ng-valid, select.ng-valid {
 }
 .pagination>li:last-child>a, .pagination>li:last-child>span {
 	width: 30px !important;
-	/*border-radius:10px !important;*/
 	text-align: center !important;
 	padding: 5px 0px 6px;
 	color: #907F7F !important;
 }
 .pagination>li:first-child>a, .pagination>li:first-child>span{
 	width: 30px !important;
-	/*border-radius:10px !important;*/
 	text-align: center !important;
 	padding: 5px 0px 6px;
 	color: #907F7F !important;

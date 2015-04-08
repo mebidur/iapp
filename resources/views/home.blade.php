@@ -7,7 +7,7 @@
 	</div>
 </div>
 <div class="container container-bordered">
-	<h3>Invoice History</h3>
+	<h3 class="title-text">Invoice History</h3>
 		@if(Session::has('message'))
 		<div class="alert alert-success">
 			{{Session::get('message')}}
