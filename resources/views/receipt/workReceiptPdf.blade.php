@@ -191,7 +191,7 @@
       <input type="hidden" name="receiptId" value="{{$receipt->id}}">
       <div class="pdf-buttons button-content">
         <button type="submit" class="btn-download-pdf">Download PDF</button>
-        <button id="pdf-print-btn" class="pdf-print-btn">Print</button>
+        <button type="button" id="pdf-print-btn" class="pdf-print-btn">Print</button>
       </div>  
     {!!Form::close()!!}
   </div>
@@ -236,13 +236,13 @@
         <td>{{$each['workDescription']}}</td>
         <td>{{$each['hour']}}</td>
         <?php $subTotal += $each['rate'] * $each['hour'];?>
-        <td>{{$receipt->currency . ' '.$each['rate']}}</td>
-        <td>{{$receipt->currency . ' '.$each['rate'] * $each['hour']}}</td>
+        <td><span class="currency-view">$receipt->currency</span><span>{{$each['rate']}}</span></td>
+        <td><span class="currency-view">$receipt->currency</span><span>{{$each['rate'] * $each['hour']}}</span></td>
       </tr>
       @endforeach
       <tr>
         <td colspan="3" style="text-align:right"><b>Total:</b></td>
-        <td><b><span class="currency-view">{{$receipt->currency}}</span>{{round($subTotal,2)}}</b></td>
+        <td><b><span class="currency-view">{{$receipt->currency}}</span><span>{{round($subTotal,2)}}</span></b></td>
       </tr>
     </tbody>
   </table>

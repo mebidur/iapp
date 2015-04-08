@@ -190,7 +190,7 @@
       <input type="hidden" name="receiptId" value="{{$receipt->id}}">
       <div class="pdf-buttons button-content">
         <button type="submit" class="btn-download-pdf">Download PDF</button>
-        <button id="pdf-print-btn" class="pdf-print-btn">Print</button>
+        <button type="button" id="pdf-print-btn" class="pdf-print-btn">Print</button>
       </div>  
     {!!Form::close()!!}
     
@@ -234,7 +234,7 @@
       <tr>
         <td>{{$each['workDescription']}}</td>
         <td>{{$each['amount']}}</td>
-        <td><span class="currency-view">{{$receipt->currency}}</span>{{$each['amount']}}</td>
+        <td><span class="currency-view">{{$receipt->currency}}</span><span>{{$each['amount']}}</span></td>
         <?php $subTotal += $each['amount'];?>
       </tr>
       @endforeach

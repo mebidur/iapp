@@ -1,11 +1,13 @@
 @extends('app')
 @section('content')
-<div class="container">
-	@include('app-nav')
+<p style="margin-top:80px;"></p>
+<div class="container iapp-status">
+	<div class="row">
+		<div class="col-md-12">Receipts / Work Receipt</div>
+	</div>
 </div>
-<br>
 <div class="container container-bordered">
-	<h3 class="title-line">Working Hour Receipt</h3>
+	<h3 class="title-line">Create New Work Hour Receipt</h3>
 	<p></p>
 	@include('include.error-msg')
 	<p></p>

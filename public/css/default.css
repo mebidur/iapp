@@ -16,17 +16,9 @@ html,body{
 .iapp-navbar{
 	margin-bottom: 6px !important;
 }
-.active-tab{
-	background-color: #0099C9;
-	border: 1px solid #0099C9 !important;
-	border-top: 4px solid #117696 !important;
-}
-.active-tab a{
-	color: #fff !important;
-}
-.active-tab h5, .active-tab h6{
-	color: #fff !important;
-	font-weight: bold;
+.current{
+	border-bottom: 4px solid #0099C9 !important;
+	color: #dfdfdf !important;
 }
 .title-line{
 	padding-bottom: 4px !important;
@@ -34,8 +26,9 @@ html,body{
 }
 .container-bordered{
 	border:1px solid #dfdfdf !important;
-	border-top: 3px solid #EAEBEC !important;
-	position: relative !important
+	border-top: 1px solid #EAEBEC !important;
+	position: relative !important;
+	/*margin-top: 60px !important;*/
 }
 .iapp-footer{
 	background-color: #F8F8F8;
@@ -190,4 +183,46 @@ input.ng-valid, textarea.ng-valid, select.ng-valid {
 }
 .datepicker td.active, .datepicker td.active:hover {
 	background-image: linear-gradient(to bottom, #0088cc, #0099C9) !important;
+}
+ .triangle-up {
+ 	position: absolute;
+	top: -7px;
+	left: 45%;
+	width: 0;
+	height: 0;
+	border-left: 7px solid transparent;
+	border-right: 7px solid transparent;
+	border-bottom: 7px solid #E7E7E7;
+}
+.navbar-nav ul{
+	padding: 0px !important;
+}
+.navbar-nav > li > .dropdown-menu {
+	margin-top: 10px !important;
+	border-radius: 0px !important; 
+	background-color: #F8F8F8 !important; 
+}
+.dropdown-menu > li > a {
+	padding-top: 11px;
+	padding-bottom: 8px;
+}
+.dropdown-menu > li > a:hover{
+	background: rgb(0, 153, 201);
+	color: #fff;
+	padding-top: 11px;
+	padding-bottom: 8px;
+}
+.current-list{
+	background: rgb(0, 153, 201);
+	color: #fff !important;
+	padding-top: 11px;
+	padding-bottom: 8px;
+}
+.iapp-status{
+	padding: 10px;
+	margin-top: 60px !important;
+	background: #F8F8F8;
+	border: 1px solid #EDEDED;
+	box-shadow: 0px 1px 0px 0px transparent;
+	margin-bottom: 15px;
 }

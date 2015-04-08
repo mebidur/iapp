@@ -1,4 +1,4 @@
-<div class="row">
+<!-- <div class="row">
 	<div class="col-md-2 col-xs-12 col-lg-2 col-sm-12 nav-icon {{($current == 'home') ? 'active-tab' : ''}}">
 		<a href="{{url('/')}}">
 		    <h4 class="text-center">Home</h4>
@@ -43,4 +43,4 @@
 			<h6 class="text-center text-muted hidden-lg hidden-md visible-sm visible-xs">New Receipt</h6>
 		</a>
 	</div>
-</div>
+</div> -->

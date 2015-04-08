@@ -1,9 +1,11 @@
 @extends('app')
 @section('content')
-<div class="container">
-	@include('app-nav')
+<p style="margin-top:80px;"></p>
+<div class="container iapp-status">
+	<div class="row">
+		<div class="col-md-12">Home / Invoices History</div>
+	</div>
 </div>
-<br>
 <div class="container container-bordered">
 	<h3>Invoice History</h3>
 		@if(Session::has('message'))

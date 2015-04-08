@@ -126,7 +126,6 @@
     padding: 6px 0px;
     border-radius: 13px;
     background: #0099C9;
-    /*margin: 10px 86% !important;*/
     border: 0px;
     font-size: 13px;
     border-color: #087A9D;
@@ -194,7 +193,7 @@
     <input type="hidden" name="invoiceId" value="{{$invoice->id}}">
     <div class="pdf-buttons button-content">
       <button type="submit" class="btn-download-pdf">Download PDF</button>
-      <button id="pdf-print-btn" class="pdf-print-btn">Print</button>
+      <button type="button" id="pdf-print-btn" class="pdf-print-btn">Print</button>
     </div>  
   {!!Form::close()!!}
   </div>
@@ -236,14 +235,14 @@
       @foreach($description as $each)
       <tr>
         <td>{{$each['workDescription']}}</td>
-        <td><span class="currency-view" style="vertical-align: top !important;">{{$invoice->currency}}</span>{{$each['amount']}}</td>
-        <td><span class="currency-view" style="vertical-align: top !important;">{{$invoice->currency}}</span>{{$each['amount']}}</td>
+        <td><span class="currency-view">{{$invoice->currency}}</span><span>{{$each['amount']}}</span></td>
+        <td><span class="currency-view">{{$invoice->currency}}</span><span>{{$each['amount']}}</span></td>
         <?php $subTotal += $each['amount'];?>
       </tr>
       @endforeach
       <tr>
         <td colspan="2" style="text-align:right"><b>Total:</b></td>
-        <td><b><span class="currency-view">{{$invoice->currency}}</span>{{round($subTotal,2)}}</b></td>
+        <td><b><span class="currency-view">{{$invoice->currency}}</span><span>{{round($subTotal,2)}}</span></b></td>
       </tr>
     </tbody>
   </table>

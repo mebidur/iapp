@@ -81,14 +81,15 @@ class ReceiptController extends Controller {
 		if(\Input::has('secret') && \Input::has('secure'))
 		{
 			$receiptData = Receipt::whereId(\Input::get('secret'))->with('description')->first();
-			if(\Input::get('secure') == '1')
+
+			if(!empty($receiptData) && $receiptData->type == '1')
 			{
 				return \View::make('receipt.workReceiptPdf')->with(['receipt' => $receiptData,
 			 												'description' => $receiptData['description'],
 		    												'requestType' => 'viewAgain',])
 			 											->render();		
 			}
-			if(\Input::get('secure') == '2')
+			if(!empty($receiptData) && $receiptData->type == '2')
 			{
 				return \View::make('receipt.serviceReceiptPdf')->with(['receipt' => $receiptData,
 			 												'description' => $receiptData['description'],
@@ -104,7 +105,7 @@ class ReceiptController extends Controller {
 							  ->whereId(\Input::get('receiptId'))
 							  ->whereOrganizationId(\Auth::user()->organization_id)
 							  ->first();
-		if(\Input::get('requestType') == 'downloadServicePDF')
+		if(\Input::get('requestType') == 'downloadServicePDF' && !empty($receiptData))
 		{
 			$html = \View::make('receipt.serviceReceiptPdf')
 						->with(['receipt' => $receiptData,
@@ -114,7 +115,7 @@ class ReceiptController extends Controller {
 
 			return $pdf->load($html, 'A4', 'portrait')->download();
 		}
-		if(\Input::get('requestType') == 'downloadWorkPDF')
+		if(\Input::get('requestType') == 'downloadWorkPDF' && !empty($receiptData))
 		{
 			$html = \View::make('receipt.workReceiptPdf')->with(['receipt' => $receiptData,
 																 'description' => $receiptData['description'],
