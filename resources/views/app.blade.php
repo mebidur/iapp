@@ -16,11 +16,11 @@
 	<div class="wrapper">
 		<div id="app-menu" class="navbar navbar-default navbar-fixed-top" role="navigation">
 		    <div class="container">
-		        <div class="navbar-header"><a class="navbar-brand" href="/"><b>Invoice App</b></a>
+		        <div class="navbar-header"><a class="navbar-brand" href="{{url('/')}}"><b>Invoice App</b></a>
 		            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-menubuilder"><span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span>
 		            </button>
 		        </div>
-		        <div class="collapse navbar-collapse">
+		        <div class="collapse navbar-collapse navbar-menubuilder">
 		            @if(Auth::check())
 		            <ul class="nav navbar-nav navbar-left">
 		                <li class="{{($current == 'home') ? 'current' : ''}}"><a href="{{url('/')}}"><b>Home</b></a></li>
