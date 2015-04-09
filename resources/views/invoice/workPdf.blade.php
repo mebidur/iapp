@@ -192,7 +192,7 @@
     <input type="hidden" name="requestType" value="downloadWorkPDF">
     <input type="hidden" name="invoiceId" value="{{$invoice->id}}">
     <div class="pdf-buttons button-content">
-      <button type="submit" class="btn-download-pdf">Download PDF</button>&nbsp;&nbsp;&nbsp;
+      <button type="submit" class="btn-download-pdf">Download PDF</button>
       <button type="button" id="pdf-print-btn" class="pdf-print-btn">Print</button>
     </div>  
   {!!Form::close()!!}
@@ -270,11 +270,20 @@
     </tr>
   </table>
   <p></p>
-  <div class="row col-xs-12 iapp-details">
-    <h4 class="underline-text"><b>Note</b></h4>
-    <span class="ipp-details">{{$invoice->keyNote}}</span>
-  </div>
-  <p></p>
+  <table class="panels table table-bordered">
+    <tr>
+      <th>Note</th>
+    </tr>
+    <tr>
+      <td>
+          <div class="iapp-details">
+            <pre>
+              {{$invoice->keyNote}}
+            </pre>
+        </div>
+      </td>
+    </tr>
+  </table>
 </div>
 <script type="text/javascript" src="{{url('js/jquery.min.js')}}"></script>
 <script type="text/javascript" src="{{url('js/printPdf.js')}}"></script>

@@ -14,7 +14,7 @@
 			<a href="javascript:void(0)" class="pull-right alert-close">&times;</a>
 		</div>
 		@endif
-	<span class="pagination-view">Showing {{$receipts->firstItem()}} to {{$receipts->lastItem()}} of {{$receipts->total()}} Receipts</span>
+	<span class="pagination-view hidden-xs">Showing {{$receipts->firstItem()}} to {{$receipts->lastItem()}} of {{$receipts->total()}} Receipts</span>
 	<div class="table-responsive">
 		<table class="table">
 			<tr>

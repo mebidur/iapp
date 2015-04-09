@@ -7,7 +7,8 @@
 	</div>
 </div>
 <div class="container container-bordered">
-	<h3 class="title-line">Create New Service Receipt</h3>
+	<h3 class="title-line hidden-xs">Create New Service Receipt</h3>
+	<h4 class="title-line visible-xs hidden-lg hidden-md hidden-sm">New Receipt</h4>
 	<p></p>
 	@include('include.error-msg')
 	<p></p>

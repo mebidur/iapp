@@ -7,7 +7,8 @@
 	</div>
 </div>
 <div class="container container-bordered">
-	<h3 class="title-line">Create New Work Hour Receipt</h3>
+	<h3 class="title-line hidden-xs">Create New Hourly Receipt</h3>
+	<h4 class="title-line visible-xs hidden-lg hidden-md hidden-sm">New Receipt</h4>
 	<p></p>
 	@include('include.error-msg')
 	<p></p>
@@ -144,7 +145,6 @@
 		<div class="col-md-6">
 			<label><b>Currency</b></label>
 			<select class="form-control" name="currency" ng-model="currency" required>
-				<option selected disabled value="">Select Currency</option>
 				<option selected disabled value="">Select Currency</option>
 				<option value="Rs">Nepalese Rupee</option>
 				<option value="&euro;">Euro</option>				

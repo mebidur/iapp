@@ -20,7 +20,7 @@
 		            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-menubuilder"><span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span>
 		            </button>
 		        </div>
-		        <div class="collapse navbar-collapse navbar-menubuilder">
+		        <div class="collapse navbar-collapse">
 		            @if(Auth::check())
 		            <ul class="nav navbar-nav navbar-left">
 		                <li class="{{($current == 'home') ? 'current' : ''}}"><a href="{{url('/')}}"><b>Home</b></a></li>
@@ -67,7 +67,7 @@
 		</div> 
 		<div class="iapp-footer">
 	       <center>
-	          <p >&copy; 2015 | All rights reserved. <a href="javascript:void(0)" class="iapp-terms">Privacy</a>  <a href="javascript:void(0)" class="iapp-policy">Terms</a> <a href="" class="iapp-policy">Security</a></p>
+	          <p>&copy; 2015 | All rights reserved. <a href="javascript:void(0)" class="iapp-terms hidden-xs">Privacy</a>  <a href="javascript:void(0)" class="iapp-policy hidden-xs">Terms</a> <a href="" class="iapp-policy hidden-xs">Security</a></p>
 	          <input type="hidden" id="siteUrl" value="{{url('/')}}">
 	          <input type="hidden" value="{{csrf_token()}}" id="_token" name="_token">
 	          <input type="hidden" value="{{date('Y-m-m')}}" id="_date">

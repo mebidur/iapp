@@ -1,6 +1,6 @@
 @extends('app')
 @section('content')
-<p style="margin-top:80px;"></p>
+<p style="margin-top:65px;"></p>
 <div class="container iapp-status">
 	<div class="row">
 		<div class="col-md-12">Home / Invoices History</div>
@@ -14,7 +14,7 @@
 			<a href="javascript:void(0)" class="pull-right alert-close">&times;</a>
 		</div>
 		@endif
-	<span class="pagination-view" style="top: 4% !important;">Showing {{$invoices->firstItem()}} to {{$invoices->lastItem()}} of {{$invoices->total()}} Invoices</span>
+	<span class="pagination-view hidden-xs" style="top: 4% !important;">Showing {{$invoices->firstItem()}} to {{$invoices->lastItem()}} of {{$invoices->total()}} Invoices</span>
 	<div class="table-responsive">
 		<table class="table">
 			<tr>

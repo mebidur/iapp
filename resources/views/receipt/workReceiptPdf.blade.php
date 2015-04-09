@@ -236,8 +236,8 @@
         <td>{{$each['workDescription']}}</td>
         <td>{{$each['hour']}}</td>
         <?php $subTotal += $each['rate'] * $each['hour'];?>
-        <td><span class="currency-view">$receipt->currency</span><span>{{$each['rate']}}</span></td>
-        <td><span class="currency-view">$receipt->currency</span><span>{{$each['rate'] * $each['hour']}}</span></td>
+        <td><span class="currency-view">{{$receipt->currency}}</span><span>{{$each['rate']}}</span></td>
+        <td><span class="currency-view">{{$receipt->currency}}</span><span>{{$each['rate'] * $each['hour']}}</span></td>
       </tr>
       @endforeach
       <tr>
@@ -247,11 +247,14 @@
     </tbody>
   </table>
   <p></p>
-  <div class="row col-xs-12 iapp-details">
-    <h4 class="underline-text"><b>Note</b></h4>
-    <span>{{$receipt->keyNote}}</span>
-  </div>
-  <p></p>
+  <table class="table table-bordered mid-panels">
+    <tr>
+      <th>Note</th>
+    </tr>
+    <tr>
+      <td class="iapp-details"><pre>{{$receipt->keyNote}}</pre></td>
+    </tr>
+  </table>
 </div>
 <script type="text/javascript" src="{{url('js/jquery.min.js')}}"></script>
 <script type="text/javascript" src="{{url('js/printPdf.js')}}"></script>

@@ -1,13 +1,14 @@
 @extends('app')
 @section('content')
-<p style="margin-top:80px;"></p>
+<p style="margin-top:65px;"></p>
 <div class="container iapp-status">
 	<div class="row">
 		<div class="col-md-12">Invoices / Work Invoice</div>
 	</div>
 </div>
 <div class="container container-bordered">
-	<h3 class="title-line">Create New Work Hour Invoice</h3>
+	<h3 class="title-line hidden-xs">Create New Hourly Invoice</h3>
+	<h4 class="title-line visible-xs hidden-lg hidden-md hidden-sm">New Invoice</h4>
 	<p></p>
 	@include('include.error-msg')
 	<p></p>
