@@ -112,7 +112,7 @@ var app = angular.module('iApp', ['ngMessages'])
 			}	    
 		}
 
-		$scope.organization = {'serviceDate': _date};
+		$scope.organization = {'serviceDate': _date,'state': 0,};
 		$scope.customer = {};
 
 		$scope.doFocus = function(){
