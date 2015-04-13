@@ -17,16 +17,11 @@ class CreateInvoicesTable extends Migration {
 			$table->increments('id');
 			$table->string('invoiceNumber');
 			$table->integer('organization_id');
-			$table->string('serviceProvider');
+			$table->integer('customer_id');
 			$table->timestamp('serviceDate');
-			$table->string('serviceReceiver');
-			$table->string('companyAddress');
-			$table->string('clientAddress');
-			$table->string('termsCondition');
-			$table->string('bankDetails');
-			$table->string('keyNote');
 			$table->string('status');
 			$table->string('type');
+			$table->integer('state');
 			$table->string('currency');
 			$table->timestamps();
 			$table->softDeletes();

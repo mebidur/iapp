@@ -1,6 +1,5 @@
 @extends('app')
 @section('content')
-<p style="margin-top:65px;"></p>
 <div class="container iapp-status">
 	<div class="row">
 		<div class="col-md-12">Home / Invoices History</div>
@@ -32,8 +31,8 @@
 				@foreach($invoices as $invoice)
 					<tr>
 						<td>{{$sn}}</td>
-						<td><a href="{{url('invoice/view?secret='.$invoice->id.'&secure='.$invoice->type)}}">{{$invoice->invoiceNumber}}</a></td>
-						<td>{{$invoice->serviceReceiver}}</td>
+						<td><a href="{{url('invoice/view?response='.$invoice->id.'&secure='.$invoice->type)}}">{{$invoice->invoiceNumber}}</a></td>
+						<td>{{$invoice['customer']->name}}</td>
 						<td>{{date('d/m/Y H:i:s',strtotime($invoice->created_at))}}</td>
 						<td>{{date('d/m/Y',strtotime($invoice->serviceDate))}}</td>
 						<?php $workTotal = 0; $serviceTotal = 0; ?>

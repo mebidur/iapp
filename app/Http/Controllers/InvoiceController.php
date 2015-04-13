@@ -5,6 +5,7 @@ use App\Http\Requests\WorkInvoice;
 use App\Http\Requests\ServiceInvoice;
 use App\Invoice;
 use App\Organization;
+use App\Customer;
 use App\Description;
 use Vsmoraes\Pdf\Pdf;
 
@@ -17,7 +18,8 @@ class InvoiceController extends Controller {
 
 	public function getIndex()
 	{
-		$invoices = Invoice::with(['description',])
+		$invoices = Invoice::with(['description','customer'])
+							->orderBy('created_at', 'desc')
 							->where('organization_id', \Auth::user()->organization_id)
 							->paginate(10);
 
@@ -27,42 +29,58 @@ class InvoiceController extends Controller {
 
 	public function getWork()
 	{
+		$year = substr(date('Y'),1,4).'-';
+		$number = Invoice::select('invoiceNumber')
+							->whereOrganizationId(\Auth::user()->organization_id)
+							->whereState(0)
+							->orderBy('created_at', 'desc')->first();
+		$isUnique = (empty($number)) ? 1000 : (intval(explode('-', $number->invoiceNumber)[1]) + 1);
+		$finalNumber = $year.$isUnique;
+
 		return \View::make('invoice.work-invoice')
-					->with(['current' => 'work-invoice',]);
+					->with(['current' => 'work-invoice',
+							'uniqueInvoice' => $finalNumber]);
 	}
 
-	public function postWork(WorkInvoice $request, Invoice $invoice, PDF $pdf)
+	public function postWork(WorkInvoice $request, Invoice $invoice, PDF $pdf, Customer $customer)
 	{
 		if(\Input::get('requestType') == 'default'){
-			$data = Invoice::with('description')->whereInvoicenumber($request->invoiceNumber)->first();
 			
-			if(!empty($data)){
-				$invoice = $data;
-				$desc = $invoice['description'];
-
-			}else{
-
-				$invoiceData = array_merge($request->all(),['organization_id' => \Auth::user()->organization_id, 'type' => 1]);
-				$fillInvoice = array_except($invoiceData, ['workDescription','hour','rate']);
-				$descOnly = array_only($invoiceData, ['workDescription','hour','rate']);
-
-				$invoice = $invoice->create($fillInvoice);
-				$allDesc = [];
-				
-				for($i = 0; $i < count($descOnly['rate']); $i++){
-					array_push($allDesc, 
-						new Description(['invoice_id' => $invoice->id,
-										'workDescription' => $descOnly['workDescription'][$i],
-										'rate' => $descOnly['rate'][$i],
-										'hour' => $descOnly['hour'][$i],
-										]));
+			try {
+				$customerOld = Customer::whereName(\Input::get('customer')['name'])->first();
+					
+				if(!empty($customerOld)){
+					$customer = $customerOld;
+				}else{
+					$customerData = array_merge(['organization_id' => \Auth::user()->organization_id],\Input::get('customer'));
+					$customer = $customer->create($customerData);
 				}
-				$desc = $invoice->description()->saveMany($allDesc);
+
+				$invoiceOld = Invoice::with('description','customer')->whereInvoicenumber(\Input::get('organization')['invoiceNumber'])->first();
+				
+				if(!empty($invoiceOld)){
+					$invoice = $invoiceOld;
+					$desc = $invoice['description'];
+					$cust = $invoice['customer'];
+
+				}else{
+
+					$invoiceData = array_merge(['organization_id' => \Auth::user()->organization_id, 'type' => 1,'customer_id' => $customer->id], array_only(\Input::get('organization'), ['invoiceNumber','serviceDate','currency']));
+					$invoice = $invoice->create($invoiceData);
+
+					$fillDesc = [];
+
+					foreach (\Input::get('allDesc') as $each){
+						array_push($fillDesc, new Description(array_merge(['invoice_id' => $invoice->id],$each)));
+					}
+
+					$desc = $invoice->description()->saveMany($fillDesc);
+					$cust = $invoice->customer;
+				}
+				return ['status' => 'OK', 'statusCode' => 200, 'invoiceId' => $invoice->id,'invoiceTpye' => $invoice->type,'response' => true];
+			} catch (Exception $e) {
+				return ['status' => 'Database Error', 'statusCode' => 503, 'response' => false];
 			}
-			return \View::make('invoice.workPdf')->with(['invoice' => $invoice,
-			    			 								 'description' => $desc,
-			    			 								 'requestType' => $request->requestType])
-			    									 ->render();
 		}
 		return 'Bad request!';
 	}
@@ -75,20 +93,18 @@ class InvoiceController extends Controller {
 
 	public function getView()
 	{
-		if(\Input::has('secret') && \Input::has('secure'))
+		if(\Input::has('response') && \Input::has('secure'))
 		{
-			$invoiceData = Invoice::whereId(\Input::get('secret'))->with('description')->first();
+			$invoiceData = Invoice::with('customer','organization','description')->whereId(\Input::get('response'))->with('description')->first();
 			if(!empty($invoiceData) && $invoiceData->type == '1')
 			{
 				return \View::make('invoice.workPdf')->with(['invoice' => $invoiceData,
-			 												'description' => $invoiceData['description'],
 		    												'requestType' => 'viewAgain',])
 			 											->render();		
 			}
 			if(!empty($invoiceData) && $invoiceData->type == '2')
 			{
 				return \View::make('invoice.servicePdf')->with(['invoice' => $invoiceData,
-			 												'description' => $invoiceData['description'],
 		    												'requestType' => 'viewAgain',])
 			 											->render();
 			}
@@ -123,39 +139,45 @@ class InvoiceController extends Controller {
 		return 'Bad Request!';
 	}
 
-	public function postService(ServiceInvoice $request, Invoice $invoice, PDF $pdf)
+	public function postService(Invoice $invoice, PDF $pdf, Customer $customer)
 	{
-		if($request->requestType == 'default')
-		{
-			$data = Invoice::with('description')
-							->where('invoiceNumber',$request->invoiceNumber)
-							->first();
+		if(\Input::get('requestType') == 'default'){
 			
-			if(!empty($data)){
-				$invoice = $data;
-				$desc = $invoice['description'];
-
-			}else{
-				$allDesc = [];
-				$invoiceData = array_merge($request->all(),['organization_id' => \Auth::user()->organization_id,'type' => 2]);
-				$fillInvoice = array_except($invoiceData, ['workDescription','amount']);
-				$descOnly = array_only($invoiceData, ['workDescription','amount']);
-
-				$invoice = $invoice->create($fillInvoice);	
-				
-				for($i = 0; $i < count($descOnly['workDescription']); $i++){
-					array_push($allDesc, 
-						new Description(['invoice_id' => $invoice->id,
-										'workDescription' => $descOnly['workDescription'][$i],
-										'amount' => $descOnly['amount'][$i],
-										]));
+			try {
+				$customerOld = Customer::whereName(\Input::get('customer')['name'])->first();
+					
+				if(!empty($customerOld)){
+					$customer = $customerOld;
+				}else{
+					$customerData = array_merge(['organization_id' => \Auth::user()->organization_id],\Input::get('customer'));
+					$customer = $customer->create($customerData);
 				}
-				$desc = $invoice->description()->saveMany($allDesc);
+
+				$invoiceOld = Invoice::with('description','customer')->whereInvoicenumber(\Input::get('organization')['invoiceNumber'])->first();
+				
+				if(!empty($invoiceOld)){
+					$invoice = $invoiceOld;
+					$desc = $invoice['description'];
+					$cust = $invoice['customer'];
+
+				}else{
+
+					$invoiceData = array_merge(['organization_id' => \Auth::user()->organization_id, 'type' => 2,'customer_id' => $customer->id], array_only(\Input::get('organization'), ['invoiceNumber','serviceDate','currency']));
+					$invoice = $invoice->create($invoiceData);
+
+					$fillDesc = [];
+
+					foreach (\Input::get('allDesc') as $each){
+						array_push($fillDesc, new Description(array_merge(['invoice_id' => $invoice->id],$each)));
+					}
+
+					$desc = $invoice->description()->saveMany($fillDesc);
+					$cust = $invoice->customer;
+				}
+				return ['status' => 'OK', 'statusCode' => 200, 'invoiceId' => $invoice->id,'invoiceTpye' => $invoice->type,'response' => true];
+			} catch (Exception $e) {
+				return ['status' => 'Database Error', 'statusCode' => 503, 'response' => false];
 			}
-			 return \View::make('invoice.servicePdf')->with(['invoice' => $invoice,
-			 												'description' => $desc,
-		    												'requestType' => $request->requestType,])
-			 										->render();
 		}
 		return 'Bad request!';		
 	}

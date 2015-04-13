@@ -12,6 +12,6 @@ class Description extends Model {
 
 	public function invoice()
 	{
-		return $this->belongsTo('App\Invoice','invoice_id','id');
+		return $this->belongsTo('App\Invoice');
 	}
 }

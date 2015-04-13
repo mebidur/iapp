@@ -152,7 +152,7 @@
     vertical-align: middle !important;
   }
   .invoice-date{
-    padding-left: 25% !important;
+    text-align: right !important;
     vertical-align: middle !important;
   }
   .invoice-no{
@@ -180,6 +180,17 @@
 .currency-view{
   padding-right: 2px !important;
 }
+.go-back, .go-back:hover{
+  width: 70px;
+  padding: 6px 10px;
+  text-decoration: none;
+  border-radius: 13px;
+  background: #0099C9;
+  border: 0px;
+  font-size: 13px;
+  border-color: #087A9D;
+  color: #fff;
+}
 
 </style>
 </head>  
@@ -192,6 +203,7 @@
     <input type="hidden" name="requestType" value="downloadWorkPDF">
     <input type="hidden" name="invoiceId" value="{{$invoice->id}}">
     <div class="pdf-buttons button-content">
+      <a href="{{url('/home')}}" class="go-back">Go Back</a>
       <button type="submit" class="btn-download-pdf">Download PDF</button>
       <button type="button" id="pdf-print-btn" class="pdf-print-btn">Print</button>
     </div>  
@@ -212,12 +224,12 @@
     </tr>
     <tr>
       <td>
-        <b>{{$invoice->serviceProvider}}</b><br>
-          <span>{{$invoice->companyAddress}}</span>
+        <b>{{$invoice['organization']->name}}</b><br>
+          <span>{{$invoice['organization']->address}}</span>
       </td>
       <td>
-        <b>{{$invoice->serviceReceiver}}</b><br>
-          <span>{{$invoice->clientAddress}}</span>
+        <b>{{$invoice['customer']->name}}</b><br>
+          <span>{{$invoice['customer']->address}}</span>
       </td>
     </tr>
   </table>
@@ -233,7 +245,7 @@
     </thead>
     <tbody>
     <?php $subTotal = 0;?>
-      @foreach($description as $each)
+      @foreach($invoice['description'] as $each)
       <tr>
         <td>{{$each['workDescription']}}</td>
         <td>{{$each['hour']}}</td>
@@ -257,13 +269,13 @@
     <tr>
       <td>
         <div class="iapp-details">
-          <pre>{{$invoice->bankDetails}}</pre>
+          <pre>{{$invoice['organization']->bankDetails}}</pre>
         </div>
       </td>
       <td>
         <div class="iapp-details">
           <pre>
-            {{$invoice->termsCondition}}
+            {{$invoice['organization']->rules}}
           </pre>
         </div>
       </td>
@@ -278,7 +290,7 @@
       <td>
           <div class="iapp-details">
             <pre>
-              {{$invoice->keyNote}}
+              {{$invoice['organization']->note}}
             </pre>
         </div>
       </td>

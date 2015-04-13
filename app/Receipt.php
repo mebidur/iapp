@@ -8,10 +8,22 @@ class Receipt extends Model {
 	use SoftDeletes;
     protected $dates = ['deleted_at'];
 	protected $table = 'receipts';
-	protected $fillable = ['receiptNumber','organization_id','serviceProvider','serviceDate','serviceReceiver','companyAddress','clientAddress','currency','keyNote','type'];
+	protected $fillable = ['receiptNumber','organization_id','customer_id','serviceDate','currency','type'];
+
 
 
 	public function description(){
 		return $this->hasMany('App\Description');
 	}
+	
+	public function organization()
+	{
+		return $this->belongsTo('App\Organization');
+	}
+
+	public function customer()
+	{
+		return $this->belongsTo('App\Customer');
+	}
+
 }

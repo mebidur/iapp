@@ -1,6 +1,5 @@
 @extends('app')
 @section('content')
-<p style="margin-top:80px;"></p>
 <div class="container iapp-status">
 	<div class="row">
 		<div class="col-md-12">Receipts / Receipts History</div>
@@ -30,8 +29,8 @@
 				@foreach($receipts as $receipt)
 					<tr>
 						<td>{{$sn}}</td>
-						<td><a href="{{url('receipt/view?secret='.$receipt->id.'&secure='.$receipt->type)}}">{{$receipt->receiptNumber}}</a></td>
-						<td>{{$receipt->serviceReceiver}}</td>
+						<td><a href="{{url('receipt/view?response='.$receipt->id.'&secure='.$receipt->type)}}">{{$receipt->receiptNumber}}</a></td>
+						<td>{{$receipt['customer']->name}}</td>
 						<td>{{date('d/m/Y H:i:s',strtotime($receipt->created_at))}}</td>
 						<td>{{date('d/m/Y',strtotime($receipt->serviceDate))}}</td>
 						<?php $workTotal = 0; $serviceTotal = 0; ?>

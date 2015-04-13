@@ -9,6 +9,7 @@ use App\Http\Requests\ServiceReceipt;
 use App\Receipt;
 use App\Organization;
 use App\Description;
+use App\Customer;
 use Vsmoraes\Pdf\Pdf;
 use View;
 
@@ -18,8 +19,10 @@ class ReceiptController extends Controller {
 		$this->middleware('auth');
 	}
 	
-	public function getIndex(){
-		$receipts = Receipt::with(['description'])
+	public function getIndex()
+	{
+		$receipts = Receipt::with(['description','customer'])
+							->orderBy('created_at', 'desc')
 							->where('organization_id', \Auth::user()->organization_id)
 							->paginate(10);
 							
@@ -32,42 +35,47 @@ class ReceiptController extends Controller {
 					->with(['current' => 'work-receipt']);
 	}
 
-	public function postWork(WorkReceipt $request, Receipt $receipt, PDF $pdf)
-	{
-		if($request->requestType == 'default')
-		{
-			$data = Receipt::with('description')
-							->where('receiptNumber',$request->receiptNumber)
-							->first();
+	public function postWork(WorkReceipt $request, Receipt $receipt, PDF $pdf, Customer $customer)
+	{		
+		if(\Input::get('requestType') == 'default'){
 			
-			if(!empty($data)){
-				$receipt = $data;
-				$desc = $receipt['description'];
-
-			}else{
-				$descAll = [];
-				$allInput = array_merge($request->all(),['organization_id' => \Auth::user()->organization_id,'type' => '1']);
-				$receiptData = array_except($allInput, ['workDescription','rate','hour']);
-				$descOnly = array_only($allInput, ['workDescription','rate','hour']);
-
-				$receipt = $receipt->create($receiptData);	
-				
-				for($i = 0; $i < count($descOnly['rate']); $i++){
-					array_push($descAll, new Description(['receipt_id' => $receipt->id,
-														  'workDescription' => $descOnly['workDescription'][$i],
-														  'rate' => $descOnly['rate'][$i],
-														  'hour' => $descOnly['hour'][$i]
-															]));
+			try {
+				$customerOld = Customer::whereName(\Input::get('customer')['name'])->first();
+					
+				if(!empty($customerOld)){
+					$customer = $customerOld;
+				}else{
+					$customerData = array_merge(['organization_id' => \Auth::user()->organization_id],\Input::get('customer'));
+					$customer = $customer->create($customerData);
 				}
-				$desc = $receipt->description()->saveMany($descAll);
+
+				$receiptOld = Receipt::with('description','customer')->whereReceiptnumber(\Input::get('organization')['receiptNumber'])->first();
+				
+				if(!empty($receiptOld)){
+					$receipt = $receiptOld;
+					$desc = $receipt['description'];
+					$cust = $receipt['customer'];
+
+				}else{
+
+					$receiptData = array_merge(['organization_id' => \Auth::user()->organization_id, 'type' => 1,'customer_id' => $customer->id], array_only(\Input::get('organization'), ['receiptNumber','serviceDate','currency']));
+					$receipt = $receipt->create($receiptData);
+
+					$fillDesc = [];
+
+					foreach (\Input::get('allDesc') as $each){
+						array_push($fillDesc, new Description(array_merge(['receipt_id' => $receipt->id],$each)));
+					}
+
+					$desc = $receipt->description()->saveMany($fillDesc);
+					$cust = $receipt->customer;
+				}
+				return ['status' => 'OK', 'statusCode' => 200, 'receiptId' => $receipt->id,'receiptTpye' => $receipt->type,'response' => true];
+			} catch (Exception $e) {
+				return ['status' => 'Database Error', 'statusCode' => 503, 'response' => false];
 			}
-		
-	    	return \View::make('receipt.workReceiptPdf')->with(['receipt' => $receipt,
-															'description' => $desc,
-															'requestType' => $request->requestType,])
-	    											->render();
-	    }
-	    return 'Bad request!';
+		}
+		return 'Bad request!';
 	}
 
 	public function getService()
@@ -78,21 +86,19 @@ class ReceiptController extends Controller {
 
 	public function getView()
 	{
-		if(\Input::has('secret') && \Input::has('secure'))
+		if(\Input::has('response') && \Input::has('secure'))
 		{
-			$receiptData = Receipt::whereId(\Input::get('secret'))->with('description')->first();
+			$receiptData = Receipt::with('customer','organization','description')->whereId(\Input::get('response'))->with('description')->first();
 
 			if(!empty($receiptData) && $receiptData->type == '1')
 			{
 				return \View::make('receipt.workReceiptPdf')->with(['receipt' => $receiptData,
-			 												'description' => $receiptData['description'],
 		    												'requestType' => 'viewAgain',])
 			 											->render();		
 			}
 			if(!empty($receiptData) && $receiptData->type == '2')
 			{
 				return \View::make('receipt.serviceReceiptPdf')->with(['receipt' => $receiptData,
-			 												'description' => $receiptData['description'],
 		    												'requestType' => 'viewAgain',])
 			 											->render();
 			}
@@ -126,40 +132,47 @@ class ReceiptController extends Controller {
 		return 'Bad Request!';
 	}
 
-	public function postService(ServiceReceipt $request, Receipt $receipt, PDF $pdf)
+	public function postService(ServiceReceipt $request, Receipt $receipt, PDF $pdf, Customer $customer)
 	{	
-
-		if($request->requestType == 'default'){
-			$data = Receipt::with('description')->whereReceiptnumber($request->receiptNumber)->first();
-		
-			if(!empty($data)){
-				$receipt = $data;
-				$desc = $receipt['description'];
-
-			}else{
-				$descAll = [];
-				$allData = array_merge($request->all(),['organization_id' => \Auth::user()->organization_id,'type' => '2']);
-				$receiptData = array_except($allData, ['workDescription','amount']);
-				$descOnly = array_only($allData, ['workDescription','amount']);
-				
-				$receipt = $receipt->create($receiptData);	
-				
-				for($i = 0; $i < count($descOnly['workDescription']); $i++){
-					array_push($descAll, new Description(['receipt_id' => $receipt->id,
-															'workDescription' => $descOnly['workDescription'][$i],
-															'amount' => $descOnly['amount'][$i],
-															]));
-				}
-				$desc = $receipt->description()->saveMany($descAll);
-			}
+		if(\Input::get('requestType') == 'default'){
 			
-		    return \View::make('receipt.serviceReceiptPdf')
-		    			->with(['receipt' => $receipt, 
-								'description' => $desc, 
-								'requestType' => $request->requestType])
-		    			->render();
+			try {
+				$customerOld = Customer::whereName(\Input::get('customer')['name'])->first();
+					
+				if(!empty($customerOld)){
+					$customer = $customerOld;
+				}else{
+					$customerData = array_merge(['organization_id' => \Auth::user()->organization_id],\Input::get('customer'));
+					$customer = $customer->create($customerData);
+				}
+
+				$receiptOld = Receipt::with('description','customer')->whereReceiptnumber(\Input::get('organization')['receiptNumber'])->first();
+				
+				if(!empty($receiptOld)){
+					$receipt = $receiptOld;
+					$desc = $receipt['description'];
+					$cust = $receipt['customer'];
+
+				}else{
+
+					$receiptData = array_merge(['organization_id' => \Auth::user()->organization_id, 'type' => 2,'customer_id' => $customer->id], array_only(\Input::get('organization'), ['receiptNumber','serviceDate','currency']));
+					$receipt = $receipt->create($receiptData);
+
+					$fillDesc = [];
+
+					foreach (\Input::get('allDesc') as $each){
+						array_push($fillDesc, new Description(array_merge(['receipt_id' => $receipt->id],$each)));
+					}
+
+					$desc = $receipt->description()->saveMany($fillDesc);
+					$cust = $receipt->customer;
+				}
+				return ['status' => 'OK', 'statusCode' => 200, 'receiptId' => $receipt->id,'receiptTpye' => $receipt->type,'response' => true];
+			} catch (Exception $e) {
+				return ['status' => 'Database Error', 'statusCode' => 503, 'response' => false];
+			}
 		}
-		return 'Bad Request!';
+		return 'Bad request!';
 
 	}
 	

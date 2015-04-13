@@ -16,17 +16,17 @@
 	<div class="wrapper">
 		<div id="app-menu" class="navbar navbar-default navbar-fixed-top" role="navigation">
 		    <div class="container">
-		        <div class="navbar-header"><a class="navbar-brand" href="{{url('/')}}"><b>Invoice App</b></a>
-		            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-menubuilder"><span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span>
+		        <div class="navbar-header"><a class="navbar-brand" href="{{url('/')}}">Invoice App</a>
+		            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-menubuilder"><span class="glyphicon glyphicon-menu-hamburger"></span>
 		            </button>
 		        </div>
 		        <div class="collapse navbar-collapse navbar-menubuilder">
 		            @if(Auth::check())
-		            <ul class="nav navbar-nav navbar-left">
+		            <ul class="nav navbar-nav navbar-left iapp-nav">
 		                <li class="{{($current == 'home') ? 'current' : ''}}"><a href="{{url('/')}}"><b>Home</b></a></li>
 		                <li class="dropdown {{($current == 'work-invoice' || $current == 'service-invoice') ? 'current' : ''}}">
 							<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><b>Invoices</b></a>
-							<ul class="dropdown-menu" role="menu">
+							<ul class="dropdown-menu iapp-drop-down-menu" role="menu">
 								<div class="triangle-up"></div>
 								<li><a href="{{url('/invoice/work')}}" class="{{($current == 'work-invoice') ? 'current-list' : ''}}"><span class="glyphicon glyphicon-file"></span> New Hourly Invoice</a></li>
 								<li class="divider"></li>
@@ -35,25 +35,27 @@
 						</li>
 	                	<li class="dropdown {{($current == 'work-receipt' || $current == 'service-receipt') ? 'current' : ''}}">
 							<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><b>Receipts</b></a>
-							<ul class="dropdown-menu" role="menu">
+							<ul class="dropdown-menu iapp-drop-down-menu" role="menu">
 								<div class="triangle-up"></div>
 								<li><a href="{{url('/receipt/work')}}" class="{{($current == 'work-receipt') ? 'current-list': ''}}"><span class="glyphicon glyphicon-file"></span> New Hourly Receipt</a></li>
 								<li class="divider"></li>
 								<li><a href="{{url('/receipt/service')}}" class="{{($current == 'service-receipt') ? 'current-list': ''}}"><span class="glyphicon glyphicon-file"></span> New Service Receipt</a></li>
 								<li class="divider"></li>
-								<li><a href="{{url('/receipt')}}" class="{{($current == 'receipt') ? 'current-list': ''}}"><span class="glyphicon glyphicon-list-alt"></span> Receipts History</a></li>
+								<li><a href="{{url('/receipt')}}" class="{{($current == 'receipt') ? 'current-list': ''}}"><span class="glyphicon glyphicon-option-vertical"></span> Receipts History</a></li>
 							</ul>
 						</li>						
 		            </ul>
 		            @endif
-		            <ul class="nav navbar-nav navbar-right">
+		            <ul class="nav navbar-nav navbar-right iapp-nav">
 		            	@if (Auth::guest())
 							<li><a href="{{url('/')}}">Login</a></li>
 						@else
 							<li class="dropdown">
 								<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">{{ Auth::user()->email }} <span class="caret"></span></a>
-								<ul class="dropdown-menu" role="menu">
+								<ul class="dropdown-menu iapp-drop-down-menu" role="menu">
 									<div class="triangle-up"></div>
+									<li><a href=""><span class="glyphicon glyphicon-cog"></span> Settings</a></li>
+									<li class="divider"></li>
 									<li><a href="{{URL::to('/auth/logout')}}"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
 								</ul>
 							</li>
@@ -62,7 +64,7 @@
 		        </div>
 		    </div>
 		</div>
-		<div>
+		<div class="content-holder">
 			@yield('content')
 		</div> 
 		<div class="iapp-footer">
@@ -80,10 +82,8 @@
 	{!!HTML::script('js/bootstrap-datepicker.js')!!}
 	{!!HTML::script('js/custom.js')!!}
 	{!!HTML::script('js/angular.min.js')!!}
+	{!!HTML::script('js/angular-messages.js')!!}
 	{!!HTML::script('js/app.js')!!}
-	{!!HTML::script('js/CreateElement.js')!!}
-	{!!HTML::script('js/CreateElementService.js')!!}
-	{!!HTML::script('js/printPage.js')!!}
 	@yield('script')
 </body>
 </html>

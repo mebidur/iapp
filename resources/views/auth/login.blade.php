@@ -8,7 +8,7 @@
 	</div>
 	<div id="output"></div>
 	<div class="avatar"></div>
-	<div class="form-box">
+	<div class="form-box" ng-controller="LoginFormController">
 	    {!!Form::open(['url' => '/auth/login'])!!}
 	        <input name="email" type="text" placeholder="email" value="{{old('email')}}">
 	        <input type="password" name="password" placeholder="password" value="{{old('password')}}">
@@ -20,7 +20,7 @@
 	       	</div>
 	       	@endif
 	        
-	        <button class="btn btn-login btn-block login" data-loading-text="Signing In..." type="submit">Sign In</button>
+	        <button class="btn btn-login btn-block login" ng-click="checkLogin()" type="submit">[[buttonText]]</button>
 	    {!!Form::close()!!}
 	</div>
 	</div>        

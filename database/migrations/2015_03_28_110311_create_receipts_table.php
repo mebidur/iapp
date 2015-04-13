@@ -17,14 +17,11 @@ class CreateReceiptsTable extends Migration {
 			$table->increments('id');
 			$table->string('receiptNumber');
 			$table->integer('organization_id');
-			$table->string('serviceProvider');
+			$table->integer('customer_id');			
 			$table->timestamp('serviceDate');
-			$table->string('serviceReceiver');
-			$table->string('companyAddress');
-			$table->string('clientAddress');
-			$table->string('keyNote');
 			$table->string('currency');
 			$table->string('type');
+			$table->integer('state');
 			$table->timestamps();
 			$table->softDeletes();
 		});

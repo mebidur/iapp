@@ -22,6 +22,9 @@ class CreateOrganizationsTable extends Migration {
 			$table->string('state');
 			$table->string('country');
 			$table->string('email');
+			$table->text('rules');
+			$table->text('note');
+			$table->string('bankDetails');
 			$table->timestamps();
 			$table->softDeletes();
 		});

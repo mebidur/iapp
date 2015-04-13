@@ -1,10 +1,6 @@
 html,body{
 	height: 100%;
 }
-.login-container{
-	background: #0060AD url(../img/loginbg.jpg) no-repeat left top;
-	color: #fff !important;
-}
 .nav-icon{
 	border: 1px solid #ACC7C1 !important;
 	border-top: 4px solid #B8B8B8 !important;
@@ -52,18 +48,22 @@ html,body{
 	min-height: 100%;
 }
 .choices-holder {
-   margin-left: 10% !important;
    float: right !important;
 }
-.btn-more{
-	border-radius: 0px !important;
-	border-bottom: 2px solid #2e6da4 !important;
+.section-content{
+	border: 1px solid #dfdfdf;
+	padding: 10px;
+	margin-bottom: 10px;
 }
+.content-title{
+	padding-bottom: 10px !important;
+	border-bottom: 1px solid #dfdfdf !important;
+	color: #0099C9 !important;
+}
+
 .iapp-lg-btn{
 	height: 47px;
-	float: right !important;
 	width: 160px !important;
-	margin-top: 20px;
 	border-bottom: 2px solid #034E8E;
 	font-size: 20px;
 	border-radius: 1px;
@@ -80,11 +80,13 @@ html,body{
 	  padding: 0px 8px !important;
 }
 .iapp-terms, .iapp-policy{
-	/*font-size: 13px !important;*/
 	padding-left: 14px !important;
 
 }
-.container-bordered  input[type="email"], select,input[type="text"],input[type="number"],input[type="date"]{
+.container-bordered  input[type="email"], 
+select,input[type="text"],
+input[type="number"],
+input[type="date"]{
 	height: 40px !important;
 	padding: 9px 18px !important;
 }
@@ -133,18 +135,30 @@ html,body{
 	background-color: #0099C9;
 	border-radius: 10px;
 }
-.datepicker:before {
-	border-left: 0px solid transparent !important; 
-	border-right: 0px solid transparent !important; 
-	border-bottom: 0px solid #ccc !important; 
+.content-holder{
+	padding-top: 65px !important;
 }
-input.ng-invalid, textarea.ng-invalid, select.ng-invalid {
-/*border: 1px solid #a94442;*/
+
+input.ng-invalid, 
+textarea.ng-invalid, 
+select.ng-invalid, 
+input.ng-dirty, 
+textarea.ng-dirty, 
+select.ng-dirty{
+	border: 1px solid #a94442;
 }
-input.ng-valid, textarea.ng-valid, select.ng-valid {
-  border: 1px solid rgb(195, 201, 202);
+input.ng-valid, 
+textarea.ng-valid, 
+select.ng-valid {
+  border: 1px solid rgb(195, 201, 202) !important;
 }
-.pagination>li>a, .pagination>li>span{
+input.ng-pristine, 
+textarea.ng-pristine, 
+select.ng-pristine{
+  border: 1px solid rgb(195, 201, 202) !important;
+}
+.pagination>li>a, 
+.pagination>li>span{
 	margin-right: 7px;
 	color: #fff!important;
 	border-radius: 2px !important;
@@ -154,7 +168,12 @@ input.ng-valid, textarea.ng-valid, select.ng-valid {
 	padding: 5px 0px 6px;
 	color: #907F7F !important;
 }
-.pagination>.active>a, .pagination>.active>span, .pagination>.active>a:hover, .pagination>.active>span:hover, .pagination>.active>a:focus, .pagination>.active>span:focus {
+.pagination>.active>a, 
+.pagination>.active>span, 
+.pagination>.active>a:hover, 
+.pagination>.active>span:hover, 
+.pagination>.active>a:focus, 
+.pagination>.active>span:focus {
 	background-color: #0099C9 !important;
 	border-color: #0099C9 !important;
 	border-top: 2px solid #117696 !important;
@@ -165,22 +184,34 @@ input.ng-valid, textarea.ng-valid, select.ng-valid {
 	padding: 5px 0px 6px;
 	color: #FFFFFF !important;
 }
-.pagination>.disabled>span, .pagination>.disabled>span:hover, .pagination>.disabled>span:focus, .pagination>.disabled>a, .pagination>.disabled>a:hover, .pagination>.disabled>a:focus {
+.pagination>.disabled>span, 
+.pagination>.disabled>span:hover, 
+.pagination>.disabled>span:focus, 
+.pagination>.disabled>a, 
+.pagination>.disabled>a:hover, 
+.pagination>.disabled>a:focus {
 	cursor: default !important;
 }
-.pagination>li:last-child>a, .pagination>li:last-child>span {
+.pagination>li:last-child>a, 
+.pagination>li:last-child>span {
 	width: 30px !important;
 	text-align: center !important;
 	padding: 5px 0px 6px;
 	color: #907F7F !important;
 }
-.pagination>li:first-child>a, .pagination>li:first-child>span{
+.pagination>li:first-child>a, 
+.pagination>li:first-child>span{
 	width: 30px !important;
 	text-align: center !important;
 	padding: 5px 0px 6px;
 	color: #907F7F !important;
 }
-.datepicker td.active, .datepicker td.active:hover {
+.iapp-drop-down-menu{
+	  border-radius: 0px !important;
+	  padding: 2px !important;
+}
+.datepicker td.active, 
+.datepicker td.active:hover {
 	background-image: linear-gradient(to bottom, #0088cc, #0099C9) !important;
 }
  .triangle-up {
@@ -191,21 +222,21 @@ input.ng-valid, textarea.ng-valid, select.ng-valid {
 	height: 0;
 	border-left: 7px solid transparent;
 	border-right: 7px solid transparent;
-	border-bottom: 7px solid #E7E7E7;
+	border-bottom: 7px solid #F8F8F8;
 }
-.navbar-nav ul{
+.iapp-nav .navbar-nav ul{
 	padding: 0px !important;
 }
-.navbar-nav > li > .dropdown-menu {
+.iapp-nav .navbar-nav > li > .dropdown-menu {
 	margin-top: 10px !important;
 	border-radius: 0px !important; 
 	background-color: #F8F8F8 !important; 
 }
-.dropdown-menu > li > a {
+.iapp-nav .dropdown-menu > li > a {
 	padding-top: 11px;
 	padding-bottom: 8px;
 }
-.dropdown-menu > li > a:hover{
+.iapp-nav .dropdown-menu > li > a:hover{
 	background: rgb(0, 153, 201) !important;
 	color: #fff !important;
 	padding-top: 11px;
@@ -219,12 +250,22 @@ input.ng-valid, textarea.ng-valid, select.ng-valid {
 }
 .iapp-status{
 	padding: 10px;
-	margin-top: 60px !important;
 	background: #F8F8F8;
 	border: 1px solid #EDEDED;
 	box-shadow: 0px 1px 0px 0px transparent;
 	margin-bottom: 15px;
+	font-weight: bold;
+	color: #777777;
 }
-.navbar-default .navbar-nav > .open > a, .navbar-default .navbar-nav > .open > a:hover, .navbar-default .navbar-nav > .open > a:focus {
+.navbar-default .navbar-nav > .open > a,
+.navbar-default .navbar-nav > .open > a:hover, 
+.navbar-default .navbar-nav > .open > a:focus{
   border-bottom: 4px solid #E7E7E7 !important;
+}
+.database-error-msg, .submitted-error-msg{
+	border-radius: 0px !important;
+}
+.unique-number[disabled]{
+background-color: white !important;
+cursor: default !important;
 }
