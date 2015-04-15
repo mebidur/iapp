@@ -412,3 +412,24 @@ var app = angular.module('iApp', ['ngMessages'])
            $scope.company =  data;
         });		
 	});
+
+	app.directive('ngPayinvoice', function($http) {
+	    return {
+	        link: function (scope, element, attrs) {
+	            element.bind('click', function (){
+	              var  Id = element.data('id');
+	                $http({
+	                		method  : 'POST',
+					        url     : appurl+'/invoice/status',
+					        data    : {id : Id, _token : _token}, })
+	                	.success(function(data){
+	                			if(data.statusCode == 200){
+	                				element.closest('td').prev().find('span').replaceWith('<span class="iapp-badge">Paid</span>');
+				                	element.replaceWith('<span class="glyphicon glyphicon-ok iapp-ok"></span>');	
+	                			}
+					});				
+	            });
+	        }
+	    };
+	});
+

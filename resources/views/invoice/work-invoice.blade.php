@@ -11,12 +11,12 @@
 	<p></p>
 	@include('include.error-msg')
 	<p></p>
-	<div class="alert alert-danger database-error-msg" ng-show="databaseError">
+	<!-- <div class="alert alert-danger database-error-msg" ng-show="databaseError">
 		<strong>Oops! Error Occured</strong> Some thing went wrong! Please be sure with your database configuration ...
 	</div>
 	<div class="alert alert-danger submitted-error-msg" ng-show="submitted">
 		<strong>Oops! Error Occured</strong> Some thing went wrong! Fill required input fields ...
-	</div>
+	</div> -->
 	<p></p>
 	<form name="workInvoiceForm" ng-submit="workInvoiceForm.$valid && workInvoiceProcess()"  novalidate>	
 	<div class="org-content section-content">
@@ -39,14 +39,14 @@
 				required />
 
 			<div ng-show="workInvoiceForm.invoiceNumber.$dirty && workInvoiceForm.invoiceNumber.$invalid && !workInvoiceForm.invoiceNumber.$focused">
-	        <small class="text-danger" 
+	        <!-- <small class="text-danger" 
 	                ng-show="workInvoiceForm.invoiceNumber.$error.minlength">
 	                Your Invoice no is required to be at least 5 characters
 	        </small>
 	        <small class="text-danger" 
 	                ng-show="workInvoiceForm.invoiceNumber.$error.maxlength">
 	                Your invoice no cannot be longer than 20 characters
-	        </small>
+	        </small> -->
 	        <small class="text-danger"
 					ng-show="workInvoiceForm.invoiceNumber.$error.unique" ng-hide="workInvoiceForm.invoiceNumber.$error">
 					That invoice number provided is  already taken, please try another.

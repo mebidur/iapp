@@ -279,7 +279,6 @@
 			</div>
 		</div>
 		<p></p>
-		[[organization]]
 	</form>
 </div>
 @stop

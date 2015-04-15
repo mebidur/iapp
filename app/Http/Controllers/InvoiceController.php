@@ -159,7 +159,7 @@ class InvoiceController extends Controller {
 
 				}else{
 
-					return $invoiceData = array_merge(['state'=> $request->get('organization')['isManual'],'organization_id' => \Auth::user()->organization_id, 'type' => 2,'customer_id' => $customer->id], array_only(\Input::get('organization'), ['invoiceNumber','serviceDate','currency']));
+					$invoiceData = array_merge(['state'=> $request->get('organization')['isManual'],'organization_id' => \Auth::user()->organization_id, 'type' => 2,'customer_id' => $customer->id], array_only(\Input::get('organization'), ['invoiceNumber','serviceDate','currency']));
 					$invoice = $invoice->create($invoiceData);
 
 					$fillDesc = [];
@@ -188,6 +188,16 @@ class InvoiceController extends Controller {
 			return ['isUnique' => true ];
 		}
 		
+	}
+
+	public function postStatus()
+	{
+		$invoice = Invoice::find(\Input::get('id'));
+		if(!empty($invoice)){
+			$invoice->status = 1;
+			$invoice->update();
+			return ['statusCode' => 200, 'status' => 'OK'];
+		}
 	}
 
 }

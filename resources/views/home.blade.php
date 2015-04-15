@@ -46,7 +46,7 @@
 						<td><span class="currency-view">{{$invoice->currency}}</span>{{($invoice->type == 1) ? $workTotal : $serviceTotal}}</td>
 						
 						<td>{!! ($invoice->status == 0) ? '<span class="iapp-badge">Pending</span>': '<span class="iapp-badge">Paid</span>' !!}</td>
-						<td>{!! ($invoice->status == 0) ? '<button class="status-print-btn">Paid</button>': '<span class="glyphicon glyphicon-ok iapp-ok"></span>' !!}</td>
+						<td>{!! ($invoice->status == 0) ? '<button data-id="'.$invoice->id.'" class="status-print-btn" ng-payinvoice>Paid</button>': '<span class="glyphicon glyphicon-ok iapp-ok"></span>' !!}</td>
 					</tr>
 					<?php $sn++;?>
 				@endforeach
