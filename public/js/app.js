@@ -157,8 +157,6 @@ var app = angular.module('iApp', ['ngMessages'])
 			        		},
 			    })
 				.success(function(data){
-					console.log(data);
-
 					if(data.statusCode == 200 && data.response == true){
 		            	window.location.replace(appurl+'/invoice/view?response='+data.invoiceId+'&secure='+data.invoiceTpye+'&status='+data.statusCode);
 		            }else if(data.statusCode == 503 && data.response == false){
@@ -201,6 +199,7 @@ var app = angular.module('iApp', ['ngMessages'])
 		$scope.organization = {};
 		$scope.customer = {};
 		$http({method : 'GET', url: appurl+'/config/initialize'}).success(function(data){
+			console.log(data);
          	$scope.organization = data;
         });
 
@@ -243,6 +242,7 @@ var app = angular.module('iApp', ['ngMessages'])
 			        		},
 			    })
 				.success(function(data){
+					console.log(data);
 		            if(data.statusCode == 200 && data.response == true){
 		            	window.location.href = appurl+'/invoice/view?response='+data.invoiceId+'&secure='+data.invoiceTpye+'&status='+data.statusCode;
 		            }else if(data.statusCode == 503 && data.response == false){

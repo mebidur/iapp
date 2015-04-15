@@ -137,10 +137,9 @@ class InvoiceController extends Controller {
 		return 'Bad Request!';
 	}
 
-	public function postService(Invoice $invoice, PDF $pdf, Customer $customer)
+	public function postService(ServiceInvoice $request, Invoice $invoice, PDF $pdf, Customer $customer)
 	{
 		if(\Input::get('requestType') == 'default'){
-			
 			try {
 				$customerOld = Customer::whereName(\Input::get('customer')['name'])->first();
 					
@@ -160,7 +159,7 @@ class InvoiceController extends Controller {
 
 				}else{
 
-					$invoiceData = array_merge(['state'=> $request->get('organization')['isManual'],'organization_id' => \Auth::user()->organization_id, 'type' => 2,'customer_id' => $customer->id], array_only(\Input::get('organization'), ['invoiceNumber','serviceDate','currency']));
+					return $invoiceData = array_merge(['state'=> $request->get('organization')['isManual'],'organization_id' => \Auth::user()->organization_id, 'type' => 2,'customer_id' => $customer->id], array_only(\Input::get('organization'), ['invoiceNumber','serviceDate','currency']));
 					$invoice = $invoice->create($invoiceData);
 
 					$fillDesc = [];
