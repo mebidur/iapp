@@ -5,7 +5,7 @@
 		<div class="col-md-12">Invoices / Work Invoice</div>
 	</div>
 </div>
-<div class="container container-bordered" ng-controller="WorkInvoiceController" ng-init="organization.invoiceNumber='{{$uniqueInvoice}}';organization.isManualCode='{{$uniqueInvoice}}'">
+<div class="container container-bordered" ng-controller="WorkInvoiceController">
 	<h4 class="title-line hidden-xs content-title">Create New Hourly Invoice</h4>
 	<h4 class="title-line visible-xs hidden-lg hidden-md hidden-sm">New Invoice</h4>
 	<p></p>
@@ -22,7 +22,7 @@
 	<div class="org-content section-content">
 		<h4 class="content-title">Organization Information</h4>
 		<div class="row">
-			<div class="col-md-5 col-xs-10 col-sm-10">
+			<div class="col-md-5 col-xs-9 col-sm-9">
 				<label><b>Invoice No</b></label>
 				<input class="form-control unique-number" 
 				type="text"
@@ -32,7 +32,7 @@
 	            ng-minlength="5" 
 	            ng-maxlength="20"
 	            maxlength="20" 
-	            ng-change="checkNumber()"
+	            ng-change="checkState()"
 	            ng-disabled="!manualCode"
 	            ng-focus
 	            ensure-unique="invoiceNumber"
@@ -53,9 +53,9 @@
 			</small>
 	      </div>
 			</div>
-			<div class="col-md-1 col-sm-2 col-xs-2" style="margin-top: 1%;">
-				<br>
-				<button  class="btn btn-primary add-more-field" ng-click="doFocus(this)">
+			<div class="col-md-1 col-sm-3 col-xs-3">
+				<label><b style="color:#fff;" class="hidden-print">Option</b></label>
+				<button  class="btn btn-primary add-more-field" ng-click="doFocus()">
 					<span class="glyphicon glyphicon-pencil"></span>
 				</button>
 				<input type="hidden" ng-model="organization.isManualCode" name="isManualCode">
@@ -139,9 +139,7 @@
 			<div class="col-md-6">
 				<label><b>Country</b></label>
 				<select class="form-control" name="companyCountry" ng-model="organization.country" required>
-					<option selected disabled value="">Select Country</option>
-					<option value="NP">Nepal</option>
-					<option value="UK">United Kingdon</option>
+					@include('include.country-list')
 				</select>
 			</div>
 			<div class="col-md-6">
@@ -266,9 +264,7 @@
 			<div class="col-md-3">
 				<label><b>Country</b></label>
 				<select class="form-control" name="customerCountry" ng-model="customer.country" required>
-					<option selected disabled value="">Select Country</option>
-					<option value="NP">Nepal</option>
-					<option value="UK">United Kingdon</option>
+					@include('include.country-list')
 				</select>
 			</div>
 		</div>
@@ -283,15 +279,15 @@
 		     		<label><b>Work Description</b></label>
 		     		<textarea rows="3" class="form-control" ng-model="choice.workDescription" placeholder="Work Description ..." required></textarea>
 		     	</div>
-		     	<div class="col-md-2 col-xs-5 col-sm-5">
+		     	<div class="col-md-2 col-xs-12 col-sm-12">
 		     	<label><b>Rate</b></label>
 		     		<input type="text" class="form-control" ng-model="choice.rate" name="" ng-pattern="/^0|[1-9][0-9]*$/" placeholder="Enter hour" required>
 		     	</div>
-		     	<div class="col-md-3 col-xs-5 col-sm-5">
+		     	<div class="col-md-3 col-xs-8 col-sm-8">
 		     		<label><b>Hour</b></label>
 		     		<input type="text" class="form-control" ng-model="choice.hour" name="" ng-pattern="/^0|[1-9][0-9]*$/" placeholder="Enter rate" required>
 		     	</div>
-		     	<div class="col-md-1 col-xs-2 col-sm-2"><p><br></p>
+		     	<div class="col-md-1 col-xs-3 col-sm-3"><p><br></p>
 		     		<button type="button" ng-click="removeInput($index)" ng-hide="($index == 0)" class="btn btn-danger"><span class="glyphicon glyphicon-remove-sign"></span></button>
 		     		<button type="button" ng-show="$first" ng-click="addNewChoice()" class="btn btn-primary add-more-field"><span class="glyphicon glyphicon-plus-sign"></span></button>
 		     	</div>
@@ -306,7 +302,6 @@
 			<button type="submit" ng-disabled="workInvoiceForm.$invalid || !workInvoiceButtonStatus" class="btn btn-primary btn-block input-lg work-invoice-btn iapp-lg-btn choices-holder">[[workInvoiceButton]]</button>
 		</div>
 		<p></p>
-		[[organization]]
 	</div>
 	<p></p>
 	</form>

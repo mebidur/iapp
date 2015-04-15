@@ -23,12 +23,13 @@ class ReceiptController extends Controller {
 	{
 		$receipts = Receipt::with(['description','customer'])
 							->orderBy('created_at', 'desc')
-							->where('organization_id', \Auth::user()->organization_id)
+							->whereOrganizationId(\Auth::user()->organization_id)
 							->paginate(10);
 							
 		return \View::make('receipt.view-receipt')->with(['current' => 'receipt',
 														  'receipts' => $receipts,]);
 	}
+
 	public function getWork()
 	{
 		return View::make('receipt.work-receipt')
@@ -58,7 +59,7 @@ class ReceiptController extends Controller {
 
 				}else{
 
-					$receiptData = array_merge(['organization_id' => \Auth::user()->organization_id, 'type' => 1,'customer_id' => $customer->id], array_only(\Input::get('organization'), ['receiptNumber','serviceDate','currency']));
+					$receiptData = array_merge(['state'=> $request->get('organization')['isManual'],'organization_id' => \Auth::user()->organization_id, 'type' => 1,'customer_id' => $customer->id], array_only(\Input::get('organization'), ['receiptNumber','serviceDate','currency']));
 					$receipt = $receipt->create($receiptData);
 
 					$fillDesc = [];
@@ -81,14 +82,17 @@ class ReceiptController extends Controller {
 	public function getService()
 	{
 		return View::make('receipt.service-receipt')
-					->with(['current' => 'service-receipt',]);
+					->with(['current' => 'service-receipt']);
 	}
 
 	public function getView()
 	{
 		if(\Input::has('response') && \Input::has('secure'))
 		{
-			$receiptData = Receipt::with('customer','organization','description')->whereId(\Input::get('response'))->with('description')->first();
+			$receiptData = Receipt::with('customer','organization','description')
+									->whereId(\Input::get('response'))
+									->whereOrganizationId(\Auth::user()->organization_id)
+									->first();
 
 			if(!empty($receiptData) && $receiptData->type == '1')
 			{
@@ -107,15 +111,17 @@ class ReceiptController extends Controller {
 	}
 	
 	public function postDownload(PDF $pdf){
-		$receiptData = Receipt::with('description')
-							  ->whereId(\Input::get('receiptId'))
-							  ->whereOrganizationId(\Auth::user()->organization_id)
-							  ->first();
+		if(\Input::has('receiptId'))
+		{
+			$receiptData = Receipt::with('customer','organization','description')
+								  ->whereId(\Input::get('receiptId'))
+								  ->whereOrganizationId(\Auth::user()->organization_id)
+								  ->first();
+		}
 		if(\Input::get('requestType') == 'downloadServicePDF' && !empty($receiptData))
 		{
 			$html = \View::make('receipt.serviceReceiptPdf')
 						->with(['receipt' => $receiptData,
-						 		'description' => $receiptData['description'],
 						 		'requestType' => 'downloadServicePDF'])
 						->render();
 
@@ -124,7 +130,6 @@ class ReceiptController extends Controller {
 		if(\Input::get('requestType') == 'downloadWorkPDF' && !empty($receiptData))
 		{
 			$html = \View::make('receipt.workReceiptPdf')->with(['receipt' => $receiptData,
-																 'description' => $receiptData['description'],
 																 'requestType' => 'downloadWorkPDF',])
 														->render();
 			return $pdf->load($html, 'A4', 'portrait')->download();
@@ -155,7 +160,7 @@ class ReceiptController extends Controller {
 
 				}else{
 
-					$receiptData = array_merge(['organization_id' => \Auth::user()->organization_id, 'type' => 2,'customer_id' => $customer->id], array_only(\Input::get('organization'), ['receiptNumber','serviceDate','currency']));
+					$receiptData = array_merge(['state'=> $request->get('organization')['isManual'],'organization_id' => \Auth::user()->organization_id, 'type' => 2,'customer_id' => $customer->id], array_only(\Input::get('organization'), ['receiptNumber','serviceDate','currency']));
 					$receipt = $receipt->create($receiptData);
 
 					$fillDesc = [];

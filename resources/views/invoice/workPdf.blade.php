@@ -115,11 +115,9 @@
   }
 
   .pdf-print-btn{
-    width: 70px;
-    padding: 6px 0px;
+    padding: 6px 15px;
     border-radius: 13px;
     background: #0099C9;
-    /*margin: 10px 86% !important;*/
     border: 0px;
     font-size: 13px;
     border-color: #087A9D;
@@ -164,8 +162,7 @@
     padding-left: 9px !important;
   }
   .btn-download-pdf{
-    padding: 6px 0px;
-    width: 120px;
+    padding: 6px 12px;
     border-radius: 13px;
     background: #0099C9;
     border: 0px;
@@ -181,8 +178,7 @@
   padding-right: 2px !important;
 }
 .go-back, .go-back:hover{
-  width: 70px;
-  padding: 6px 10px;
+  padding: 6px 12px;
   text-decoration: none;
   border-radius: 13px;
   background: #0099C9;

@@ -10,7 +10,6 @@
 	<link href="{{ asset('/css/app.css') }}" rel="stylesheet">
 	<link rel="stylesheet" type="text/css" href="{{url('css/default.css')}}">
 	<link rel="stylesheet" type="text/css" href="{{url('css/datepicker.css')}}">
-	<link rel="stylesheet" type="text/css" href="{{url('css/login.css')}}">
 </head>
 <body>
 	<div class="wrapper">
@@ -47,14 +46,12 @@
 		            </ul>
 		            @endif
 		            <ul class="nav navbar-nav navbar-right iapp-nav">
-		            	@if (Auth::guest())
-							<li><a href="{{url('/')}}">Login</a></li>
-						@else
+		            	@if (Auth::check())
 							<li class="dropdown">
 								<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">{{ Auth::user()->email }} <span class="caret"></span></a>
 								<ul class="dropdown-menu iapp-drop-down-menu" role="menu">
 									<div class="triangle-up"></div>
-									<li><a href=""><span class="glyphicon glyphicon-cog"></span> Settings</a></li>
+									<li><a href="{{url('config/profile')}}"><span class="glyphicon glyphicon-cog"></span> Settings</a></li>
 									<li class="divider"></li>
 									<li><a href="{{URL::to('/auth/logout')}}"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
 								</ul>
@@ -80,7 +77,6 @@
 	{!!HTML::script('js/jquery.min.js')!!}
 	{!!HTML::script('js/bootstrap.min.js')!!}
 	{!!HTML::script('js/bootstrap-datepicker.js')!!}
-	{!!HTML::script('js/custom.js')!!}
 	{!!HTML::script('js/angular.min.js')!!}
 	{!!HTML::script('js/angular-messages.js')!!}
 	{!!HTML::script('js/app.js')!!}

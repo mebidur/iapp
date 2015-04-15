@@ -12,6 +12,7 @@
 		Route::controllers([
 			'invoice' => 'InvoiceController',
 			'receipt' => 'ReceiptController',
+			'config'  => 'ConfigurationController',
 		]);
 		Route::get('home', 'InvoiceController@getIndex');
 	});

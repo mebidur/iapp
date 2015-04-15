@@ -122,8 +122,7 @@
   }
 
   .pdf-print-btn{
-    width: 70px;
-    padding: 6px 0px;
+    padding: 6px 15px;
     border-radius: 13px;
     background: #0099C9;
     border: 0px;
@@ -183,8 +182,7 @@
   padding-right: 2px !important;
 }
 .go-back, .go-back:hover{
-  width: 70px;
-  padding: 6px 10px;
+  padding: 6px 12px;
   text-decoration: none;
   border-radius: 13px;
   background: #0099C9;
@@ -225,10 +223,10 @@
     <tr>
       <td>
         <b>{{$invoice['organization']->name}}</b><br>
-          <span>{{$invoice['customer']->name}}</span>
+          <span>{{$invoice['organization']->address}}</span>
       </td>
       <td>
-        <b>{{$invoice['organization']->name}}</b><br>
+        <b>{{$invoice['customer']->name}}</b><br>
           <span>{{$invoice['customer']->address}}</span>
       </td>
     </tr>

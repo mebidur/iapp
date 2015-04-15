@@ -27,7 +27,8 @@ trait AuthenticatesAndRegistersUsers {
 	 */
 	public function getRegister()
 	{
-		return view('auth.register');
+		return 'Forbidden';
+		// return view('auth.register');
 	}
 
 	/**
@@ -38,18 +39,19 @@ trait AuthenticatesAndRegistersUsers {
 	 */
 	public function postRegister(Request $request)
 	{
-		$validator = $this->registrar->validator($request->all());
+		return 'Forbidden';
+		// $validator = $this->registrar->validator($request->all());
 
-		if ($validator->fails())
-		{
-			$this->throwValidationException(
-				$request, $validator
-			);
-		}
+		// if ($validator->fails())
+		// {
+		// 	$this->throwValidationException(
+		// 		$request, $validator
+		// 	);
+		// }
 
-		$this->auth->login($this->registrar->create($request->all()));
+		// $this->auth->login($this->registrar->create($request->all()));
 
-		return redirect($this->redirectPath());
+		// return redirect($this->redirectPath());
 	}
 
 	/**

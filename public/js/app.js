@@ -1,7 +1,5 @@
-var baseUrl = document.getElementById('siteUrl').value;
+var appurl = document.getElementById('siteUrl').value;
 var _token 	= document.getElementById('_token').value;
-var _date 	= document.getElementById('_date').value;
-
 var app = angular.module('iApp', ['ngMessages'])
 	.config(['$interpolateProvider','$httpProvider',function($interpolateProvider,$httpProvider){
 		$httpProvider.defaults.headers.common["X-Requested-With"] = "XMLHttpRequest";
@@ -18,7 +16,7 @@ var app = angular.module('iApp', ['ngMessages'])
 			if (!n) return;
 				$http({
 					method: 'POST',
-					url: baseUrl+'/invoice/check',
+					url: appurl+'/invoice/check',
 					data: {"field": n, "_token" : _token}
 				}).success(function(data) {
 					c.$setValidity('unique', data.isUnique);
@@ -37,7 +35,7 @@ var app = angular.module('iApp', ['ngMessages'])
 			if (!n) return;
 				$http({
 					method: 'POST',
-					url: baseUrl+'/receipt/check',
+					url: appurl+'/receipt/check',
 					data: {"field": n, "_token" : _token}
 				}).success(function(data) {
 					c.$setValidity('isunique', data.isUnique);
@@ -112,8 +110,11 @@ var app = angular.module('iApp', ['ngMessages'])
 			}	    
 		}
 
-		$scope.organization = {'serviceDate': _date,'state': 0,};
+		$scope.organization = {};
 		$scope.customer = {};
+		$http({method : 'GET', url: appurl+'/config/initialize'}).success(function(data){
+         	$scope.organization = data;
+        });
 
 		$scope.doFocus = function(){
 			$scope.manualCode = true;
@@ -121,19 +122,19 @@ var app = angular.module('iApp', ['ngMessages'])
 				$timeout(function(){
 					$('.unique-number').focus();
 					if($scope.organization.isManualCode == $scope.organization.invoiceNumber){
-						$scope.organization.state = 0;
+						$scope.organization.isManual = 0;
 					}else{
-						$scope.organization.state = 1;
+						$scope.organization.isManual = 1;
 					}
 				});
 			}
 		}
 
-		$scope.checkNumber = function(){
+		$scope.checkState = function(){
 			if($scope.organization.isManualCode == $scope.organization.invoiceNumber){
-				$scope.organization.state = 0;
+				$scope.organization.isManual = 0;
 			}else{
-				$scope.organization.state = 1;
+				$scope.organization.isManual = 1;
 			}
 		}
 		
@@ -145,7 +146,7 @@ var app = angular.module('iApp', ['ngMessages'])
 
 				$http({
 			        method  : 'POST',
-			        url     : baseUrl+'/invoice/work',
+			        url     : appurl+'/invoice/work',
 			        data    : {'organization' : $scope.organization,
 			        		   'customer': $scope.customer,
 			        		   'allDesc': $scope.choices,
@@ -155,10 +156,8 @@ var app = angular.module('iApp', ['ngMessages'])
 			        		},
 			    })
 				.success(function(data){
-					console.log(data);
-
-		            if(data.statusCode == 200 && data.response == true){
-		            	window.location.replace(baseUrl+'/invoice/view?response='+data.invoiceId+'&secure='+data.invoiceTpye+'&status='+data.statusCode);
+					if(data.statusCode == 200 && data.response == true){
+		            	window.location.replace(appurl+'/invoice/view?response='+data.invoiceId+'&secure='+data.invoiceTpye+'&status='+data.statusCode);
 		            }else if(data.statusCode == 503 && data.response == false){
 		            	$scope.databaseError = true;
 		            	$scope.workInvoiceButtonStatus = true;
@@ -179,10 +178,11 @@ var app = angular.module('iApp', ['ngMessages'])
 		}
 	});
 
-	app.controller('ServiceInvoiceController',function($scope, $http){
+	app.controller('ServiceInvoiceController',function($scope, $http, $timeout){
 		$scope.serviceInvoiceButton = "Continue ...";
 		$scope.serviceInvoiceButtonStatus = true;
 		$scope.databaseError = false;
+		$scope.manualCode = false;
 
 		$scope.choices = [{}];
 		$scope.addNewChoice = function() {  
@@ -195,8 +195,33 @@ var app = angular.module('iApp', ['ngMessages'])
 			}	    
 		}
 
-		$scope.organization = {'serviceDate': _date};
+		$scope.organization = {};
 		$scope.customer = {};
+		$http({method : 'GET', url: appurl+'/config/initialize'}).success(function(data){
+         	$scope.organization = data;
+        });
+
+		$scope.doFocus = function(){
+			$scope.manualCode = true;
+			if($scope.manualCode){
+				$timeout(function(){
+					$('.is-unique-invoice').focus();
+					if($scope.organization.isManualCode == $scope.organization.invoiceNumber){
+						$scope.organization.isManual = 0;
+					}else{
+						$scope.organization.isManual = 1;
+					}
+				});
+			}
+		}
+
+		$scope.checkState = function(){
+			if($scope.organization.isManualCode == $scope.organization.invoiceNumber){
+				$scope.organization.isManual = 0;
+			}else{
+				$scope.organization.isManual = 1;
+			}
+		}
 
 		$scope.serviceInvoiceProcess = function(){	
 			if($scope.serviceInvoiceForm.$valid){
@@ -205,7 +230,7 @@ var app = angular.module('iApp', ['ngMessages'])
 
 				$http({
 			        method  : 'POST',
-			        url     : baseUrl+'/invoice/service',
+			        url     : appurl+'/invoice/service',
 			        data    : {'organization' : $scope.organization,
 			        		   'customer': $scope.customer,
 			        		   'allDesc': $scope.choices,
@@ -216,7 +241,7 @@ var app = angular.module('iApp', ['ngMessages'])
 			    })
 				.success(function(data){
 		            if(data.statusCode == 200 && data.response == true){
-		            	window.location.href = baseUrl+'/invoice/view?response='+data.invoiceId+'&secure='+data.invoiceTpye+'&status='+data.statusCode;
+		            	window.location.href = appurl+'/invoice/view?response='+data.invoiceId+'&secure='+data.invoiceTpye+'&status='+data.statusCode;
 		            }else if(data.statusCode == 503 && data.response == false){
 		            	$scope.databaseError = true;
 		            	$scope.serviceInvoiceButtonStatus = true;
@@ -227,10 +252,11 @@ var app = angular.module('iApp', ['ngMessages'])
 		}
 	});
 
-	app.controller('WorkReceiptController',function($scope, $http){
+	app.controller('WorkReceiptController',function($scope, $http, $timeout){
 		$scope.workReceiptButton = "Continue ...";
 		$scope.workReceiptButtonStatus = true;
 		$scope.databaseError = false;
+		$scope.manualCode = false;
 
 		$scope.choices = [{}];
 		$scope.addNewChoice = function() {  
@@ -243,9 +269,33 @@ var app = angular.module('iApp', ['ngMessages'])
 			}	    
 		}
 		
-		$scope.organization = {'serviceDate': _date};
+		$scope.organization = {};
 		$scope.customer = {};
+		$http({method : 'GET', url: appurl+'/config/initializer'}).success(function(data){
+         	$scope.organization = data;
+        });
 
+		$scope.doFocus = function(){
+			$scope.manualCode = true;
+			if($scope.manualCode){
+				$timeout(function(){
+					$('.is-unique-receipt').focus();
+					if($scope.organization.isManualCode == $scope.organization.receiptNumber){
+						$scope.organization.isManual = 0;
+					}else{
+						$scope.organization.isManual = 1;
+					}
+				});
+			}
+		}
+
+		$scope.checkState = function(){
+			if($scope.organization.isManualCode == $scope.organization.receiptNumber){
+				$scope.organization.isManual = 0;
+			}else{
+				$scope.organization.isManual = 1;
+			}
+		}
 
 		$scope.workReceiptProcess = function(){	
 			if($scope.workReceiptForm.$valid){
@@ -254,7 +304,7 @@ var app = angular.module('iApp', ['ngMessages'])
 
 				$http({
 			        method  : 'POST',
-			        url     : baseUrl+'/receipt/work',
+			        url     : appurl+'/receipt/work',
 			        data    : {'organization' : $scope.organization,
 			        		   'customer': $scope.customer,
 			        		   'allDesc': $scope.choices,
@@ -263,10 +313,9 @@ var app = angular.module('iApp', ['ngMessages'])
 			        			'currentState': 'work'
 			        		},
 			    })
-				.success(function(data){
-					console.log(data);
+				.success(function(data){					
 		            if(data.statusCode == 200 && data.response == true){
-		            	window.location.href = baseUrl+'/receipt/view?response='+data.receiptId+'&secure='+data.receiptTpye+'&status='+data.statusCode;
+		            	window.location.href = appurl+'/receipt/view?response='+data.receiptId+'&secure='+data.receiptTpye+'&status='+data.statusCode;
 		            }else if(data.statusCode == 503 && data.response == false){
 		            	$scope.databaseError = true;
 		            	$scope.workReceiptButtonStatus = true;
@@ -277,12 +326,11 @@ var app = angular.module('iApp', ['ngMessages'])
 		}
 	});	
 
-	app.controller('ServiceReceiptController',function($scope, $http){
-		
+	app.controller('ServiceReceiptController',function($scope, $http, $timeout){		
 		$scope.serviceReceiptButton = "Continue ...";
 		$scope.serviceReceiptButtonStatus = true;
 		$scope.databaseError = false;
-
+		$scope.manualCode = false;
 
 		$scope.choices = [{}];
 		$scope.addNewChoice = function() {  
@@ -293,10 +341,34 @@ var app = angular.module('iApp', ['ngMessages'])
 			if(index != 0){
 				$scope.choices.splice(index,1);	
 			}	    
+		}	
+		$scope.organization = {};
+		$scope.customer = {};
+		$http({method : 'GET', url: appurl+'/config/initializer'}).success(function(data){
+         	$scope.organization = data;
+        });
+
+		$scope.doFocus = function(){
+			$scope.manualCode = true;
+			if($scope.manualCode){
+				$timeout(function(){
+					$('.is-unique-receipt').focus();
+					if($scope.organization.isManualCode == $scope.organization.receiptNumber){
+						$scope.organization.isManual = 0;
+					}else{
+						$scope.organization.isManual = 1;
+					}
+				});
+			}
 		}
 
-		$scope.organization = {'serviceDate': _date};
-		$scope.customer = {};
+		$scope.checkState = function(){
+			if($scope.organization.isManualCode == $scope.organization.receiptNumber){
+				$scope.organization.isManual = 0;
+			}else{
+				$scope.organization.isManual = 1;
+			}
+		}
 
 		$scope.serviceReceiptProcess = function(){
 			if($scope.serviceReceiptForm.$valid){
@@ -305,7 +377,7 @@ var app = angular.module('iApp', ['ngMessages'])
 
 				$http({
 			        method  : 'POST',
-			        url     : baseUrl+'/receipt/service',
+			        url     : appurl+'/receipt/service',
 			        data    : {'organization' : $scope.organization,
 			        		   'customer': $scope.customer,
 			        		   'allDesc': $scope.choices,
@@ -315,9 +387,8 @@ var app = angular.module('iApp', ['ngMessages'])
 			        		},
 			    })
 				.success(function(data){
-					console.log(data);
 		            if(data.statusCode == 200 && data.response == true){
-		            	window.location.href = baseUrl+'/receipt/view?response='+data.receiptId+'&secure='+data.receiptTpye+'&status='+data.statusCode;
+		            	window.location.href = appurl+'/receipt/view?response='+data.receiptId+'&secure='+data.receiptTpye+'&status='+data.statusCode;
 		            }else if(data.statusCode == 503 && data.response == false){
 		            	$scope.databaseError = true;
 		            	$scope.serviceReceiptButtonStatus = true;
@@ -326,4 +397,15 @@ var app = angular.module('iApp', ['ngMessages'])
 		        });	
 			}
 		}
+	});
+
+	app.controller('ConfigController',function($scope, $http){	
+		$scope.configButton = 'Continue ...';
+		$scope.doLoad = function(){
+			$scope.configButton = 'Loading ...';
+		}
+		$scope.company = {};
+		$http({method : 'GET', url: appurl+'/config/initializeo'}).success(function(data){
+           $scope.company =  data;
+        });		
 	});

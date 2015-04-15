@@ -28,18 +28,10 @@ class InvoiceController extends Controller {
 	}
 
 	public function getWork()
-	{
-		$year = substr(date('Y'),1,4).'-';
-		$number = Invoice::select('invoiceNumber')
-							->whereOrganizationId(\Auth::user()->organization_id)
-							->whereState(0)
-							->orderBy('created_at', 'desc')->first();
-		$isUnique = (empty($number)) ? 1000 : (intval(explode('-', $number->invoiceNumber)[1]) + 1);
-		$finalNumber = $year.$isUnique;
+	{	
 
 		return \View::make('invoice.work-invoice')
-					->with(['current' => 'work-invoice',
-							'uniqueInvoice' => $finalNumber]);
+					->with(['current' => 'work-invoice']);
 	}
 
 	public function postWork(WorkInvoice $request, Invoice $invoice, PDF $pdf, Customer $customer)
@@ -52,6 +44,7 @@ class InvoiceController extends Controller {
 				if(!empty($customerOld)){
 					$customer = $customerOld;
 				}else{
+
 					$customerData = array_merge(['organization_id' => \Auth::user()->organization_id],\Input::get('customer'));
 					$customer = $customer->create($customerData);
 				}
@@ -65,7 +58,7 @@ class InvoiceController extends Controller {
 
 				}else{
 
-					$invoiceData = array_merge(['organization_id' => \Auth::user()->organization_id, 'type' => 1,'customer_id' => $customer->id], array_only(\Input::get('organization'), ['invoiceNumber','serviceDate','currency']));
+					$invoiceData = array_merge(['state'=> $request->get('organization')['isManual'],'organization_id' => \Auth::user()->organization_id, 'type' => 1,'customer_id' => $customer->id], array_only(\Input::get('organization'), ['invoiceNumber','serviceDate','currency']));
 					$invoice = $invoice->create($invoiceData);
 
 					$fillDesc = [];
@@ -88,14 +81,17 @@ class InvoiceController extends Controller {
 	public function getService()
 	{
 		return \View::make('invoice.service-invoice')
-					->with(['current' => 'service-invoice',]);
+					->with(['current' => 'service-invoice']);
 	}
 
 	public function getView()
 	{
 		if(\Input::has('response') && \Input::has('secure'))
 		{
-			$invoiceData = Invoice::with('customer','organization','description')->whereId(\Input::get('response'))->with('description')->first();
+			$invoiceData = Invoice::with('customer','organization','description')
+									->whereId(\Input::get('response'))
+									->whereOrganizationId(\Auth::user()->organization_id)
+									->first();
 			if(!empty($invoiceData) && $invoiceData->type == '1')
 			{
 				return \View::make('invoice.workPdf')->with(['invoice' => $invoiceData,
@@ -114,15 +110,18 @@ class InvoiceController extends Controller {
 
 	public function postDownload(PDF $pdf)
 	{
-		$invoiceData = Invoice::with('description')
+		if(\Input::has('invoiceId'))
+		{
+			$invoiceData = Invoice::with('customer','organization','description')
 							  ->whereId(\Input::get('invoiceId'))
 							  ->whereOrganizationId(\Auth::user()->organization_id)
 							  ->first();
+		}
+		
 		if(\Input::get('requestType') == 'downloadServicePDF' && !empty($invoiceData))
 		{
 			$html = \View::make('invoice.servicePdf')
 						->with(['invoice' => $invoiceData,
-						 		'description' => $invoiceData['description'],
 						 		'requestType' => 'downloadServicePDF'])
 						->render();
 
@@ -131,8 +130,7 @@ class InvoiceController extends Controller {
 		if(\Input::get('requestType') == 'downloadWorkPDF' && !empty($invoiceData))
 		{
 			$html = \View::make('invoice.workPdf')->with(['invoice' => $invoiceData,
-																 'description' => $invoiceData['description'],
-																 'requestType' => 'downloadWorkPDF',])
+														  'requestType' => 'downloadWorkPDF',])
 														->render();
 			return $pdf->load($html, 'A4', 'portrait')->download();
 		}
@@ -162,7 +160,7 @@ class InvoiceController extends Controller {
 
 				}else{
 
-					$invoiceData = array_merge(['organization_id' => \Auth::user()->organization_id, 'type' => 2,'customer_id' => $customer->id], array_only(\Input::get('organization'), ['invoiceNumber','serviceDate','currency']));
+					$invoiceData = array_merge(['state'=> $request->get('organization')['isManual'],'organization_id' => \Auth::user()->organization_id, 'type' => 2,'customer_id' => $customer->id], array_only(\Input::get('organization'), ['invoiceNumber','serviceDate','currency']));
 					$invoice = $invoice->create($invoiceData);
 
 					$fillDesc = [];
