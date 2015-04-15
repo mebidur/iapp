@@ -53,13 +53,13 @@ class ConfigurationController extends Controller {
 	public function organization()
 	{
 		$orgData =  Organization::select('name','address','phoneNo','city','state','country','email','rules','note','bankDetails')->whereId(\Auth::user()->organization_id)->first();
-		return (!empty($orgData)) ? $orgData->toArray(): [] ;
+		return (!empty($orgData)) ? $orgData->toArray(): [];
 	}
 
 	public function getInitialize()
 	{
 		if(\Request::ajax()){
-			return array_merge(['invoiceNumber' => $this->autoInvoice(),'isManualCode' => $this->autoInvoice() ,'currency' => '£', 'serviceDate' => date('Y-m-d')],$this->organization()); 		
+			return array_merge(['invoiceNumber' => $this->autoInvoice(),'isManualCode' => $this->autoInvoice() ,'currency' => '£', 'isManual' => 0, 'serviceDate' => date('Y-m-d')],$this->organization()); 		
 		}
 	}
 
@@ -67,7 +67,7 @@ class ConfigurationController extends Controller {
 	{
 		if(\Request::ajax())
 		{
-			return array_merge(['receiptNumber' => $this->autoReceipt(),'isManualCode' => $this->autoReceipt() ,'currency' => '£', 'serviceDate' => date('Y-m-d')],$this->organization());
+			return array_merge(['receiptNumber' => $this->autoReceipt(),'isManualCode' => $this->autoReceipt() ,'currency' => '£', 'isManual' => 0, 'serviceDate' => date('Y-m-d')],$this->organization());
 		}
 	}
 

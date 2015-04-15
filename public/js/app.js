@@ -1,5 +1,6 @@
 var appurl = document.getElementById('siteUrl').value;
 var _token 	= document.getElementById('_token').value;
+
 var app = angular.module('iApp', ['ngMessages'])
 	.config(['$interpolateProvider','$httpProvider',function($interpolateProvider,$httpProvider){
 		$httpProvider.defaults.headers.common["X-Requested-With"] = "XMLHttpRequest";
@@ -156,6 +157,8 @@ var app = angular.module('iApp', ['ngMessages'])
 			        		},
 			    })
 				.success(function(data){
+					console.log(data);
+
 					if(data.statusCode == 200 && data.response == true){
 		            	window.location.replace(appurl+'/invoice/view?response='+data.invoiceId+'&secure='+data.invoiceTpye+'&status='+data.statusCode);
 		            }else if(data.statusCode == 503 && data.response == false){

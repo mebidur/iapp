@@ -52,7 +52,7 @@
 			</div>
 			<div class="col-md-1 col-sm-3 col-xs-3">
 				<label><b style="color:#fff;" class="hidden-print">Option</b></label>
-				<button  class="btn btn-primary add-more-field" ng-click="doFocus()">
+				<button type="button" class="btn btn-primary add-more-field" ng-click="doFocus()">
 					<span class="glyphicon glyphicon-pencil"></span>
 				</button>
 				<input type="hidden" ng-model="organization.isManualCode" name="isManualCode">
