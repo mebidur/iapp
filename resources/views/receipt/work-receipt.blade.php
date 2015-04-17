@@ -9,7 +9,13 @@
 	<h3 class="title-line hidden-xs">Create New Hourly Receipt</h3>
 	<h4 class="title-line visible-xs hidden-lg hidden-md hidden-sm">New Receipt</h4>
 	<p></p>
-	@include('include.error-msg')
+	<div class="errors" ng-if="hasErrors">
+		<div ng-class="{'alert alert-danger' : hasErrors}">
+			<div ng-repeat="error in errors">
+				<span ng-bind="error" ng-if="hasErrors"></span><br>
+			</div>
+		</div>
+	</div>
 	<p></p>
 	<form name="workReceiptForm" ng-submit="workReceiptForm.$valid && workReceiptProcess()"  novalidate>
 	<div class="org-content section-content">

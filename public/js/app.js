@@ -99,6 +99,8 @@ var app = angular.module('iApp', ['ngMessages'])
 		$scope.databaseError = true;
 		$scope.submitted = false;
 		$scope.manualCode = false;
+		$scope.errors = [{}];
+		$scope.hasErrors = false;
 
 		$scope.choices = [{}];
 		$scope.addNewChoice = function() {  
@@ -163,6 +165,12 @@ var app = angular.module('iApp', ['ngMessages'])
 		            	$scope.databaseError = true;
 		            	$scope.workInvoiceButtonStatus = true;
 		            	$scope.workInvoiceButton = "Continue ...";
+		            }else{
+		            	$scope.hasErrors = true;
+		            	$scope.errors = data;
+		            	$timeout(function(){
+							 $("html, body").animate({ scrollTop: 0 }, 600);
+		            	});
 		            }
 		        });
 			}else{
@@ -184,6 +192,8 @@ var app = angular.module('iApp', ['ngMessages'])
 		$scope.serviceInvoiceButtonStatus = true;
 		$scope.databaseError = false;
 		$scope.manualCode = false;
+		$scope.errors = [{}];
+		$scope.hasErrors = false;
 
 		$scope.choices = [{}];
 		$scope.addNewChoice = function() {  
@@ -199,7 +209,6 @@ var app = angular.module('iApp', ['ngMessages'])
 		$scope.organization = {};
 		$scope.customer = {};
 		$http({method : 'GET', url: appurl+'/config/initialize'}).success(function(data){
-			console.log(data);
          	$scope.organization = data;
         });
 
@@ -242,13 +251,18 @@ var app = angular.module('iApp', ['ngMessages'])
 			        		},
 			    })
 				.success(function(data){
-					console.log(data);
 		            if(data.statusCode == 200 && data.response == true){
 		            	window.location.href = appurl+'/invoice/view?response='+data.invoiceId+'&secure='+data.invoiceTpye+'&status='+data.statusCode;
 		            }else if(data.statusCode == 503 && data.response == false){
 		            	$scope.databaseError = true;
 		            	$scope.serviceInvoiceButtonStatus = true;
 		            	$scope.serviceInvoiceButton = "Continue ...";
+		            }else{
+		            	$scope.hasErrors = true;
+		            	$scope.errors = data;
+		            	$timeout(function(){
+							 $("html, body").animate({ scrollTop: 0 }, 600);
+		            	});
 		            }
 		        });	
 			}
@@ -260,6 +274,8 @@ var app = angular.module('iApp', ['ngMessages'])
 		$scope.workReceiptButtonStatus = true;
 		$scope.databaseError = false;
 		$scope.manualCode = false;
+		$scope.errors = [{}];
+		$scope.hasErrors = false;
 
 		$scope.choices = [{}];
 		$scope.addNewChoice = function() {  
@@ -323,6 +339,12 @@ var app = angular.module('iApp', ['ngMessages'])
 		            	$scope.databaseError = true;
 		            	$scope.workReceiptButtonStatus = true;
 		            	$scope.workReceiptButton = "Continue ...";
+		            }else{
+		            	$scope.hasErrors = true;
+		            	$scope.errors = data;
+		            	$timeout(function(){
+							 $("html, body").animate({ scrollTop: 0 }, 600);
+		            	});
 		            }
 		        });	
 			}
@@ -334,6 +356,8 @@ var app = angular.module('iApp', ['ngMessages'])
 		$scope.serviceReceiptButtonStatus = true;
 		$scope.databaseError = false;
 		$scope.manualCode = false;
+		$scope.errors = [{}];
+		$scope.hasErrors = false;
 
 		$scope.choices = [{}];
 		$scope.addNewChoice = function() {  
@@ -396,6 +420,12 @@ var app = angular.module('iApp', ['ngMessages'])
 		            	$scope.databaseError = true;
 		            	$scope.serviceReceiptButtonStatus = true;
 		            	$scope.serviceReceiptButton = "Continue ...";
+		            }else{
+		            	$scope.hasErrors = true;
+		            	$scope.errors = data;
+		            	$timeout(function(){
+							 $("html, body").animate({ scrollTop: 0 }, 600);
+		            	});
 		            }
 		        });	
 			}

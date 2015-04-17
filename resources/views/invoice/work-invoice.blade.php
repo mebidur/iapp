@@ -9,14 +9,20 @@
 	<h4 class="title-line hidden-xs content-title">Create New Hourly Invoice</h4>
 	<h4 class="title-line visible-xs hidden-lg hidden-md hidden-sm">New Invoice</h4>
 	<p></p>
-	@include('include.error-msg')
-	<p></p>
 <!-- <div class="alert alert-danger database-error-msg" ng-show="databaseError">
 		<strong>Oops! Error Occured</strong> Some thing went wrong! Please be sure with your database configuration ...
 	</div>
 	<div class="alert alert-danger submitted-error-msg" ng-show="submitted">
 		<strong>Oops! Error Occured</strong> Some thing went wrong! Fill required input fields ...
 	</div> -->
+	<p></p>
+	<div class="errors" ng-if="hasErrors">
+		<div ng-class="{'alert alert-danger' : hasErrors}">
+			<div ng-repeat="error in errors">
+				<span ng-bind="error" ng-if="hasErrors"></span><br>
+			</div>
+		</div>
+	</div>
 	<p></p>
 	<form name="workInvoiceForm" ng-submit="workInvoiceForm.$valid && workInvoiceProcess()"  novalidate>	
 	<div class="org-content section-content">

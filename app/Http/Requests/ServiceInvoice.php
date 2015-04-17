@@ -1,6 +1,7 @@
 <?php namespace App\Http\Requests;
 
 use App\Http\Requests\Request;
+use Illuminate\Http\JsonResponse;
 
 class ServiceInvoice extends Request {
 
@@ -22,39 +23,69 @@ class ServiceInvoice extends Request {
 	public function rules()
 	{
 		$rules = [
-			// 'invoiceNumber' 		=> 'required|max:20',
-			// 'serviceDate' 			=> 'required',
-			// 'serviceProvider' 		=> 'required',
-			// 'serviceReceiver' 		=> 'required',
-			// 'companyAddress' 		=> 'required',
-			// 'clientAddress' 		=> 'required',
-			// 'currency' 				=> 'required',
-			// 'bankDetails'			=> 'required',
-			// 'termsCondition'		=> 'required',
-			// 'keyNote' 				=> 'required'
+			'organization.invoiceNumber' 		=> 'required',
+			'organization.serviceDate' 			=> 'required',			
+			'organization.currency' 			=> 'required',
+			'organization.name'					=> 'required',
+			'organization.address'				=> 'required',
+			'organization.phoneNo'				=> 'required',
+			'organization.city'					=> 'required',
+			'organization.state'				=> 'required',
+			'organization.country'				=> 'required',
+			'organization.email'				=> 'required|email',
+			'organization.rules'				=> 'required',
+			'organization.note'					=> 'required',
+			'organization.bankDetails'			=> 'required',
+			'customer.name'						=> 'required',
+			'customer.address'					=> 'required',
+			'customer.email'					=> 'required|email',
+			'customer.city'						=> 'required',
+			'customer.state'					=> 'required',
+			'customer.country'					=> 'required',
+
 		];
 
-		// foreach ($this->request->get('workDescription') as $key => $value) {
-		// 	$rules['workDescription.'.$key] = 'required';
-		// }
-		// foreach ($this->request->get('amount') as $key => $value) {
-		// 	$rules['amount.'.$key] = 'required|numeric';
-		// }
-
+		foreach($this->request->get('allDesc') as $index => $each)
+		{
+			$i = $index;
+			foreach ($each as $key => $value) {
+				if($key == 'amount'){
+					$rules['allDesc.'.$i.'.'.$key] = 'required|numeric';
+				}else{
+					$rules['allDesc.'.$i.'.'.$key] = 'required';
+				}
+			}
+		}
 		return $rules;
 	}
 
-	// public function messages()
-	// {
-	// 	$messages = [];
-	// 	foreach ($this->request->get('workDescription') as $key => $value) {
-	// 		$messages['workDescription.'.$key.'.required'] =' The field work description '.$key.' is required.';
-	// 	}
-	// 	foreach ($this->request->get('amount') as $key => $value) {
-	// 		$messages['amount.'.$key.'.required'] = 'The field amount '.$key.' is required';
-	// 		$messages['amount.'.$key.'.numeric'] = 'The field amount '.$key.' should be numeric value';
-	// 	}
-	// 	return $messages;
-	// }
+	public function messages()
+	{
+		$messages = [];
+		foreach($this->request->get('allDesc') as $key => $val)
+		{
+			$i = $key;
+			foreach ($val as $each => $value) {
+				$field = ($each == 'workDescription') ? 'work description' : $each;
+				$messages['allDesc.'.$i.'.'.$each.'.required'] = 'The field '.$field. ' ' .$i.' is required.';
+				$messages['allDesc.'.$i.'.'.$each.'.numeric'] = 'The field '.$field. ' ' .$i.' must be a numeric value.';
+				$messages['allDesc.'.$i.'.'.$each.'.email'] = 'The field '.$field. ' ' .$i.' must be a valid email.';
+			}
+		}
+
+	  return $messages;
+	}
+
+	public function response(array $errors)
+	{
+		if (Request::ajax())
+		{
+			return new JsonResponse($errors);
+		}
+
+		return $this->redirector->to($this->getRedirectUrl())
+                                        ->withInput($this->except($this->dontFlash))
+                                        ->withErrors($errors, $this->errorBag);
+	}
 
 }

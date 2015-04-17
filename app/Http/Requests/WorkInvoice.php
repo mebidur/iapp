@@ -36,40 +36,36 @@ class WorkInvoice extends Request {
 
 		];
 
-		// foreach($this->request->get('allDesc') as $key => $val)
-		// {
-		// 	$rules['workDescription.'.$key] = 'required';
-		// }
+		foreach($this->request->get('allDesc') as $index => $each)
+		{
+			$i = $index;
+			foreach ($each as $key => $value) {
+				if($key == 'hour' || $key == 'rate'){
+					$rules['allDesc.'.$i.'.'.$key] = 'required|numeric';
+				}else{
+					$rules['allDesc.'.$i.'.'.$key] = 'required';
+				}
+			}
+		}
 		return $rules;
 	}
 
-	// protected function formatErrors(Validator $validator)
-	// {
-	//     return $validator->errors()->all();
-	// }
+	public function messages()
+	{
+		$messages = [];
+		foreach($this->request->get('allDesc') as $key => $val)
+		{
+			$i = $key;
+			foreach ($val as $each => $value){
+				$field = ($each == 'workDescription') ? 'work description' : $each;
+				$messages['allDesc.'.$i.'.'.$each.'.required'] = 'The field '.$field. ' ' .$i.' is required.';
+				$messages['allDesc.'.$i.'.'.$each.'.numeric'] = 'The field '.$field. ' ' .$i.' must be a numeric value.';
+				$messages['allDesc.'.$i.'.'.$each.'.email'] = 'The field '.$field. ' ' .$i.' must be a valid email.';
+			}
+		}
 
-	// public function messages()
-	// {
-	// 	$messages = [];
-	// 	foreach($this->request->get('workDescription') as $key => $val)
-	// 	{
-	// 		$messages['workDescription.'.$key.'.required'] = 'The field description '.$key.' is required.';
-	// 	}
-
-	// 	foreach($this->request->get('rate') as $key => $val)
-	// 	{			
-	// 		$messages['rate.'.$key.'.required'] = 'The field rate '.$key.' is required.';
-	// 		$messages['rate.'.$key.'.numeric'] = 'The field rate '.$key.' must be numeric value.';
-	// 	}
-
-	// 	foreach($this->request->get('hour') as $key => $val)
-	// 	{
-	// 		$messages['hour.'.$key.'.required'] = 'The field hour '.$key.' is required.';
-	// 		$messages['hour.'.$key.'.numeric'] = 'The field hour '.$key.' must be numeric value.';
-	// 	}
-
-	//   return $messages;
-	// }
+	  return $messages;
+	}
 
 	public function response(array $errors)
 	{

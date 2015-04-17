@@ -22,55 +22,67 @@ class WorkReceipt extends Request {
 	public function rules()
 	{
 		$rules = [
-			// 'receiptNumber' 		=> 'required|max:20',
-			// 'serviceDate' 			=> 'required',
-			// 'serviceProvider' 		=> 'required',
-			// 'serviceReceiver' 		=> 'required',
-			// 'companyAddress' 		=> 'required',
-			// 'clientAddress' 		=> 'required',
-			// 'currency' 				=> 'required',
-			// 'keyNote' 				=> 'required'
+			'organization.invoiceNumber' 		=> 'required',
+			'organization.serviceDate' 			=> 'required',			
+			'organization.currency' 			=> 'required',
+			'organization.name'					=> 'required',
+			'organization.address'				=> 'required',
+			'organization.phoneNo'				=> 'required',
+			'organization.city'					=> 'required',
+			'organization.state'				=> 'required',
+			'organization.country'				=> 'required',
+			'organization.email'				=> 'required|email',
+			'organization.note'					=> 'required',			
+			'customer.name'						=> 'required',
+			'customer.address'					=> 'required',
+			'customer.email'					=> 'required|email',
+			'customer.city'						=> 'required',
+			'customer.state'					=> 'required',
+			'customer.country'					=> 'required',
 		];
 
-		// foreach($this->request->get('workDescription') as $key => $val)
-		// {
-		// 	$rules['workDescription.'.$key] = 'required';
-		// }
-
-		// foreach($this->request->get('rate') as $key => $val)
-		// {
-		// 	$rules['rate.'.$key] = 'required|numeric';
-		// }
-
-		// foreach($this->request->get('hour') as $key => $val)
-		// {
-		// 	$rules['hour.'.$key] = 'required|numeric';
-		// }
+		foreach($this->request->get('allDesc') as $index => $each)
+		{
+			$i = $index;
+			foreach ($each as $key => $value) {
+				if($key == 'hour' || $key == 'rate'){
+					$rules['allDesc.'.$i.'.'.$key] = 'required|numeric';
+				}else{
+					$rules['allDesc.'.$i.'.'.$key] = 'required';
+				}
+			}
+		}
 
 		return $rules;
 	}
 	
-	// public function messages()
-	// {
-	// 	$messages = [];
-	// 	foreach($this->request->get('workDescription') as $key => $val)
-	// 	{
-	// 		$messages['workDescription.'.$key.'.required'] = 'The field description '.$key.' is required.';
-	// 	}
+	public function messages()
+	{
+		$messages = [];
+		foreach($this->request->get('allDesc') as $key => $val)
+		{
+			$i = $key;
+			foreach ($val as $each => $value){
+				$field = ($each == 'workDescription') ? 'work description' : $each;
+				$messages['allDesc.'.$i.'.'.$each.'.required'] = 'The field '.$field. ' ' .$i.' is required.';
+				$messages['allDesc.'.$i.'.'.$each.'.numeric'] = 'The field '.$field. ' ' .$i.' must be a numeric value.';
+				$messages['allDesc.'.$i.'.'.$each.'.email'] = 'The field '.$field. ' ' .$i.' must be a valid email.';
+			}
+		}
 
-	// 	foreach($this->request->get('rate') as $key => $val)
-	// 	{			
-	// 		$messages['rate.'.$key.'.required'] = 'The field rate '.$key.' is required.';
-	// 		$messages['rate.'.$key.'.numeric'] = 'The field rate '.$key.' must be numeric value.';
-	// 	}
+	  return $messages;
+	}
 
-	// 	foreach($this->request->get('hour') as $key => $val)
-	// 	{
-	// 		$messages['hour.'.$key.'.required'] = 'The field hour '.$key.' is required.';
-	// 		$messages['hour.'.$key.'.numeric'] = 'The field hour '.$key.' must be numeric value.';
-	// 	}
+	public function response(array $errors)
+	{
+		if (Request::ajax())
+		{
+			return new JsonResponse($errors);
+		}
 
-	//   return $messages;
-	// }
+		return $this->redirector->to($this->getRedirectUrl())
+                                        ->withInput($this->except($this->dontFlash))
+                                        ->withErrors($errors, $this->errorBag);
+	}
 
 }
