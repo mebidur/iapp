@@ -10,7 +10,7 @@
 		@if(Session::has('message'))
 		<div class="alert alert-success">
 			{{Session::get('message')}}
-			<a href="javascript:void(0)" class="pull-right alert-close">&times;</a>
+			<a href="javascript:void(0)" class="pull-right alert-close" ng-fade-out><span class="success-close">&times;</span></a>
 		</div>
 		@endif
 	<span class="pagination-view hidden-xs" style="top: 4% !important;">Showing {{$invoices->firstItem()}} to {{$invoices->lastItem()}} of {{$invoices->total()}} Invoices</span>
@@ -46,7 +46,7 @@
 						<td><span class="currency-view">{{$invoice->currency}}</span>{{($invoice->type == 1) ? $workTotal : $serviceTotal}}</td>
 						
 						<td>{!! ($invoice->status == 0) ? '<span class="iapp-badge">Pending</span>': '<span class="iapp-badge">Paid</span>' !!}</td>
-						<td>{!! ($invoice->status == 0) ? '<button data-id="'.$invoice->id.'" class="status-print-btn" ng-payinvoice>Paid</button>': '<span class="glyphicon glyphicon-ok iapp-ok"></span>' !!}</td>
+						<td>{!! ($invoice->status == 0) ? '<button data-id="'.$invoice->id.'" class="status-print-btn" ng-pay-invoice>Paid</button>': '<span class="glyphicon glyphicon-ok iapp-ok"></span>' !!}</td>
 					</tr>
 					<?php $sn++;?>
 				@endforeach

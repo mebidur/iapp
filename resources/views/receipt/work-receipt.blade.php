@@ -15,7 +15,7 @@
 	<div class="org-content section-content">
 		<h4 class="content-title">Organization Information</h4>
 		<div class="row">
-			<div class="col-md-5 col-xs-9 col-sm-9">
+			<div class="col-md-5 col-xs-9 col-sm-10">
 				<label><b>Receipt No</b></label>
 				<input class="form-control unique-number is-unique-receipt" 
 				type="text"
@@ -50,14 +50,14 @@
 			    </div>
 
 			</div>
-			<div class="col-md-1 col-sm-3 col-xs-3">
+			<div class="col-md-1 col-sm-1 col-xs-1">
 				<label><b style="color:#fff;" class="hidden-print">Option</b></label>
 				<button type="button" class="btn btn-primary add-more-field" ng-click="doFocus()">
 					<span class="glyphicon glyphicon-pencil"></span>
 				</button>
 				<input type="hidden" ng-model="organization.isManualCode" name="isManualCode">
 			</div>
-			<div class="col-md-6">
+			<div class="col-md-6 col-xs-12 col-sm-12">
 				<label><b>Receipt Date</b></label>
 				<input type="text" class="form-control iapp-date" 
 				name="serviceDate" 
@@ -264,11 +264,11 @@
 		     	<label><b>Rate</b></label>
 		     		<input type="text" class="form-control" ng-model="choice.rate" name="" ng-pattern="/^0|[1-9][0-9]*$/" placeholder="Enter hour" required>
 		     	</div>
-		     	<div class="col-md-3 col-xs-8 col-sm-8">
+		     	<div class="col-md-3 col-xs-9 col-sm-10">
 		     		<label><b>Hour</b></label>
 		     		<input type="text" class="form-control" ng-model="choice.hour" name="" ng-pattern="/^0|[1-9][0-9]*$/" placeholder="Enter rate" required>
 		     	</div>
-		     	<div class="col-md-1 col-xs-3 col-sm-3"><p><br></p>
+		     	<div class="col-md-1 col-xs-2 col-sm-1"><p><br></p>
 		     		<button type="button" ng-click="removeInput($index)" ng-hide="($index == 0)" class="btn btn-danger"><span class="glyphicon glyphicon-remove-sign"></span></button>
 		     		<button type="button" ng-show="$first" ng-click="addNewChoice()" class="btn btn-primary add-more-field"><span class="glyphicon glyphicon-plus-sign"></span></button>
 		     	</div>

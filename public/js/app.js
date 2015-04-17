@@ -96,7 +96,7 @@ var app = angular.module('iApp', ['ngMessages'])
 
 		$scope.workInvoiceButton = "Continue ...";
 		$scope.workInvoiceButtonStatus = true;
-		$scope.databaseError = false;
+		$scope.databaseError = true;
 		$scope.submitted = false;
 		$scope.manualCode = false;
 
@@ -413,7 +413,7 @@ var app = angular.module('iApp', ['ngMessages'])
         });		
 	});
 
-	app.directive('ngPayinvoice', function($http) {
+	app.directive('ngPayInvoice', function($http, $timeout) {
 	    return {
 	        link: function (scope, element, attrs) {
 	            element.bind('click', function (){
@@ -424,12 +424,26 @@ var app = angular.module('iApp', ['ngMessages'])
 					        data    : {id : Id, _token : _token}, })
 	                	.success(function(data){
 	                			if(data.statusCode == 200){
-	                				element.closest('td').prev().find('span').replaceWith('<span class="iapp-badge">Paid</span>');
-				                	element.replaceWith('<span class="glyphicon glyphicon-ok iapp-ok"></span>');	
+	                				element.html('Wait ..').css('background-color','#45B4D7');
+	                				$timeout(function(){
+	                					element.closest('td').prev().find('span').replaceWith('<span class="iapp-badge">Paid</span>');
+				                		element.replaceWith('<span class="glyphicon glyphicon-ok iapp-ok"></span>');				                			
+	                				},1000);
+	                				
 	                			}
 					});				
 	            });
 	        }
 	    };
+	});
+
+	app.directive('ngFadeOut',function(){
+		return {
+			link: function(scope, element, attrs){
+				element.bind('click',function(){
+					element.parent().fadeOut(3000,"linear");
+				});	
+			}
+		}
 	});
 

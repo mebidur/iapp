@@ -15,7 +15,7 @@
 		<div class="org-content section-content">
 			<h4 class="content-title">Organization Information</h4>
 			<div class="row">
-				<div class="col-md-5 col-xs-9 col-sm-9">
+				<div class="col-md-5 col-lg-5 col-xs-9 col-sm-10">
 					<label><b>Invoice No</b></label>
 					<input class="form-control unique-number is-unique-invoice"
 					ng-class="{
@@ -53,14 +53,14 @@
 		      </div>
 
 				</div>
-				<div class="col-md-1 col-sm-3 col-xs-3">
+				<div class="col-md-1 col-sm-1 col-xs-1">
 					<label><b style="color:#fff;" class="hidden-print">Option</b></label>
 					<button type="button" class="btn btn-primary add-more-field" ng-click="doFocus()">
 						<span class="glyphicon glyphicon-pencil"></span>
 					</button>
 					<input type="hidden" ng-model="organization.isManualCode" name="isManualCode">
 				</div>
-				<div class="col-md-6">
+				<div class="col-md-6 col-xs-12 col-sm-12">
 					<label><b>Invoice Date</b></label>			
 					<input type="text" class="form-control iapp-date" 
 					name="serviceDate" 

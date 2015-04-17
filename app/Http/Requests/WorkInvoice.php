@@ -13,36 +13,33 @@ class WorkInvoice extends Request {
 
 	public function rules()
 	{
-
-
 		$rules = [
-			// 'organization.invoiceNumber' 		=> 'required|numeric|max:20',
-			// 'serviceDate' 			=> 'required',
-			// 'serviceProvider' 		=> 'required',
-			// 'serviceReceiver' 		=> 'required',
-			// 'companyAddress' 		=> 'required',
-			// 'clientAddress' 		=> 'required',
-			// 'currency' 				=> 'required',
-			// 'termsCondition' 		=> 'required',
-			// 'bankDetails' 			=> 'required',
-			// 'keyNote' 				=> 'required'
+			'organization.invoiceNumber' 		=> 'required',
+			'organization.serviceDate' 			=> 'required',			
+			'organization.currency' 			=> 'required',
+			'organization.name'					=> 'required',
+			'organization.address'				=> 'required',
+			'organization.phoneNo'				=> 'required',
+			'organization.city'					=> 'required',
+			'organization.state'				=> 'required',
+			'organization.country'				=> 'required',
+			'organization.email'				=> 'required|email',
+			'organization.rules'				=> 'required',
+			'organization.note'					=> 'required',
+			'organization.bankDetails'			=> 'required',
+			'customer.name'						=> 'required',
+			'customer.address'					=> 'required',
+			'customer.email'					=> 'required|email',
+			'customer.city'						=> 'required',
+			'customer.state'					=> 'required',
+			'customer.country'					=> 'required',
+
 		];
 
-		// foreach($this->request->get('workDescription') as $key => $val)
+		// foreach($this->request->get('allDesc') as $key => $val)
 		// {
 		// 	$rules['workDescription.'.$key] = 'required';
 		// }
-
-		// foreach($this->request->get('rate') as $key => $val)
-		// {
-		// 	$rules['rate.'.$key] = 'required|numeric';
-		// }
-
-		// foreach($this->request->get('hour') as $key => $val)
-		// {
-		// 	$rules['hour.'.$key] = 'required|numeric';
-		// }
-
 		return $rules;
 	}
 

@@ -138,6 +138,9 @@ input[type="date"]{
 .content-holder{
 	padding-top: 65px !important;
 }
+.success-close{
+	color: #3C763D !important;
+}
 
 input.ng-invalid, 
 textarea.ng-invalid, 

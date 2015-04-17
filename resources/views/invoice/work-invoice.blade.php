@@ -11,7 +11,7 @@
 	<p></p>
 	@include('include.error-msg')
 	<p></p>
-	<!-- <div class="alert alert-danger database-error-msg" ng-show="databaseError">
+<!-- <div class="alert alert-danger database-error-msg" ng-show="databaseError">
 		<strong>Oops! Error Occured</strong> Some thing went wrong! Please be sure with your database configuration ...
 	</div>
 	<div class="alert alert-danger submitted-error-msg" ng-show="submitted">
@@ -22,7 +22,7 @@
 	<div class="org-content section-content">
 		<h4 class="content-title">Organization Information</h4>
 		<div class="row">
-			<div class="col-md-5 col-xs-9 col-sm-9">
+			<div class="col-md-5 col-lg-5 col-xs-9 col-sm-10">
 				<label><b>Invoice No</b></label>
 				<input class="form-control unique-number" 
 				type="text"
@@ -38,22 +38,22 @@
 	            ensure-unique="invoiceNumber"
 				required />
 
-			<div ng-show="workInvoiceForm.invoiceNumber.$dirty && workInvoiceForm.invoiceNumber.$invalid && !workInvoiceForm.invoiceNumber.$focused">
-	        <!-- <small class="text-danger" 
-	                ng-show="workInvoiceForm.invoiceNumber.$error.minlength">
-	                Your Invoice no is required to be at least 5 characters
-	        </small>
-	        <small class="text-danger" 
-	                ng-show="workInvoiceForm.invoiceNumber.$error.maxlength">
-	                Your invoice no cannot be longer than 20 characters
-	        </small> -->
-	        <small class="text-danger"
-					ng-show="workInvoiceForm.invoiceNumber.$error.unique" ng-hide="workInvoiceForm.invoiceNumber.$error">
-					That invoice number provided is  already taken, please try another.
-			</small>
+				<div ng-show="workInvoiceForm.invoiceNumber.$dirty && workInvoiceForm.invoiceNumber.$invalid && !workInvoiceForm.invoiceNumber.$focused">
+		        <!-- <small class="text-danger" 
+		                ng-show="workInvoiceForm.invoiceNumber.$error.minlength">
+		                Your Invoice no is required to be at least 5 characters
+		        </small>
+		        <small class="text-danger" 
+		                ng-show="workInvoiceForm.invoiceNumber.$error.maxlength">
+		                Your invoice no cannot be longer than 20 characters
+		        </small> -->
+		        <small class="text-danger"
+						ng-show="workInvoiceForm.invoiceNumber.$error.unique" ng-hide="workInvoiceForm.invoiceNumber.$error">
+						That invoice number provided is  already taken, please try another.
+				</small>
+		      </div>
 	      </div>
-			</div>
-			<div class="col-md-1 col-sm-3 col-xs-3">
+			<div class="col-md-1 col-sm-1 col-xs-1">
 				<label><b style="color:#fff;" class="hidden-print">Option</b></label>
 				<button type="button" class="btn btn-primary add-more-field" ng-click="doFocus()">
 					<span class="glyphicon glyphicon-pencil"></span>
@@ -283,11 +283,11 @@
 		     	<label><b>Rate</b></label>
 		     		<input type="text" class="form-control" ng-model="choice.rate" name="" ng-pattern="/^0|[1-9][0-9]*$/" placeholder="Enter hour" required>
 		     	</div>
-		     	<div class="col-md-3 col-xs-8 col-sm-8">
+		     	<div class="col-md-3 col-xs-9 col-sm-10">
 		     		<label><b>Hour</b></label>
 		     		<input type="text" class="form-control" ng-model="choice.hour" name="" ng-pattern="/^0|[1-9][0-9]*$/" placeholder="Enter rate" required>
 		     	</div>
-		     	<div class="col-md-1 col-xs-3 col-sm-3"><p><br></p>
+		     	<div class="col-md-1 col-xs-2 col-sm-1"><p><br></p>
 		     		<button type="button" ng-click="removeInput($index)" ng-hide="($index == 0)" class="btn btn-danger"><span class="glyphicon glyphicon-remove-sign"></span></button>
 		     		<button type="button" ng-show="$first" ng-click="addNewChoice()" class="btn btn-primary add-more-field"><span class="glyphicon glyphicon-plus-sign"></span></button>
 		     	</div>
