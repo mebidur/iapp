@@ -1,48 +1,66 @@
-var appurl = document.getElementById('siteUrl').value;
-var _token 	= document.getElementById('_token').value;
+var appurl = document.getElementById('siteUrl').value,
+	_token 	= document.getElementById('_token').value,
+	app = angular.module('iApp', ['ngMessages']), 
+	typingTimer;
 
-var app = angular.module('iApp', ['ngMessages'])
-	.config(['$interpolateProvider','$httpProvider',function($interpolateProvider,$httpProvider){
+	app.config(['$interpolateProvider','$httpProvider',function($interpolateProvider,$httpProvider)
+	{
 		$httpProvider.defaults.headers.common["X-Requested-With"] = "XMLHttpRequest";
 		$interpolateProvider.startSymbol('[[');
 		$interpolateProvider.endSymbol(']]');
 	}]);
 
-
-	app.directive('ensureUnique', function($http) {
+	app.directive('ensureUnique', function($http, $timeout){
 		return {
 		require: 'ngModel',
 			link: function(scope, ele, attrs, c) {
-			scope.$watch(attrs.ngModel, function(n) {
-			if (!n) return;
-				$http({
-					method: 'POST',
-					url: appurl+'/invoice/check',
-					data: {"field": n, "_token" : _token}
-				}).success(function(data) {
-					c.$setValidity('unique', data.isUnique);
-				}).error(function(data) {
-						c.$setValidity('unique', false);
-					});
+			scope.$watch(attrs.ngModel, function(n){
+				if (!n) return;
+				ele.on('keyup',function(){
+					$timeout.cancel(typingTimer);
+				    typingTimer = $timeout(function(){
+					    $http({
+							method: 'POST',
+							url: appurl+'/invoice/check',
+							data: {"field": n, "_token" : _token}
+						}).success(function(data){
+							c.$setValidity('unique', data.isUnique);
+						}).error(function(data) {
+								c.$setValidity('unique', false);
+							});
+				    },1500);
+				});
+				ele.on('keydown',function(){
+					$timeout.cancel(typingTimer);
+				});
 				});
 			}
 		}
 	});
-	app.directive('isUnique', function($http) {
+	app.directive('isUnique', function($http, $timeout){
 		return {
 		require: 'ngModel',
-			link: function(scope, ele, attrs, c) {
+			link: function(scope, ele, attrs, c){
 			scope.$watch(attrs.ngModel, function(n) {
-			if (!n) return;
-				$http({
-					method: 'POST',
-					url: appurl+'/receipt/check',
-					data: {"field": n, "_token" : _token}
-				}).success(function(data) {
-					c.$setValidity('isunique', data.isUnique);
-				}).error(function(data) {
-						c.$setValidity('isunique', false);
+				if (!n) return;
+				ele.on('keyup',function(){
+					$timeout.cancel(typingTimer);
+					typingTimer = $timeout(function(){
+						$http({
+						method: 'POST',
+						url: appurl+'/receipt/check',
+						data: {"field": n, "_token" : _token}
+					}).success(function(data){
+						c.$setValidity('isunique', data.isUnique);
+					}).error(function(data){
+							c.$setValidity('isunique', false);
 					});
+					}, 1500);
+				});
+
+				ele.on('keydown',function(){
+					$timeout.cancel(typingTimer);
+				});
 				});
 			}
 		}
@@ -96,8 +114,8 @@ var app = angular.module('iApp', ['ngMessages'])
 
 		$scope.workInvoiceButton = "Continue ...";
 		$scope.workInvoiceButtonStatus = true;
-		$scope.databaseError = true;
-		$scope.submitted = false;
+		$scope.databaseError = false;
+		$scope.dataSubmitted = false;
 		$scope.manualCode = false;
 		$scope.errors = [{}];
 		$scope.hasErrors = false;
@@ -115,7 +133,7 @@ var app = angular.module('iApp', ['ngMessages'])
 
 		$scope.organization = {};
 		$scope.customer = {};
-		$http({method : 'GET', url: appurl+'/config/initialize'}).success(function(data){
+		$http.get(appurl+'/config/init').success(function(data){
          	$scope.organization = data;
         });
 
@@ -141,12 +159,14 @@ var app = angular.module('iApp', ['ngMessages'])
 			}
 		}
 		
-		$scope.workInvoiceProcess = function(){	
+		$scope.workInvoiceProcess = function(){
+			if($scope.workInvoiceForm.$invalid){
+				$scope.dataSubmitted = true;
+			}
+
 			if($scope.workInvoiceForm.$valid){
 				$scope.workInvoiceButton = "Please wait ...";
 				$scope.workInvoiceButtonStatus = false;	
-				
-
 				$http({
 			        method  : 'POST',
 			        url     : appurl+'/invoice/work',
@@ -173,8 +193,6 @@ var app = angular.module('iApp', ['ngMessages'])
 		            	});
 		            }
 		        });
-			}else{
-				$scope.submitted = true;
 			}
 		}
 	});	
@@ -208,7 +226,7 @@ var app = angular.module('iApp', ['ngMessages'])
 
 		$scope.organization = {};
 		$scope.customer = {};
-		$http({method : 'GET', url: appurl+'/config/initialize'}).success(function(data){
+		$http.get(appurl+'/config/init').success(function(data){
          	$scope.organization = data;
         });
 
@@ -290,7 +308,7 @@ var app = angular.module('iApp', ['ngMessages'])
 		
 		$scope.organization = {};
 		$scope.customer = {};
-		$http({method : 'GET', url: appurl+'/config/initializer'}).success(function(data){
+		$http.get(appurl+'/config/initr').success(function(data){
          	$scope.organization = data;
         });
 
@@ -320,18 +338,9 @@ var app = angular.module('iApp', ['ngMessages'])
 			if($scope.workReceiptForm.$valid){
 				$scope.workReceiptButton = "Please wait ...";
 				$scope.workReceiptButtonStatus = false;
-
-				$http({
-			        method  : 'POST',
-			        url     : appurl+'/receipt/work',
-			        data    : {'organization' : $scope.organization,
-			        		   'customer': $scope.customer,
-			        		   'allDesc': $scope.choices,
-			        			'_token' : _token,
-			        			'requestType': 'default',
-			        			'currentState': 'work'
-			        		},
-			    })
+				var bulkData = {'organization' : $scope.organization,'customer': $scope.customer,
+								'allDesc': $scope.choices, '_token' : _token, 'requestType': 'default', 'currentState': 'work'};
+				$http.post(appurl+'/receipt/work' ,bulkData)
 				.success(function(data){					
 		            if(data.statusCode == 200 && data.response == true){
 		            	window.location.href = appurl+'/receipt/view?response='+data.receiptId+'&secure='+data.receiptTpye+'&status='+data.statusCode;
@@ -371,7 +380,7 @@ var app = angular.module('iApp', ['ngMessages'])
 		}	
 		$scope.organization = {};
 		$scope.customer = {};
-		$http({method : 'GET', url: appurl+'/config/initializer'}).success(function(data){
+		$http.get(appurl+'/config/initr').success(function(data){
          	$scope.organization = data;
         });
 
@@ -401,7 +410,6 @@ var app = angular.module('iApp', ['ngMessages'])
 			if($scope.serviceReceiptForm.$valid){
 				$scope.serviceReceiptButton = "Please wait ...";
 				$scope.serviceReceiptButtonStatus = false;
-
 				$http({
 			        method  : 'POST',
 			        url     : appurl+'/receipt/service',
@@ -438,7 +446,7 @@ var app = angular.module('iApp', ['ngMessages'])
 			$scope.configButton = 'Loading ...';
 		}
 		$scope.company = {};
-		$http({method : 'GET', url: appurl+'/config/initializeo'}).success(function(data){
+		$http.get(appurl+'/config/inito').success(function(data){
            $scope.company =  data;
         });		
 	});

@@ -5,21 +5,11 @@ use Illuminate\Http\JsonResponse;
 
 class ServiceInvoice extends Request {
 
-	/**
-	 * Determine if the user is authorized to make this request.
-	 *
-	 * @return bool
-	 */
 	public function authorize()
 	{
 		return true;
 	}
 
-	/**
-	 * Get the validation rules that apply to the request.
-	 *
-	 * @return array
-	 */
 	public function rules()
 	{
 		$rules = [
@@ -62,6 +52,28 @@ class ServiceInvoice extends Request {
 	public function messages()
 	{
 		$messages = [];
+		$messages['organization.invoiceNumber.required'] = 'The field  invoice number is required.';
+		$messages['organization.serviceDate.required'] = 'The field  service date is required.';
+		$messages['organization.currency.required'] = 'The field  currency is required.';
+		$messages['organization.name.required'] = 'The field  company name is required.';
+		$messages['organization.address.required'] = 'The field company address is required.';
+		$messages['organization.phoneNo.required'] = 'The field company phone no is required.';
+		$messages['organization.city.required'] = 'The field  company city is required.';
+		$messages['organization.state.required'] = 'The field  company state is required.';
+		$messages['organization.country.required'] = 'The field  company country is required.';
+		$messages['organization.email.required'] = 'The field  company email is required.';
+		$messages['organization.email.email'] = 'The field  email address must be a valid email';
+		$messages['organization.note.required'] = 'The field note is required.';
+		$messages['organization.rules.required'] = 'The field note is required.';
+		$messages['organization.bankDetails.required'] = 'The field note is required.';
+		$messages['customer.name.required'] = 'The field  customer name is required.';
+		$messages['customer.address.required'] = 'The field  customer address is required.';
+		$messages['customer.email.required'] = 'The field customer email is required.';
+		$messages['customer.email.email'] = 'The field  email address must be a valid email';
+		$messages['customer.city.required'] = 'The field  customer city is required.';
+		$messages['customer.state.required'] = 'The field  customer state is required.';
+		$messages['customer.country.required'] = 'The field  customer country is required.';
+
 		foreach($this->request->get('allDesc') as $key => $val)
 		{
 			$i = $key;

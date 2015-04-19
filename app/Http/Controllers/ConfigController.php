@@ -9,7 +9,7 @@ use App\Organization;
 use App\Receipt;
 use App\Invoice;
 
-class ConfigurationController extends Controller {
+class ConfigController extends Controller {
 
 	public function __construct()
 	{
@@ -52,26 +52,38 @@ class ConfigurationController extends Controller {
 
 	public function organization()
 	{
-		$orgData =  Organization::select('name','address','phoneNo','city','state','country','email','rules','note','bankDetails')->whereId(\Auth::user()->organization_id)->first();
+		$selectable = ['name','address','phoneNo','city','state','country','email','rules','note','bankDetails'];
+		$orgData =  Organization::select($selectable)->whereId(\Auth::user()->organization_id)->first();
 		return (!empty($orgData)) ? $orgData->toArray(): [];
 	}
 
-	public function getInitialize()
+	public function getInit()
 	{
 		if(\Request::ajax()){
-			return array_merge(['invoiceNumber' => $this->autoInvoice(),'isManualCode' => $this->autoInvoice() ,'currency' => '£', 'isManual' => 0, 'serviceDate' => date('Y-m-d')],$this->organization()); 		
+			$localData = ['invoiceNumber' => $this->autoInvoice(),
+						'isManualCode' => $this->autoInvoice() ,
+						'currency' => '£', 'isManual' => 0, 
+						'serviceDate' => date('Y-m-d')];
+						
+			return array_merge($localData ,$this->organization()); 		
 		}
 	}
 
-	public function getInitializer()
+	public function getInitr()
 	{
 		if(\Request::ajax())
 		{
-			return array_merge(['receiptNumber' => $this->autoReceipt(),'isManualCode' => $this->autoReceipt() ,'currency' => '£', 'isManual' => 0, 'serviceDate' => date('Y-m-d')],$this->organization());
+			$localData = ['receiptNumber' => $this->autoReceipt(),
+						'isManualCode' => $this->autoReceipt() ,
+						'currency' => '£', 
+						'isManual' => 0, 
+						'serviceDate' => date('Y-m-d')];
+						
+			return array_merge($localData ,$this->organization());
 		}
 	}
 
-	public function getInitializeo()
+	public function getInito()
 	{
 		if(\Request::ajax())
 		{
