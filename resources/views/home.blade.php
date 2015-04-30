@@ -24,7 +24,7 @@
 				<th>Inovice Date</th>
 				<th>Amount</th>
 				<th>Status</th>
-				<th>Option</th>
+				<th>Action</th>
 			</tr>
 			<?php $sn = $invoices->firstItem();?>
 			@if(!empty($invoices))
@@ -46,7 +46,19 @@
 						<td><span class="currency-view">{{$invoice->currency}}</span>{{($invoice->type == 1) ? $workTotal : $serviceTotal}}</td>
 						
 						<td>{!! ($invoice->status == 0) ? '<span class="iapp-badge">Pending</span>': '<span class="iapp-badge">Paid</span>' !!}</td>
-						<td>{!! ($invoice->status == 0) ? '<button data-id="'.$invoice->id.'" class="status-print-btn" ng-pay-invoice>Paid</button>': '<span class="glyphicon glyphicon-ok iapp-ok"></span>' !!}</td>
+						<td class="dropdown">
+							<button type="button" class="edit-btn dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><span class="glyphicon glyphicon-option-vertical"></span> Choose</button>
+								<ul class="dropdown-menu dropdown-menu-hover" role="menu">
+									<div class="triangle-up triangle-iapp"></div>
+									@if($invoice->status == 0)
+									<li><a href="javascript:void(0)" data-id="{{$invoice->id}}" ng-pay-invoice>Paid</a></li>
+									<li class="divider"></li>
+									@endif
+									<li><a href="javascript:void(0)" data-id="{{$invoice->id}}"><span class="glyphicon glyphicon-pencil"></span> Edit</a></li>
+									<li class="divider"></li>
+									<li><a href="javascript:void(0)" data-id="{{$invoice->id}}"><span class="glyphicon glyphicon-remove-sign"></span> Delete</a></li>
+								</ul>
+						</td>
 					</tr>
 					<?php $sn++;?>
 				@endforeach
@@ -56,5 +68,4 @@
 			{!! $invoices->render() !!}
 		</div>
 	</div>
-</div>
-@stop
+</div> 

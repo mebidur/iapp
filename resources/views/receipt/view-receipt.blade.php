@@ -23,6 +23,7 @@
 				<th>Created Date</th>
 				<th>Receipt Date</th>
 				<th>Amount</th>
+				<th>Option</th>
 			</tr>
 			<?php $sn = $receipts->firstItem();?>
 			@if(!empty($receipts))
@@ -41,7 +42,18 @@
 								<?php $serviceTotal += $each->amount;?>
 							@endif
 						@endforeach						
-						<td><span class="currency-view">{{$receipt->currency}}</span>{{($receipt->type == 1) ? $workTotal : $serviceTotal}}</td>
+						<td>
+							<span class="currency-view">{{$receipt->currency}}</span>{{($receipt->type == 1) ? $workTotal : $serviceTotal}}
+						</td>
+						<td class="dropdown">
+							<button type="button" class="edit-btn dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><span class="glyphicon glyphicon-option-vertical"></span> Choose</button>
+								<ul class="dropdown-menu dropdown-menu-hover" role="menu">
+									<div class="triangle-up triangle-iapp"></div>
+									<li><a href="javascript:void(0)" data-id="{{$receipt->id}}">Edit</a></li>
+									<li class="divider"></li>
+									<li><a href="javascript:void(0)" data-id="{{$receipt->id}}">Delete</a></li>
+								</ul>
+						</td>
 					</tr>
 					<?php $sn++;?>
 				@endforeach

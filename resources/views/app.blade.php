@@ -26,16 +26,14 @@
 		                <li class="dropdown {{($current == 'work-invoice' || $current == 'service-invoice') ? 'current' : ''}}">
 							<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><b>Invoices</b></a>
 							<ul class="dropdown-menu iapp-drop-down-menu" role="menu">
-								<div class="triangle-up"></div>
 								<li><a href="{{url('/invoice/work')}}" class="{{($current == 'work-invoice') ? 'current-list' : ''}}"><span class="glyphicon glyphicon-file"></span> New Hourly Invoice</a></li>
 								<li class="divider"></li>
 								<li><a href="{{url('/invoice/service')}}" class="{{($current == 'service-invoice') ? 'current-list' : ''}}"><span class="glyphicon glyphicon-file"></span> New Service Invoice</a></li>
 							</ul>
 						</li>
-	                	<li class="dropdown {{($current == 'work-receipt' || $current == 'service-receipt') ? 'current' : ''}}">
+	                	<li class="dropdown {{($current == 'receipt' || $current == 'work-receipt' || $current == 'service-receipt') ? 'current' : ''}}">
 							<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><b>Receipts</b></a>
 							<ul class="dropdown-menu iapp-drop-down-menu" role="menu">
-								<div class="triangle-up"></div>
 								<li><a href="{{url('/receipt/work')}}" class="{{($current == 'work-receipt') ? 'current-list': ''}}"><span class="glyphicon glyphicon-file"></span> New Hourly Receipt</a></li>
 								<li class="divider"></li>
 								<li><a href="{{url('/receipt/service')}}" class="{{($current == 'service-receipt') ? 'current-list': ''}}"><span class="glyphicon glyphicon-file"></span> New Service Receipt</a></li>

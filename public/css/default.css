@@ -263,7 +263,9 @@ select.ng-pristine{
 .navbar-default .navbar-nav > .open > a,
 .navbar-default .navbar-nav > .open > a:hover, 
 .navbar-default .navbar-nav > .open > a:focus{
-  border-bottom: 4px solid #E7E7E7 !important;
+  /*border-bottom: 4px solid #E7E7E7 !important;*/
+  background-color: #fff;
+  border-bottom: 4px solid #FFFFFF !important;
 }
 .database-error-msg, .submitted-error-msg{
 	border-radius: 0px !important;
@@ -429,4 +431,37 @@ hr{
 .fadeInUp {
   -webkit-animation-name: fadeInUp;
   animation-name: fadeInUp;
+}
+.edit-btn, .delete-btn{
+	padding: 2px 10px;
+	padding-top: 3px;
+	border-radius: 13px;
+	background: #0099C9;
+	border: 0px;
+	font-size: 13px;
+	border-bottom: 2px solid #087A9D;
+	color: #fff;
+	  min-width: 81px !important;
+}
+.dropdown-menu-hover {
+	position: absolute;
+    top: 30px !important;
+   min-width: 80px !important; 
+}
+.dropdown-menu .divider {
+	height: 1px !important;
+	margin: 0px 0 !important;
+}
+.iapp-pagination{
+	text-align: center !important;
+	margin-bottom: 15px !important;
+}
+.dropdown-menu {
+
+   border: 1px solid #dfdfdf !important;
+   -webkit-box-shadow: none !important;
+   box-shadow: none !important;
+}
+.triangle-iapp{
+	left: 61% !important;
 }
