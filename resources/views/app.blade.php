@@ -15,7 +15,7 @@
 	<div class="wrapper">
 		<div id="app-menu" class="navbar navbar-default navbar-fixed-top" role="navigation">
 		    <div class="container">
-		        <div class="navbar-header"><a class="navbar-brand" href="{{url('/')}}">Invoice App</a>
+		        <div class="navbar-header iapp-logo"><a class="navbar-brand" href="{{url('/')}}">Invoice App</a>
 		            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-menubuilder"><span class="glyphicon glyphicon-menu-hamburger"></span>
 		            </button>
 		        </div>

@@ -459,16 +459,17 @@ var appurl = document.getElementById('siteUrl').value,
 	                $http({
 	                		method  : 'POST',
 					        url     : appurl+'/invoice/status',
-					        data    : {id : Id, _token : _token}, })
-	                	.success(function(data){
-	                			if(data.statusCode == 200){
-	                				element.html('Wait ..').css('background-color','#45B4D7');
-	                				$timeout(function(){
-	                					element.closest('td').prev().find('span').replaceWith('<span class="iapp-badge">Paid</span>');
-				                		element.replaceWith('<span class="glyphicon glyphicon-ok iapp-ok"></span>');				                			
-	                				},1000);
-	                				
-	                			}
+					        data    : {id : Id, _token : _token}, 
+					}).success(function(data)
+				    {
+            			if(data.statusCode == 200){
+            				element.html('Wait ..').css('background-color','#45B4D7').css('color','#fff');
+            				$timeout(function(){
+            					element.closest('td').prev().find('span').replaceWith('<span class="iapp-badge">Paid</span>');
+		                		element.replaceWith('<span class="glyphicon glyphicon-ok iapp-ok"></span>');				                			
+            				},1000);
+            				
+            			}
 					});				
 	            });
 	        }
@@ -483,5 +484,61 @@ var appurl = document.getElementById('siteUrl').value,
 				});	
 			}
 		}
+	});
+
+	app.directive('ngEditInvoice', function($http, $timeout) {
+	    return {
+	        link: function (scope, element, attrs) {
+	            element.bind('click', function (){
+	              var  Id = element.data('id');
+	                $http({
+	                		method  : 'POST',
+					        url     : appurl+'/invoice/edit',
+					        data    : {id : Id, _token : _token}, 
+					}).success(function(data){
+	        			if(data.statusCode == 200){
+	        				// element.html('Wait ..').css('background-color','#45B4D7').css('color','#fff');                				
+	        			}
+					});				
+	            });
+	        }
+	    };
+	});
+
+	app.directive('ngRemoveInvoice', function($http, $timeout) {
+	    return {
+	        link: function (scope, element, attrs) {
+	            element.bind('click', function (){
+	              var  Id = element.data('id');
+	                $http({
+	                		method  : 'POST',
+					        url     : appurl+'/invoice/remove',
+					        data    : {id : Id, _token : _token}, 
+					    }).success(function(data){
+                			if(data.statusCode == 200){
+                				window.location.reload();            				               				
+                			}
+					});				
+	            });
+	        }
+	    };
+	});
+	app.directive('ngRemoveReceipt', function($http, $timeout) {
+	    return {
+	        link: function (scope, element, attrs) {
+	            element.bind('click', function (){
+	              var  Id = element.data('id');
+	                $http({
+	                		method  : 'POST',
+					        url     : appurl+'/receipt/remove',
+					        data    : {id : Id, _token : _token}, 
+					}).success(function(data){
+	        			if(data.statusCode == 200){
+	        				window.location.reload();            				               				
+	        			}
+					});				
+	            });
+	        }
+	    };
 	});
 

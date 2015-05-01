@@ -441,7 +441,7 @@ hr{
 	font-size: 13px;
 	border-bottom: 2px solid #087A9D;
 	color: #fff;
-	  min-width: 81px !important;
+	  /*min-width: 81px !important;*/
 }
 .dropdown-menu-hover {
 	position: absolute;
@@ -456,12 +456,18 @@ hr{
 	text-align: center !important;
 	margin-bottom: 15px !important;
 }
-.dropdown-menu {
-
+.iapp-option .dropdown-menu {
+	left: -37px !important;
    border: 1px solid #dfdfdf !important;
    -webkit-box-shadow: none !important;
    box-shadow: none !important;
 }
+.iapp-option .dropdown-menu > li > a {
+	padding: 3px 10px !important;
+}
 .triangle-iapp{
-	left: 61% !important;
+	left: 76% !important;
+}
+.iapp-logo a{
+	color: #0099C9 !important;
 }

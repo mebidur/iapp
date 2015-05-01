@@ -10,11 +10,11 @@
 		@if(Session::has('message'))
 		<div class="alert alert-success">
 			{{Session::get('message')}}
-			<a href="javascript:void(0)" class="pull-right alert-close">&times;</a>
+			<a href="javascript:void(0)" class="pull-right alert-close" ng-fade-out>&times;</a>
 		</div>
 		@endif
 	<span class="pagination-view hidden-xs">Showing {{$receipts->firstItem()}} to {{$receipts->lastItem()}} of {{$receipts->total()}} Receipts</span>
-	<div class="table-responsive">
+	<div class="table-responsive iapp-option">
 		<table class="table">
 			<tr>
 				<th>SN</th>
@@ -46,12 +46,12 @@
 							<span class="currency-view">{{$receipt->currency}}</span>{{($receipt->type == 1) ? $workTotal : $serviceTotal}}
 						</td>
 						<td class="dropdown">
-							<button type="button" class="edit-btn dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><span class="glyphicon glyphicon-option-vertical"></span> Choose</button>
+							<button type="button" class="edit-btn dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><span class="glyphicon glyphicon-option-vertical"></span></button>
 								<ul class="dropdown-menu dropdown-menu-hover" role="menu">
 									<div class="triangle-up triangle-iapp"></div>
-									<li><a href="javascript:void(0)" data-id="{{$receipt->id}}">Edit</a></li>
+									<li><a href="javascript:void(0)" data-id="{{$receipt->id}}" ng-edit-receipt><span class="glyphicon glyphicon-pencil"></span> Edit</a></li>
 									<li class="divider"></li>
-									<li><a href="javascript:void(0)" data-id="{{$receipt->id}}">Delete</a></li>
+									<li><a href="javascript:void(0)" data-id="{{$receipt->id}}" ng-remove-receipt><span class="glyphicon glyphicon-remove-sign"></span> Delete</a></li>
 								</ul>
 						</td>
 					</tr>

@@ -200,4 +200,35 @@ class InvoiceController extends Controller {
 		}
 	}
 
+	public function postEdit()
+	{
+		if(\Input::has('id'))
+		{
+			$invoice = Invoice::with('description')->whereId(\Input::get('id'))->first();
+			if(!empty($invoice))
+			{
+				return ['results' => $invoice, 'statusCode' => 200, 'message' => 'success'];
+			}else
+			{
+				return ['results' => [], 'statusCode' => 408,'message' => 'No data received invalid data provided!'];
+			}
+		}
+	}
+
+	public function postRemove()
+	{
+		if(\Input::has('id'))
+		{
+			try {
+				Invoice::find(\Input::get('id'))->delete();
+				\Session::flash('message', 'Invoice Deleted Successfully ...');
+				
+				return ['message' => 'success', 'statusCode' => 200];
+			} catch (Exception $e) {
+				return ['message' => $e->getMessage(), 'statusCode' => 408,];
+			}
+
+		}
+	}
+
 }

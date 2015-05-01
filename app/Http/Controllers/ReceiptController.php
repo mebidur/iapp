@@ -191,4 +191,34 @@ class ReceiptController extends Controller {
 		}
 	}
 
+	public function postEdit()
+	{
+		if(\Input::has('id'))
+		{
+			$receipt = Receipt::with('description')->whereId(\Input::get('id'))->first();
+			if(!empty($receipt))
+			{
+				return ['results' => $receipt, 'statusCode' => 200, 'message' => 'success'];
+			}else
+			{
+				return ['results' => [], 'statusCode' => 408,'message' => 'No data received invalid data provided!'];
+			}
+		}
+	}
+
+	public function postRemove()
+	{
+		if(\Input::has('id'))
+		{
+			try {
+				Receipt::find(\Input::get('id'))->delete();
+				
+				\Session::flash('message', 'Receipt Deleted Successfully ...');
+				return ['message' => 'success', 'statusCode' => 200];
+			} catch (Exception $e) {
+				return ['message' => $e->getMessage(), 'statusCode' => 408,];
+			}
+
+		}
+	}
 }
