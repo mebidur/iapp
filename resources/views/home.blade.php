@@ -14,7 +14,7 @@
 		</div>
 		@endif
 	<span class="pagination-view hidden-xs" style="top: 4% !important;">Showing {{$invoices->firstItem()}} to {{$invoices->lastItem()}} of {{$invoices->total()}} Invoices</span>
-	<div class="table-responsive iapp-option">
+	<div class="table-responsive iapp-option {{(count($invoices) < 10) ? 'has-more-invoice' : '' }}">
 		<table class="table">
 			<tr>
 				<th>SN</th>

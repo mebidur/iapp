@@ -14,7 +14,7 @@
 		</div>
 		@endif
 	<span class="pagination-view hidden-xs">Showing {{$receipts->firstItem()}} to {{$receipts->lastItem()}} of {{$receipts->total()}} Receipts</span>
-	<div class="table-responsive iapp-option">
+	<div class="table-responsive iapp-option {{(count($receipts) < 10) ? 'has-more-invoice' : '' }}">
 		<table class="table">
 			<tr>
 				<th>SN</th>

@@ -38,7 +38,7 @@
 								<li class="divider"></li>
 								<li><a href="{{url('/receipt/service')}}" class="{{($current == 'service-receipt') ? 'current-list': ''}}"><span class="glyphicon glyphicon-file"></span> New Service Receipt</a></li>
 								<li class="divider"></li>
-								<li><a href="{{url('/receipt')}}" class="{{($current == 'receipt') ? 'current-list': ''}}"><span class="glyphicon glyphicon-option-vertical"></span> Receipts History</a></li>
+								<li><a href="{{url('/receipt')}}" class="{{($current == 'receipt') ? 'current-list': ''}}"><span class="glyphicon glyphicon-menu-hamburger"></span> Receipts History</a></li>
 							</ul>
 						</li>						
 		            </ul>
