@@ -221,7 +221,7 @@ class InvoiceController extends Controller {
 		{
 			try {
 				Invoice::find(\Input::get('id'))->delete();
-				\Session::flash('message', 'Invoice Deleted Successfully ...');
+				\Session::flash('message', 'Invoice Deleted Successfully.');
 				
 				return ['message' => 'success', 'statusCode' => 200];
 			} catch (Exception $e) {
@@ -229,6 +229,11 @@ class InvoiceController extends Controller {
 			}
 
 		}
+	}
+
+	public function getEdit()
+	{
+		return \View::make('invoice.edit-work-invoice')->with(['current' => 'invoice']);
 	}
 
 }

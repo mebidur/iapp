@@ -1,6 +1,6 @@
 var appurl = document.getElementById('siteUrl').value,
 	_token 	= document.getElementById('_token').value,
-	app = angular.module('iApp', ['ngMessages']), 
+	app = angular.module('iApp', ['ngRoute','ngMessages']), 
 	typingTimer;
 
 	app.config(['$interpolateProvider','$httpProvider',function($interpolateProvider,$httpProvider)
@@ -481,7 +481,7 @@ var appurl = document.getElementById('siteUrl').value,
 			link: function(scope, element, attrs){
 				element.bind('click',function(){
 					element.parent().fadeOut(3000,"linear");
-				});	
+				});
 			}
 		}
 	});
@@ -491,15 +491,17 @@ var appurl = document.getElementById('siteUrl').value,
 	        link: function (scope, element, attrs) {
 	            element.bind('click', function (){
 	              var  Id = element.data('id');
-	                $http({
-	                		method  : 'POST',
-					        url     : appurl+'/invoice/edit',
-					        data    : {id : Id, _token : _token}, 
-					}).success(function(data){
-	        			if(data.statusCode == 200){
-	        				// element.html('Wait ..').css('background-color','#45B4D7').css('color','#fff');                				
-	        			}
-					});				
+	              window.location.replace(appurl+'/invoice/edit/'+Id);
+	    //             $http({
+	    //             		method  : 'POST',
+					//         url     : appurl+'/invoice/edit',
+					//         data    : {id : Id, _token : _token}, 
+					// }).success(function(data){
+					// 	console.log(data);
+	    //     			if(data.statusCode == 200){
+	    //     				// element.html('Wait ..').css('background-color','#45B4D7').css('color','#fff');                				
+	    //     			}
+					// });				
 	            });
 	        }
 	    };
@@ -533,6 +535,7 @@ var appurl = document.getElementById('siteUrl').value,
 					        url     : appurl+'/receipt/remove',
 					        data    : {id : Id, _token : _token}, 
 					}).success(function(data){
+						console.log(data);
 	        			if(data.statusCode == 200){
 	        				window.location.reload();            				               				
 	        			}

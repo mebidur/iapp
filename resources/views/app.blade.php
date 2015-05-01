@@ -23,7 +23,7 @@
 		            @if(Auth::check())
 		            <ul class="nav navbar-nav navbar-left iapp-nav">
 		                <li class="{{($current == 'home') ? 'current' : ''}}"><a href="{{url('/')}}"><b>Home</b></a></li>
-		                <li class="dropdown {{($current == 'work-invoice' || $current == 'service-invoice') ? 'current' : ''}}">
+		                <li class="dropdown {{($current == 'invoice' ||$current == 'work-invoice' || $current == 'service-invoice') ? 'current' : ''}}">
 							<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><b>Invoices</b></a>
 							<ul class="dropdown-menu iapp-drop-down-menu" role="menu">
 								<li><a href="{{url('/invoice/work')}}" class="{{($current == 'work-invoice') ? 'current-list' : ''}}"><span class="glyphicon glyphicon-file"></span> New Hourly Invoice</a></li>
@@ -76,6 +76,7 @@
 	{!!HTML::script('js/bootstrap.min.js')!!}
 	{!!HTML::script('js/bootstrap-datepicker.js')!!}
 	{!!HTML::script('js/angular.min.js')!!}
+	{!!HTML::script('js/angular-route.min.js')!!}
 	{!!HTML::script('js/angular-messages.js')!!}
 	{!!HTML::script('js/app.js')!!}
 	@yield('script')

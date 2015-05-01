@@ -213,7 +213,7 @@ class ReceiptController extends Controller {
 			try {
 				Receipt::find(\Input::get('id'))->delete();
 				
-				\Session::flash('message', 'Receipt Deleted Successfully ...');
+				\Session::flash('message', 'Receipt Deleted Successfully.');
 				return ['message' => 'success', 'statusCode' => 200];
 			} catch (Exception $e) {
 				return ['message' => $e->getMessage(), 'statusCode' => 408,];

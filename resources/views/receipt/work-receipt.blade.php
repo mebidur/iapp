@@ -19,7 +19,7 @@
 	<p></p>
 	<form name="workReceiptForm" ng-submit="workReceiptForm.$valid && workReceiptProcess()"  novalidate>
 	<div class="org-content section-content">
-		<h4 class="content-title">Organization Information</h4>
+		<h4 class="content-title">General Information</h4>
 		<div class="row">
 			<div class="col-md-5 col-xs-9 col-sm-10">
 				<label><b>Receipt No</b></label>
@@ -63,7 +63,7 @@
 				</button>
 				<input type="hidden" ng-model="organization.isManualCode" name="isManualCode">
 			</div>
-			<div class="col-md-6 col-xs-12 col-sm-12">
+			<div class="col-md-3 col-xs-12 col-sm-12">
 				<label><b>Receipt Date</b></label>
 				<input type="text" class="form-control iapp-date" 
 				name="serviceDate" 
@@ -82,8 +82,18 @@
 			        </small>
 			      </div>
 			</div>
+			<div class="col-md-3 col-xs-12 col-sm-12">
+				<label><b>Currency</b></label>
+				<select class="form-control" name="currency" ng-model="organization.currency" required>
+					<option selected disabled value="">Select Currency</option>
+					<option value="Rs">Nepalese Rupee</option>
+					<option value="&euro;">Euro</option>				
+					<option value="&pound;" selected>Pound Sterling</option>			
+					<option value="&dollar;">US Dollar</option>
+				</select>
+			</div>
 		</div>
-		<p></p>
+<!-- 		<p></p>
 		<div class="row">
 			<div class="col-md-6">
 				<label><b>Service Provider</b></label>
@@ -122,8 +132,8 @@
 			        </small>
 			    </div>
 			</div>
-		</div>
-		<p></p>
+		</div> -->
+		<!-- <p></p>
 		<div class="row">
 			<div class="col-md-6">
 				<label><b>Phone No</b></label>
@@ -133,8 +143,8 @@
 				<label><b>Email</b></label>
 				<input type="email" class="form-control" placeholder="Email" name="companyEmail" ng-model="organization.email" required>
 			</div>
-		</div>
-		<p></p>
+		</div> -->
+		<!-- <p></p>
 		<div class="row">
 			<div class="col-md-6">
 				<label><b>City</b></label>
@@ -145,8 +155,8 @@
 				<input type="text" class="form-control" name="companyState" ng-model="organization.state" placeholder="State" required>
 			</div>
 		</div>
-		<p></p>
-		<div class="row">
+		<p></p> -->
+		<!-- <div class="row">
 			<div class="col-md-6">
 				<label><b>Country</b></label>
 				<select class="form-control" name="companyCountry" ng-model="organization.country" required>
@@ -164,8 +174,8 @@
 				</select>
 			</div>
 		</div>
-		<p></p>
-		<div class="row">
+		<p></p> -->
+		<!-- <div class="row">
 			<div class="col-md-6">
 				<label><b>Note</b></label>
 				<textarea class="form-control" 
@@ -184,7 +194,7 @@
 			        </small>
 			      </div>
 			</div>
-		</div>
+		</div> -->
 	</div>
 	<p></p>
 	<div class="customer-content section-content">
@@ -214,7 +224,7 @@
 				<label><b>Customer Address</b></label>
 				<textarea class="form-control" 
 				rows="3" name="clientAddress" 
-				placeholder="Customer Address"
+				placeholder="Street, City, State, Country"
 				ng-minlength="5"
 				ng-model="customer.address"
 				required></textarea>
@@ -229,7 +239,7 @@
 			</div>
 		</div>
 		<p></p>
-		<div class="row">
+		<!-- <div class="row">
 			<div class="col-md-6">
 				<label><b>Phone No</b></label>
 				<input type="text" class="form-control" placeholder="Phone No" ng-pattern="/^0|[1-9][0-9]*$/" name="customerPhone" ng-model="customer.phone" required>
@@ -238,8 +248,8 @@
 				<label><b>Email</b></label>
 				<input type="email" class="form-control" placeholder="Email" name="customereEmail" ng-model="customer.email" required>
 			</div>
-		</div>
-		<p></p>
+		</div> -->
+		<!-- <p></p>
 		<div class="row">
 			<div class="col-md-6">
 				<label><b>City</b></label>
@@ -255,7 +265,7 @@
 					@include('include.country-list')
 				</select>
 			</div>
-		</div>
+		</div> -->
 	</div>
 	<p></p>
 	<div class="desc-holder section-content">
