@@ -64,7 +64,7 @@ class ReceiptController extends Controller {
 
 					$fillDesc = [];
 
-					foreach (\Input::get('allDesc') as $each){
+					foreach (\Input::get('descs') as $each){
 						array_push($fillDesc, new Description(array_merge(['receipt_id' => $receipt->id],$each)));
 					}
 
@@ -165,7 +165,7 @@ class ReceiptController extends Controller {
 
 					$fillDesc = [];
 
-					foreach (\Input::get('allDesc') as $each){
+					foreach (\Input::get('descs') as $each){
 						array_push($fillDesc, new Description(array_merge(['receipt_id' => $receipt->id],$each)));
 					}
 
@@ -219,6 +219,124 @@ class ReceiptController extends Controller {
 				return ['message' => $e->getMessage(), 'statusCode' => 408,];
 			}
 
+		}
+	}
+
+	public function getEdit($Id)
+	{
+		if($Id && is_numeric($Id))
+		{
+			$receipt = Receipt::find($Id);
+
+			if(empty($receipt)){
+				return '404 Error, Sorry the page you requested not found!';
+			}
+			if($receipt->type == 1){
+				return \View::make('receipt.edit-work-receipt')->with(['current' => 'receipt', 'currentId' => $Id]);
+			}
+			elseif($receipt->type == 2)
+			{
+				return \View::make('receipt.edit-service-receipt')->with(['current' => 'receipt', 'currentId' => $Id]);	
+			}
+		}
+		return 'Bad request!';	
+	}
+
+	public function postUpdatework(WorkReceipt $request)
+	{
+		if($request->has('currentId'))
+		{
+
+			try {
+				$receipt = Receipt::find($request->get('currentId'));
+				
+
+				$receipt->update(array_merge($request->get('organization'),['state' => $request->get('organization')['isManual']]));
+				$receipt->customer->update($request->get('customer'));				
+				
+				foreach ($request->get('descs') as $each) 
+				{				
+					if(!in_array('id', array_keys($each)))
+					{
+						$desc = new Description;
+						$desc->create(array_merge($each,['receipt_id' => $request->get('currentId')]));
+					}
+					elseif(in_array('id', array_keys($each)) && $each['id'])
+					{
+						$desc = Description::find($each['id']);
+						$desc->update($each);
+					}
+				}
+				return ['status' => 'OK', 'statusCode' => 200, 'receiptId' => $receipt->id,'receiptTpye' => $receipt->type,'response' => true];
+			} 
+			catch (Exception $e) 
+			{
+				return ['status' => $e->getMessage(), 'statusCode' => 503, 'response' => false];
+			}
+		}
+		return 'Bad Request!';
+	}
+
+	public function postUpdateservice(ServiceReceipt $request) 
+	{
+		if($request->has('currentId'))
+		{
+
+			try {
+				$receipt = Receipt::find($request->get('currentId'));				
+
+				$receipt->update(array_merge($request->get('organization'),['state' => $request->get('organization')['isManual']]));
+				$receipt->customer->update($request->get('customer'));				
+				
+				foreach ($request->get('descs') as $each) 
+				{				
+					if(!in_array('id', array_keys($each)))
+					{
+						$desc = new Description;
+						$desc->create(array_merge($each,['receipt_id' => $request->get('currentId')]));
+					}
+					elseif(in_array('id', array_keys($each)) && $each['id'])
+					{
+						$desc = Description::find($each['id']);
+						$desc->update($each);
+					}
+				}
+				return ['status' => 'OK', 'statusCode' => 200, 'receiptId' => $receipt->id,'receiptTpye' => $receipt->type,'response' => true];
+			} 
+			catch (Exception $e) 
+			{
+				return ['status' => $e->getMessage(), 'statusCode' => 503, 'response' => false];
+			}
+		}
+		return 'Bad Request!';
+	}
+
+	public function getCurrent($Id)
+	{
+		if(\Request::ajax() && $Id)
+		{
+			$receipt = Receipt::whereId($Id)->first();
+
+			if($receipt->type == 2)
+			{
+				$i = 0;
+				foreach ($receipt->description as $each) {
+					$description[$i] = ['id' => $each->id, 'workDescription' => $each->workDescription, 'amount' => $each->amount];
+					$i++;
+				}
+			}
+			elseif($receipt->type == 1)
+			{
+				$i = 0;
+				foreach ($receipt->description as $each) {
+					$description[$i] = ['id' => $each->id, 'workDescription' => $each->workDescription, 'rate' => $each->rate, 'hour' => $each->hour];
+					$i++;
+				}				
+			}
+
+			$customer = ['name' => $receipt->customer->name, 'address' => $receipt->customer->address,'id' => $receipt->customer->id];
+			$organization = ['receiptNumber' => $receipt->receiptNumber, 'serviceDate' => $receipt->serviceDate, 'currency' => $receipt->currency,'id'=> $receipt->id, 'isManualCode' => $receipt->receiptNumber,'isManual' => 0];
+			return ['organization' => $organization, 'customer' => $customer, 'description' => $description];
 		}
 	}
 }

@@ -8,6 +8,8 @@ $baseDir = dirname($vendorDir);
 return array(
     'Absolute_Positioner' => $vendorDir . '/dompdf/dompdf/include/absolute_positioner.cls.php',
     'Abstract_Renderer' => $vendorDir . '/dompdf/dompdf/include/abstract_renderer.cls.php',
+    'AddServiceDateToInvoicesTable' => $baseDir . '/database/migrations/2015_05_01_180428_add_serviceDate_to_invoices_table.php',
+    'AddServiceDateToReceiptsTable' => $baseDir . '/database/migrations/2015_05_03_071653_add_serviceDate_to_receipts_table.php',
     'Adobe_Font_Metrics' => $vendorDir . '/phenx/php-font-lib/classes/Adobe_Font_Metrics.php',
     'Attribute_Translator' => $vendorDir . '/dompdf/dompdf/include/attribute_translator.cls.php',
     'Block_Frame_Decorator' => $vendorDir . '/dompdf/dompdf/include/block_frame_decorator.cls.php',
@@ -479,6 +481,8 @@ return array(
     'Page_Frame_Decorator' => $vendorDir . '/dompdf/dompdf/include/page_frame_decorator.cls.php',
     'Page_Frame_Reflower' => $vendorDir . '/dompdf/dompdf/include/page_frame_reflower.cls.php',
     'Positioner' => $vendorDir . '/dompdf/dompdf/include/positioner.cls.php',
+    'RemoveServiceDateFromInvoicesTable' => $baseDir . '/database/migrations/2015_05_01_180239_remove_serviceDate_from_invoices_table.php',
+    'RemoveServiceDateFromReceiptsTable' => $baseDir . '/database/migrations/2015_05_03_071627_remove_serviceDate_from_receipts_table.php',
     'Renderer' => $vendorDir . '/dompdf/dompdf/include/renderer.cls.php',
     'SebastianBergmann\\Comparator\\ArrayComparator' => $vendorDir . '/sebastian/comparator/src/ArrayComparator.php',
     'SebastianBergmann\\Comparator\\Comparator' => $vendorDir . '/sebastian/comparator/src/Comparator.php',

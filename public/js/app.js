@@ -1,5 +1,8 @@
 var appurl = document.getElementById('siteUrl').value,
 	_token 	= document.getElementById('_token').value,
+	_today = document.getElementById('_date').value,
+
+
 	app = angular.module('iApp', ['ngRoute','ngMessages']), 
 	typingTimer;
 
@@ -90,22 +93,14 @@ var appurl = document.getElementById('siteUrl').value,
 	app.directive('ngDatepicker', function ($parse){
 	    return function (scope, element, attrs, controller) {
 	        var ngModel = $parse(attrs.ngModel);
-	        $(function(){
-	            element.datepicker({
-	                showOn:"both",
-	                changeYear:true,
-	                changeMonth:true,
-	                format:'yyyy-mm-dd',
-	                maxDate: new Date(),	                
-	                onSelect:function (dateText, inst) {
-	                    scope.$apply(function(scope){
-	                        ngModel.assign(scope, dateText);
-	                    });
-	                }
-	            }).on('changeDate', function(ev){
-				        $(this).datepicker('hide');
-				    });
+	        element.bind('changeDate',function(){
+	        	$(this).datepicker('hide');
+	        	  var dateText = $(this).prop('value');
+        	    scope.$apply(function(scope){
+                    ngModel.assign(scope, dateText);
+                });
 	        });
+        	element.datepicker({format:'yyyy-mm-dd'});
 	    }
 	});
 
@@ -172,7 +167,7 @@ var appurl = document.getElementById('siteUrl').value,
 			        url     : appurl+'/invoice/work',
 			        data    : {'organization' : $scope.organization,
 			        		   'customer': $scope.customer,
-			        		   'allDesc': $scope.choices,
+			        		   'descs': $scope.choices,
 			        			'_token' : _token,
 			        			'requestType': 'default',
 			        			'currentState': 'work'
@@ -196,7 +191,6 @@ var appurl = document.getElementById('siteUrl').value,
 			}
 		}
 	});	
-
 
 	app.controller('LoginFormController',function($scope){
 		$scope.buttonText = 'Sign In';
@@ -262,7 +256,7 @@ var appurl = document.getElementById('siteUrl').value,
 			        url     : appurl+'/invoice/service',
 			        data    : {'organization' : $scope.organization,
 			        		   'customer': $scope.customer,
-			        		   'allDesc': $scope.choices,
+			        		   'descs': $scope.choices,
 			        			'_token' : _token,
 			        			'requestType': 'default',
 			        			'currentState': 'service'
@@ -339,7 +333,7 @@ var appurl = document.getElementById('siteUrl').value,
 				$scope.workReceiptButton = "Please wait ...";
 				$scope.workReceiptButtonStatus = false;
 				var bulkData = {'organization' : $scope.organization,'customer': $scope.customer,
-								'allDesc': $scope.choices, '_token' : _token, 'requestType': 'default', 'currentState': 'work'};
+								'descs': $scope.choices, '_token' : _token, 'requestType': 'default', 'currentState': 'work'};
 				$http.post(appurl+'/receipt/work' ,bulkData)
 				.success(function(data){					
 		            if(data.statusCode == 200 && data.response == true){
@@ -415,7 +409,7 @@ var appurl = document.getElementById('siteUrl').value,
 			        url     : appurl+'/receipt/service',
 			        data    : {'organization' : $scope.organization,
 			        		   'customer': $scope.customer,
-			        		   'allDesc': $scope.choices,
+			        		   'descs': $scope.choices,
 			        			'_token' : _token,
 			        			'requestType': 'default',
 			        			'currentState': 'service'
@@ -491,21 +485,23 @@ var appurl = document.getElementById('siteUrl').value,
 	        link: function (scope, element, attrs) {
 	            element.bind('click', function (){
 	              var  Id = element.data('id');
-	              window.location.replace(appurl+'/invoice/edit/'+Id);
-	    //             $http({
-	    //             		method  : 'POST',
-					//         url     : appurl+'/invoice/edit',
-					//         data    : {id : Id, _token : _token}, 
-					// }).success(function(data){
-					// 	console.log(data);
-	    //     			if(data.statusCode == 200){
-	    //     				// element.html('Wait ..').css('background-color','#45B4D7').css('color','#fff');                				
-	    //     			}
-					// });				
+	              window.location.replace(appurl+'/invoice/edit/'+Id);				
 	            });
 	        }
 	    };
 	});
+
+	app.directive('ngEditReceipt', function($http, $timeout) {
+	    return {
+	        link: function (scope, element, attrs) {
+	            element.bind('click', function (){
+	              var  Id = element.data('id');
+	              window.location.replace(appurl+'/receipt/edit/'+Id);				
+	            });
+	        }
+	    };
+	});
+
 
 	app.directive('ngRemoveInvoice', function($http, $timeout) {
 	    return {
@@ -525,6 +521,7 @@ var appurl = document.getElementById('siteUrl').value,
 	        }
 	    };
 	});
+
 	app.directive('ngRemoveReceipt', function($http, $timeout) {
 	    return {
 	        link: function (scope, element, attrs) {
@@ -545,3 +542,369 @@ var appurl = document.getElementById('siteUrl').value,
 	    };
 	});
 
+	app.controller('EditServiceInvoiceController',function($scope, $http, $timeout){
+		$scope.serviceInvoiceButton = "Continue ...";
+		$scope.serviceInvoiceButtonStatus = true;
+		$scope.databaseError = false;
+		$scope.manualCode = false;
+		$scope.errors = [{}];
+		$scope.hasErrors = false;
+
+		$scope.choices = [{}];
+		$scope.addNewChoice = function() {  
+			$scope.choices.push({});
+		};
+
+		$scope.removeInput = function(index){
+			if(index != 0){
+				$scope.choices.splice(index,1);	
+			}	    
+		}
+		var currentId;
+		$timeout(function(){
+			currentId = $scope.general.currentId;
+			$scope.organization = {};
+			$scope.customer = {};
+			$http.get(appurl+'/invoice/current/'+currentId)
+			.success(function(data){
+	         	$scope.organization = data.organization;
+	         	$scope.choices = data.description;
+	         	$scope.customer = data.customer;
+	        });
+		
+		},1000);
+
+		$scope.doFocus = function(){
+			$scope.manualCode = true;
+			if($scope.manualCode){
+				$timeout(function(){
+					$('.is-unique-invoice').focus();
+					if($scope.organization.isManualCode == $scope.organization.invoiceNumber){
+						$scope.organization.isManual = 0;
+					}else{
+						$scope.organization.isManual = 1;
+					}
+				});
+			}
+		}
+
+		$scope.checkState = function(){
+			if($scope.organization.isManualCode == $scope.organization.invoiceNumber){
+				$scope.organization.isManual = 0;
+			}else{
+				$scope.organization.isManual = 1;
+			}
+		}
+
+		$scope.serviceInvoiceProcess = function(){	
+			if($scope.serviceInvoiceForm.$valid){
+				$scope.serviceInvoiceButton = "Please wait ...";
+				$scope.serviceInvoiceButtonStatus = false;
+
+				$http({
+			        method  : 'POST',
+			        url     : appurl+'/invoice/updateservice',
+			        data    : {'organization' : $scope.organization,
+			        		   'customer': $scope.customer,
+			        		   'descs': $scope.choices,
+			        			'_token' : _token,
+			        			'currentId' : currentId,
+			        			'requestType': 'default',
+			        			'currentState': 'service'
+			        		},
+			    })
+				.success(function(data){
+					if(data.statusCode == 200 && data.response == true){
+		            	window.location.href = appurl+'/invoice/view?response='+data.invoiceId+'&secure='+data.invoiceTpye+'&status='+data.statusCode;
+		            }else if(data.statusCode == 503 && data.response == false){
+		            	$scope.databaseError = true;
+		            	$scope.serviceInvoiceButtonStatus = true;
+		            	$scope.serviceInvoiceButton = "Continue ...";
+		            }
+		            else{
+		            	$scope.hasErrors = true;
+		            	$scope.errors = data;
+		            	$timeout(function(){
+							 $("html, body").animate({ scrollTop: 0 }, 600);
+		            	});
+		            }
+		        });	
+			}
+		}
+	});
+
+	app.controller('EditWorkInvoiceController',function($scope, $http, $timeout){
+
+		$scope.workInvoiceButton = "Continue ...";
+		$scope.workInvoiceButtonStatus = true;
+		$scope.databaseError = false;
+		$scope.dataSubmitted = false;
+		$scope.manualCode = false;
+		$scope.errors = [{}];
+		$scope.hasErrors = false;
+
+		$scope.choices = [{}];
+		$scope.addNewChoice = function() {  
+			$scope.choices.push({});
+		};
+
+		$scope.removeInput = function(index){
+			if(index != 0){
+				$scope.choices.splice(index,1);	
+			}	    
+		}
+
+		var currentId;
+		$timeout(function(){
+			currentId = $scope.general.currentId;
+			$scope.organization = {};
+			$scope.customer = {};
+			$http.get(appurl+'/invoice/current/'+currentId)
+			.success(function(data){
+	         	$scope.organization = data.organization;
+	         	$scope.choices = data.description;
+	         	$scope.customer = data.customer;
+	        });
+		
+		},1000);
+
+		$scope.doFocus = function(){
+			$scope.manualCode = true;
+			if($scope.manualCode){
+				$timeout(function(){
+					$('.unique-number').focus();
+					if($scope.organization.isManualCode == $scope.organization.invoiceNumber){
+						$scope.organization.isManual = 0;
+					}else{
+						$scope.organization.isManual = 1;
+					}
+				});
+			}
+		}
+
+		$scope.checkState = function(){
+			if($scope.organization.isManualCode == $scope.organization.invoiceNumber){
+				$scope.organization.isManual = 0;
+			}else{
+				$scope.organization.isManual = 1;
+			}
+		}
+		
+		$scope.workInvoiceProcess = function(){
+			if($scope.workInvoiceForm.$invalid){
+				$scope.dataSubmitted = true;
+			}
+
+			if($scope.workInvoiceForm.$valid){
+				$scope.workInvoiceButton = "Please wait ...";
+				$scope.workInvoiceButtonStatus = false;	
+				$http({
+			        method  : 'POST',
+			        url     : appurl+'/invoice/updatework',
+			        data    : {'organization' : $scope.organization,
+			        		   'customer': $scope.customer,
+			        		   'descs': $scope.choices,
+			        			'_token' : _token,
+			        			'currentId' : currentId,
+			        			'requestType': 'default',
+			        			'currentState': 'work'
+			        		},
+			    })
+				.success(function(data){
+					if(data.statusCode == 200 && data.response == true){
+		            	window.location.replace(appurl+'/invoice/view?response='+data.invoiceId+'&secure='+data.invoiceTpye+'&status='+data.statusCode);
+		            }else if(data.statusCode == 503 && data.response == false){
+		            	$scope.databaseError = true;
+		            	$scope.workInvoiceButtonStatus = true;
+		            	$scope.workInvoiceButton = "Continue ...";
+		            }
+		            else{
+		            	$scope.hasErrors = true;
+		            	$scope.errors = data;
+		            	$timeout(function(){
+							 $("html, body").animate({ scrollTop: 0 }, 600);
+		            	});
+		            }
+		        });
+			}
+		}
+	});
+
+	app.controller('EditWorkReceiptController',function($scope, $http, $timeout){
+		$scope.workReceiptButton = "Continue ...";
+		$scope.workReceiptButtonStatus = true;
+		$scope.databaseError = false;
+		$scope.manualCode = false;
+		$scope.errors = [{}];
+		$scope.hasErrors = false;
+
+		$scope.choices = [{}];
+		$scope.addNewChoice = function() {  
+			$scope.choices.push({});
+		};
+
+		$scope.removeInput = function(index){
+			if(index != 0){
+				$scope.choices.splice(index,1);	
+			}	    
+		}
+		
+		var currentId;
+		$timeout(function(){
+			currentId = $scope.general.currentId;
+			$scope.organization = {};
+			$scope.customer = {};
+			$http.get(appurl+'/receipt/current/'+currentId)
+			.success(function(data){
+	         	$scope.organization = data.organization;
+	         	$scope.choices = data.description;
+	         	$scope.customer = data.customer;
+	        });
+		
+		},1000);
+
+		$scope.doFocus = function(){
+			$scope.manualCode = true;
+			if($scope.manualCode){
+				$timeout(function(){
+					$('.is-unique-receipt').focus();
+					if($scope.organization.isManualCode == $scope.organization.receiptNumber){
+						$scope.organization.isManual = 0;
+					}else{
+						$scope.organization.isManual = 1;
+					}
+				});
+			}
+		}
+
+		$scope.checkState = function(){
+			if($scope.organization.isManualCode == $scope.organization.receiptNumber){
+				$scope.organization.isManual = 0;
+			}else{
+				$scope.organization.isManual = 1;
+			}
+		}
+
+		$scope.workReceiptProcess = function(){	
+			if($scope.workReceiptForm.$valid){
+				$scope.workReceiptButton = "Please wait ...";
+				$scope.workReceiptButtonStatus = false;
+				$http.post(appurl+'/receipt/updatework' ,{'organization' : $scope.organization,
+															'customer': $scope.customer,
+															'descs': $scope.choices, 
+															'_token' : _token, 
+															'currentId' : currentId,
+															'requestType': 'default', 
+															'currentState': 'work'})
+				.success(function(data){					
+		            if(data.statusCode == 200 && data.response == true){
+		            	window.location.href = appurl+'/receipt/view?response='+data.receiptId+'&secure='+data.receiptTpye+'&status='+data.statusCode;
+		            }else if(data.statusCode == 503 && data.response == false){
+		            	$scope.databaseError = true;
+		            	$scope.workReceiptButtonStatus = true;
+		            	$scope.workReceiptButton = "Continue ...";
+		            }
+		      //       else{
+		      //       	$scope.hasErrors = true;
+		      //       	$scope.errors = data;
+		      //       	$timeout(function(){
+							 // $("html, body").animate({ scrollTop: 0 }, 600);
+		      //       	});
+		      //       }
+		        });	
+			}
+		}
+	});	
+
+	app.controller('EditServiceReceiptController',function($scope, $http, $timeout){		
+		$scope.serviceReceiptButton = "Continue ...";
+		$scope.serviceReceiptButtonStatus = true;
+		$scope.databaseError = false;
+		$scope.manualCode = false;
+		$scope.errors = [{}];
+		$scope.hasErrors = false;
+
+		$scope.choices = [{}];
+		$scope.addNewChoice = function() {  
+			$scope.choices.push({});
+		};
+
+		$scope.removeInput = function(index){
+			if(index != 0){
+				$scope.choices.splice(index,1);	
+			}	    
+		}	
+
+		var currentId;
+		$timeout(function(){
+			currentId = $scope.general.currentId;
+			$scope.organization = {};
+			$scope.customer = {};
+			$http.get(appurl+'/receipt/current/'+currentId)
+			.success(function(data){
+	         	$scope.organization = data.organization;
+	         	$scope.choices = data.description;
+	         	$scope.customer = data.customer;
+	        });
+		
+		},1000);
+
+		$scope.doFocus = function(){
+			$scope.manualCode = true;
+			if($scope.manualCode){
+				$timeout(function(){
+					$('.is-unique-receipt').focus();
+					if($scope.organization.isManualCode == $scope.organization.receiptNumber){
+						$scope.organization.isManual = 0;
+					}else{
+						$scope.organization.isManual = 1;
+					}
+				});
+			}
+		}
+
+		$scope.checkState = function(){
+			if($scope.organization.isManualCode == $scope.organization.receiptNumber){
+				$scope.organization.isManual = 0;
+			}else{
+				$scope.organization.isManual = 1;
+			}
+		}
+
+		$scope.serviceReceiptProcess = function(){
+			if($scope.serviceReceiptForm.$valid){
+				$scope.serviceReceiptButton = "Please wait ...";
+				$scope.serviceReceiptButtonStatus = false;
+				$http({
+			        method  : 'POST',
+			        url     : appurl+'/receipt/updateservice',
+			        data    : {'organization' : $scope.organization,
+			        		   'customer': $scope.customer,
+			        		   'descs': $scope.choices,
+			        			'_token' : _token,
+			        			'currentId' : currentId,
+			        			'requestType': 'default',
+			        			'currentState': 'service'
+			        		},
+			    })
+				.success(function(data){
+					console.log(data);
+
+		            if(data.statusCode == 200 && data.response == true){
+		            	window.location.href = appurl+'/receipt/view?response='+data.receiptId+'&secure='+data.receiptTpye+'&status='+data.statusCode;
+		            }else if(data.statusCode == 503 && data.response == false){
+		            	$scope.databaseError = true;
+		            	$scope.serviceReceiptButtonStatus = true;
+		            	$scope.serviceReceiptButton = "Continue ...";
+		            }
+		      //       else{
+		      //       	$scope.hasErrors = true;
+		      //       	$scope.errors = data;
+		      //       	$timeout(function(){
+							 // $("html, body").animate({ scrollTop: 0 }, 600);
+		      //       	});
+		      //       }
+		        });	
+			}
+		}
+	});

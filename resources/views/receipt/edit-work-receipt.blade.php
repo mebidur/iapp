@@ -2,10 +2,10 @@
 @section('content')
 <div class="container iapp-status">
 	<div class="row">
-		<div class="col-md-12">Invoices / Edit Work Invoice</div>
+		<div class="col-md-12">Receipts / Edit Work Receipt</div>
 	</div>
 </div>
-<div class="container container-bordered" ng-controller="EditWorkInvoiceController" ng-init="general.currentId='{{$currentId}}';">
+<div class="container container-bordered" ng-controller="EditWorkReceiptController" ng-init="general.currentId='{{$currentId}}';">
 	<p></p>
 	<div class="errors" ng-if="hasErrors">
 		<div ng-class="{'alert alert-danger' : hasErrors}">
@@ -15,34 +15,46 @@
 		</div>
 	</div>
 	<p></p>
-	<form name="workInvoiceForm" ng-submit="workInvoiceForm.$valid && workInvoiceProcess()"  novalidate>	
+	<form name="workReceiptForm" ng-submit="workReceiptForm.$valid && workReceiptProcess()"  novalidate>
 	<div class="org-content section-content">
 		<h4 class="content-title">General Information</h4>
+		<input type="hidden" ng-model="general.currentId" name="currentId">
 		<div class="row">
-			<input type="hidden" ng-model="general.currentId" name="currentId">
-			<div class="col-md-5 col-lg-5 col-xs-9 col-sm-10">
-				<label><b>Invoice No</b></label>
-				<input class="form-control unique-number" 
+			<div class="col-md-5 col-xs-9 col-sm-10">
+				<label><b>Receipt No</b></label>
+				<input class="form-control unique-number is-unique-receipt" 
 				type="text"
-				placeholder="Invoice Number" 
-				name="invoiceNumber" 
-				ng-model="organization.invoiceNumber"
-	            ng-minlength="5" 
+				placeholder="Receipt Number" 
+				name="receiptNumber" 
+				ng-model="organization.receiptNumber"
+	            ng-minlength="5"
+	            ng-change="checkState()"		
+	            ng-disabled="!manualCode"
+	            ng-focus 
 	            ng-maxlength="20"
 	            maxlength="20" 
-	            ng-change="checkState()"
-	            ng-disabled="!manualCode"
-	            ng-focus
-	            ensure-unique="invoiceNumber"
+	            is-unique="receiptNumber"
 				required />
 
-				<div ng-show="workInvoiceForm.invoiceNumber.$dirty && workInvoiceForm.invoiceNumber.$invalid && !workInvoiceForm.invoiceNumber.$focused">
-		        <small class="text-danger"
-						ng-show="workInvoiceForm.invoiceNumber.$error.unique" ng-hide="workInvoiceForm.invoiceNumber.$error">
-						That invoice number provided is  already taken, please try another.
-				</small>
-		      </div>
-	      </div>
+				<div ng-show="workReceiptForm.receiptNumber.$dirty && workReceiptForm.receiptNumber.$invalid && !workReceiptForm.receiptNumber.$focused">
+			        <small class="text-danger" ng-show="workReceiptForm.receiptNumber.$error.required">
+			           The receipt no is requird field
+			        </small>
+			        <small class="text-danger" 
+			                ng-show="workReceiptForm.receiptNumber.$error.minlength">
+			                The receipt no is required to be at least 5 characters
+			        </small>
+			        <small class="text-danger" 
+			                ng-show="workReceiptForm.receiptNumber.$error.maxlength">
+			                The receipt no cannot be longer than 20 characters
+			        </small>
+			        <small class="text-danger"
+							ng-show="workReceiptForm.receiptNumber.$error.isunique" ng-hide="workReceiptForm.receiptNumber.$error">
+							That receipt number provided is  already taken, please try another.
+					</small>
+			    </div>
+
+			</div>
 			<div class="col-md-1 col-sm-1 col-xs-1">
 				<label><b style="color:#fff;" class="hidden-print">Option</b></label>
 				<button type="button" class="btn btn-primary add-more-field" ng-click="doFocus()">
@@ -51,19 +63,21 @@
 				<input type="hidden" ng-model="organization.isManualCode" name="isManualCode">
 			</div>
 			<div class="col-md-3 col-xs-12 col-sm-12">
-				<label><b>Invoice Date</b></label>
+				<label><b>Receipt Date</b></label>
 				<input type="text" class="form-control iapp-date" 
+				name="serviceDate" 
 				ng-maxlength="10"
 				maxlength="10"
-				name="organization.serviceDate" 
-				placeholder="YYYY/MM/DD"
+				placeholder="YYYY/MM/DD" 
 				ng-model="organization.serviceDate"
 				ng-datepicker
-				required/>
-				
-				<div ng-show="workInvoiceForm.serviceDate.$dirty && workInvoiceForm.serviceDate.$invalid">
-			        <small class="text-danger" ng-show="workInvoiceForm.serviceDate.$error.maxlength">
-			        	Date format provided not valid date.
+				required>
+				<div ng-show="workReceiptForm.serviceDate.$dirty && workReceiptForm.serviceDate.$invalid">
+			        <small class="text-danger" ng-show="workReceiptForm.serviceDate.$error.required">
+			           Receipt date is required field
+			        </small>
+			        <small class="text-danger" ng-show="workReceiptForm.serviceDate.$error.maxlength">
+			        	Date format provided is invalid.
 			        </small>
 			      </div>
 			</div>
@@ -81,7 +95,7 @@
 	</div>
 	<p></p>
 	<div class="customer-content section-content">
-	<h4 class="content-title">Customer Information</h4>
+		<h4 class="content-title">Customer Information</h4>
 		<div class="row">
 			<div class="col-md-6">
 				<label><b>Customer Name</b></label>
@@ -93,14 +107,16 @@
 				ng-model="customer.name"
 				class="form-control"
 				placeholder="Customer Name">					
-				</textarea>
-				<div ng-show="workInvoiceForm.serviceReceiver.$dirty && workInvoiceForm.serviceReceiver.$invalid">
-			        <small class="text-danger" ng-show="workInvoiceForm.serviceReceiver.$error.minlength">
-			        	Customer name is required to be at least 3 characters long.
+				</textarea>			
+				<div ng-show="workReceiptForm.serviceReceiver.$dirty && workReceiptForm.serviceReceiver.$invalid">
+			        <small class="text-danger" ng-show="workReceiptForm.serviceReceiver.$error.required">
+			           Customer name is required field
+			        </small>
+			        <small class="text-danger" ng-show="workReceiptForm.serviceReceiver.$error.minlength">
+			        	Customer name is required to be at least 3 characters
 			        </small>
 			      </div>
 			</div>
-
 			<div class="col-md-6">
 				<label><b>Customer Address</b></label>
 				<textarea class="form-control" 
@@ -109,14 +125,17 @@
 				ng-minlength="5"
 				ng-model="customer.address"
 				required></textarea>
-				<div ng-show="workInvoiceForm.clientAddress.$dirty && workInvoiceForm.clientAddress.$invalid">
-			        <small class="text-danger" ng-show="workInvoiceForm.clientAddress.$error.minlength">
-			        	Customer address is required to be at least 5 characters long.
+				<div ng-show="workReceiptForm.clientAddress.$dirty && workReceiptForm.clientAddress.$invalid">
+			        <small class="text-danger" ng-show="workReceiptForm.clientAddress.$error.required">
+			           Customer address is required field
+			        </small>
+			        <small class="text-danger" ng-show="workReceiptForm.clientAddress.$error.minlength">
+			        	Customer address is required to be at least 5 characters
 			        </small>
 			    </div>
 			</div>
-		</div>	
-		<p></p> 
+		</div>
+		<p></p>
 	</div>
 	<p></p>
 	<div class="desc-holder section-content">
@@ -145,13 +164,11 @@
 	</div>
 	<p></p>
 	<div class="row">
-		<p></p>
-		<div class="col-md-12 col-lg-12 col-xs-12 col-sm-12">
-			<button type="submit" ng-disabled="workInvoiceForm.$invalid || !workInvoiceButtonStatus" class="btn btn-primary btn-block input-lg work-invoice-btn iapp-lg-btn choices-holder">[[workInvoiceButton]]</button>
+		<div class="col-md-12">
+			<button type="submit" ng-disabled="workReceiptForm.$invalid || !workReceiptButtonStatus" class="btn btn-primary btn-block input-lg work-invoice-btn iapp-lg-btn choices-holder">[[workReceiptButton]]</button>
 		</div>
-		<p></p>
 	</div>
 	<p></p>
-	</form>
+</form>
 </div>
 @stop

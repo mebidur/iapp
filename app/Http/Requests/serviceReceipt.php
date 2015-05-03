@@ -42,14 +42,14 @@ class ServiceReceipt extends Request {
 			// 'customer.country'					=> 'required',
 		];
 
-		foreach($this->request->get('allDesc') as $index => $each)
+		foreach($this->request->get('descs') as $index => $each)
 		{
 			$i = $index;
 			foreach ($each as $key => $value) {
 				if($key == 'amount'){
-					$rules['allDesc.'.$i.'.'.$key] = 'required|numeric';
+					$rules['descs.'.$i.'.'.$key] = 'required|numeric';
 				}else{
-					$rules['allDesc.'.$i.'.'.$key] = 'required';
+					$rules['descs.'.$i.'.'.$key] = 'required';
 				}
 			}
 		}
@@ -80,14 +80,14 @@ class ServiceReceipt extends Request {
 		// $messages['customer.state.required'] = 'The field  customer state is required.';
 		// $messages['customer.country.required'] = 'The field  customer country is required.';
 
-		foreach($this->request->get('allDesc') as $key => $val)
+		foreach($this->request->get('descs') as $key => $val)
 		{
 			$i = $key;
 			foreach ($val as $each => $value) {
 				$field = ($each == 'workDescription') ? 'work description' : $each;
-				$messages['allDesc.'.$i.'.'.$each.'.required'] = 'The field '.$field. ' ' .$i.' is required.';
-				$messages['allDesc.'.$i.'.'.$each.'.numeric'] = 'The field '.$field. ' ' .$i.' must be a numeric value.';
-				$messages['allDesc.'.$i.'.'.$each.'.email'] = 'The field '.$field. ' ' .$i.' must be a valid email.';
+				$messages['descs.'.$i.'.'.$each.'.required'] = 'The field '.$field. ' ' .$i.' is required.';
+				$messages['descs.'.$i.'.'.$each.'.numeric'] = 'The field '.$field. ' ' .$i.' must be a numeric value.';
+				$messages['descs.'.$i.'.'.$each.'.email'] = 'The field '.$field. ' ' .$i.' must be a valid email.';
 			}
 		}
 

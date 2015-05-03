@@ -83,7 +83,7 @@
 			        </small>
 			      </div>
 			</div>
-			<div class="col-md-3">
+			<div class="col-md-3 col-xs-12 col-sm-12">
 				<label><b>Currency</b></label>
 				<select class="form-control" name="currency" ng-model="organization.currency" required>
 					<option selected disabled value="">Select Currency</option>

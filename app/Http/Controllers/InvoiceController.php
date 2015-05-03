@@ -63,7 +63,7 @@ class InvoiceController extends Controller {
 
 					$fillDesc = [];
 
-					foreach (\Input::get('allDesc') as $each){
+					foreach (\Input::get('descs') as $each){
 						array_push($fillDesc, new Description(array_merge(['invoice_id' => $invoice->id],$each)));
 					}
 
@@ -164,7 +164,7 @@ class InvoiceController extends Controller {
 
 					$fillDesc = [];
 
-					foreach (\Input::get('allDesc') as $each){
+					foreach (\Input::get('descs') as $each){
 						array_push($fillDesc, new Description(array_merge(['invoice_id' => $invoice->id],$each)));
 					}
 
@@ -231,9 +231,121 @@ class InvoiceController extends Controller {
 		}
 	}
 
-	public function getEdit()
+	public function getEdit($Id)
 	{
-		return \View::make('invoice.edit-work-invoice')->with(['current' => 'invoice']);
+		if($Id && is_numeric($Id))
+		{
+			$invoice = Invoice::find($Id);
+			if(empty($invoice)){
+				return '404 Error, Sorry the page you requested not found!';
+			}
+			if($invoice->type == 1){
+				return \View::make('invoice.edit-work-invoice')->with(['current' => 'invoice', 'currentId' => $Id]);
+			}
+			elseif($invoice->type == 2)
+			{
+				return \View::make('invoice.edit-service-invoice')->with(['current' => 'invoice', 'currentId' => $Id]);	
+			}
+		}
+		return 'Bad request!';	
 	}
 
+	public function postUpdatework(WorkInvoice $request)
+	{
+		if($request->has('currentId'))
+		{
+
+			try {
+				$invoice = Invoice::find($request->get('currentId'));
+				
+
+				$invoice->update(array_merge($request->get('organization'),['state' => $request->get('organization')['isManual']]));
+				$invoice->customer->update($request->get('customer'));				
+				
+				foreach ($request->get('descs') as $each) 
+				{				
+					if(!in_array('id', array_keys($each)))
+					{
+						$desc = new Description;
+						$desc->create(array_merge($each,['invoice_id' => $request->get('currentId')]));
+					}
+					elseif(in_array('id', array_keys($each)) && $each['id'])
+					{
+						$desc = Description::find($each['id']);
+						$desc->update($each);
+					}
+				}
+				return ['status' => 'OK', 'statusCode' => 200, 'invoiceId' => $invoice->id,'invoiceTpye' => $invoice->type,'response' => true];
+			} 
+			catch (Exception $e) 
+			{
+				return ['status' => $e->getMessage(), 'statusCode' => 503, 'response' => false];
+			}
+		}
+		return 'Bad Request!';
+	}
+
+	public function postUpdateservice(ServiceInvoice $request) 
+	{
+		if($request->has('currentId'))
+		{
+
+			try {
+				$invoice = Invoice::find($request->get('currentId'));
+				
+
+				$invoice->update(array_merge($request->get('organization'),['state' => $request->get('organization')['isManual']]));
+				$invoice->customer->update($request->get('customer'));				
+				
+				foreach ($request->get('descs') as $each) 
+				{				
+					if(!in_array('id', array_keys($each)))
+					{
+						$desc = new Description;
+						$desc->create(array_merge($each,['invoice_id' => $request->get('currentId')]));
+					}
+					elseif(in_array('id', array_keys($each)) && $each['id'])
+					{
+						$desc = Description::find($each['id']);
+						$desc->update($each);
+					}
+				}
+				return ['status' => 'OK', 'statusCode' => 200, 'invoiceId' => $invoice->id,'invoiceTpye' => $invoice->type,'response' => true];
+			} 
+			catch (Exception $e) 
+			{
+				return ['status' => $e->getMessage(), 'statusCode' => 503, 'response' => false];
+			}
+		}
+		return 'Bad Request!';
+	}
+
+	public function getCurrent($Id)
+	{
+		if(\Request::ajax() && $Id)
+		{
+			$invoice = Invoice::whereId($Id)->first();
+
+			if($invoice->type == 2)
+			{
+				$i = 0;
+				foreach ($invoice->description as $each) {
+					$description[$i] = ['id' => $each->id, 'workDescription' => $each->workDescription, 'amount' => $each->amount];
+					$i++;
+				}
+			}
+			elseif($invoice->type == 1)
+			{
+				$i = 0;
+				foreach ($invoice->description as $each) {
+					$description[$i] = ['id' => $each->id, 'workDescription' => $each->workDescription, 'rate' => $each->rate, 'hour' => $each->hour];
+					$i++;
+				}				
+			}
+
+			$customer = ['name' => $invoice->customer->name, 'address' => $invoice->customer->address,'id' => $invoice->customer->id];
+			$organization = ['invoiceNumber' => $invoice->invoiceNumber, 'serviceDate' => $invoice->serviceDate, 'currency' => $invoice->currency,'id'=> $invoice->id, 'isManualCode' => $invoice->invoiceNumber,'isManual' => 0];
+			return ['organization' => $organization, 'customer' => $customer, 'description' => $description];
+		}
+	}
 }

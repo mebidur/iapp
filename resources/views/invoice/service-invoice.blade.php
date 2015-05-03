@@ -239,106 +239,106 @@
 				</div>
 			</div>
 			<p></p> -->
-			<p></p>
-			<div class="customer-content section-content">
-				<h4 class="content-title">Customer Information</h4>
-				<div class="row">
-					<div class="col-md-6">
-						<label><b>Customer Name</b></label>
-						<textarea
-						ng-minlength ="3"
-						required
-						rows ="3"
-						name="customerName"
-						ng-model="customer.name"
-						class="form-control"
-						placeholder="Customer Name">					
-						</textarea>
-						<div ng-show="serviceInvoiceForm.serviceReceiver.$dirty && serviceInvoiceForm.serviceReceiver.$invalid">
-					        <small class="text-danger" ng-show="serviceInvoiceForm.serviceReceiver.$error.required">
-					           Customer name is required field
-					        </small>
-					        <small class="text-danger" ng-show="serviceInvoiceForm.serviceReceiver.$error.minlength">
-					        	Customer name is required to be at least 3 characters
-					        </small>
-					      </div>
-					</div>
-					<div class="col-md-6">
-						<label><b>Customer Address</b></label>
-						<textarea class="form-control" 
-						rows="3" name="clientAddress" 
-						placeholder="Street, City, State, Country"
-						ng-minlength="5"
-						ng-model="customer.address"
-						required>
-						</textarea>
-						<div ng-show="serviceInvoiceForm.clientAddress.$dirty && serviceInvoiceForm.clientAddress.$invalid">
-					        <small class="text-danger" ng-show="serviceInvoiceForm.clientAddress.$error.required">
-					           Customer address is required field
-					        </small>
-					        <small class="text-danger" ng-show="serviceInvoiceForm.clientAddress.$error.minlength">
-					        	Customer address provided is required to be at least 5 characters
-					        </small>
-					    </div>
-					</div>
-				</div>
-				<!-- <p></p>
-				<div class="row">
-					<div class="col-md-6">
-						<label><b>Phone No</b></label>
-						<input type="text" class="form-control" placeholder="Phone No" ng-pattern="/^0|[1-9][0-9]*$/" name="customerPhone" ng-model="customer.phone" required>
-					</div>
-					<div class="col-md-6">
-						<label><b>Email</b></label>
-						<input type="email" class="form-control" placeholder="Email" name="customereEmail" ng-model="customer.email" required>
-					</div>
-				</div> -->
-				<!-- <p></p>
-				<div class="row">
-					<div class="col-md-6">
-						<label><b>City</b></label>
-						<input type="text" class="form-control" name="customerCity" ng-model="customer.city" placeholder="City" required>
-					</div>
-					<div class="col-md-3">
-						<label><b>State</b></label>
-						<input type="text" class="form-control" name="customerState" ng-model="customer.state" placeholder="State" required>
-					</div>
-					<div class="col-md-3">
-						<label><b>Country</b></label>
-						<select class="form-control" name="customerCountry" ng-model="customer.country" required>
-							@include('include.country-list')
-						</select>
-					</div>
-				</div> -->
-			</div>
-			<p></p>
-			<div class="desc-holder section-content">
-				<h4 class="content-title">Other Information</h4>
-				<div data-ng-repeat="choice in choices">
-				     <div class="row">
-				     	<div class="col-md-6">
-				     		<label><b>Work Description</b></label>
-				     		<textarea rows="3" class="form-control" ng-model="choice.workDescription" placeholder="Work Description ..." required></textarea>
-				     	</div>
-				     	<div class="col-md-5 col-xs-8 col-sm-8">
-				     	<label><b>Amount</b></label>
-				     		<input type="text" class="form-control" ng-model="choice.amount" name="" ng-pattern="/^0|[1-9][0-9]*$/" placeholder="Enter Amount" required>
-				     	</div>
-				     	<div class="col-md-1 col-xs-3 col-sm-3"><p><br></p>
-				     		<button type="button" ng-click="removeInput($index)" ng-hide="($index == 0)" class="btn btn-danger"><span class="glyphicon glyphicon-remove-sign"></span></button>
-				     		<button type="button" ng-show="$first" ng-click="addNewChoice()" class="btn btn-primary add-more-field"><span class="glyphicon glyphicon-plus-sign"></span></button>
-				     	</div>
-				     </div>	 		     	  
-			    </div>
-			</div>
-			<p></p>
-			<div class="row">
-				<div class="col-md-12">
-					<button type="submit" ng-disabled="serviceInvoiceForm.$invalid" class="btn btn-primary btn-block input-lg work-invoice-btn iapp-lg-btn choices-holder">[[serviceInvoiceButton]]</button>
-				</div>
-			</div>
-			<p></p>
 		</div>
+		<p></p>
+		<div class="customer-content section-content">
+			<h4 class="content-title">Customer Information</h4>
+			<div class="row">
+				<div class="col-md-6">
+					<label><b>Customer Name</b></label>
+					<textarea
+					ng-minlength ="3"
+					required
+					rows ="3"
+					name="customerName"
+					ng-model="customer.name"
+					class="form-control"
+					placeholder="Customer Name">					
+					</textarea>
+					<div ng-show="serviceInvoiceForm.serviceReceiver.$dirty && serviceInvoiceForm.serviceReceiver.$invalid">
+				        <small class="text-danger" ng-show="serviceInvoiceForm.serviceReceiver.$error.required">
+				           Customer name is required field
+				        </small>
+				        <small class="text-danger" ng-show="serviceInvoiceForm.serviceReceiver.$error.minlength">
+				        	Customer name is required to be at least 3 characters
+				        </small>
+				      </div>
+				</div>
+				<div class="col-md-6">
+					<label><b>Customer Address</b></label>
+					<textarea class="form-control" 
+					rows="3" name="clientAddress" 
+					placeholder="Street, City, State, Country"
+					ng-minlength="5"
+					ng-model="customer.address"
+					required>
+					</textarea>
+					<div ng-show="serviceInvoiceForm.clientAddress.$dirty && serviceInvoiceForm.clientAddress.$invalid">
+				        <small class="text-danger" ng-show="serviceInvoiceForm.clientAddress.$error.required">
+				           Customer address is required field
+				        </small>
+				        <small class="text-danger" ng-show="serviceInvoiceForm.clientAddress.$error.minlength">
+				        	Customer address provided is required to be at least 5 characters
+				        </small>
+				    </div>
+				</div>
+			</div>
+			<!-- <p></p>
+			<div class="row">
+				<div class="col-md-6">
+					<label><b>Phone No</b></label>
+					<input type="text" class="form-control" placeholder="Phone No" ng-pattern="/^0|[1-9][0-9]*$/" name="customerPhone" ng-model="customer.phone" required>
+				</div>
+				<div class="col-md-6">
+					<label><b>Email</b></label>
+					<input type="email" class="form-control" placeholder="Email" name="customereEmail" ng-model="customer.email" required>
+				</div>
+			</div> -->
+			<!-- <p></p>
+			<div class="row">
+				<div class="col-md-6">
+					<label><b>City</b></label>
+					<input type="text" class="form-control" name="customerCity" ng-model="customer.city" placeholder="City" required>
+				</div>
+				<div class="col-md-3">
+					<label><b>State</b></label>
+					<input type="text" class="form-control" name="customerState" ng-model="customer.state" placeholder="State" required>
+				</div>
+				<div class="col-md-3">
+					<label><b>Country</b></label>
+					<select class="form-control" name="customerCountry" ng-model="customer.country" required>
+						@include('include.country-list')
+					</select>
+				</div>
+			</div> -->
+		</div>
+		<p></p>
+		<div class="desc-holder section-content">
+			<h4 class="content-title">Other Information</h4>
+			<div data-ng-repeat="choice in choices">
+			     <div class="row">
+			     	<div class="col-md-6">
+			     		<label><b>Work Description</b></label>
+			     		<textarea rows="3" class="form-control" ng-model="choice.workDescription" placeholder="Work Description ..." required></textarea>
+			     	</div>
+			     	<div class="col-md-5 col-xs-8 col-sm-8">
+			     	<label><b>Amount</b></label>
+			     		<input type="text" class="form-control" ng-model="choice.amount" name="" ng-pattern="/^0|[1-9][0-9]*$/" placeholder="Enter Amount" required>
+			     	</div>
+			     	<div class="col-md-1 col-xs-3 col-sm-3"><p><br></p>
+			     		<button type="button" ng-click="removeInput($index)" ng-hide="($index == 0)" class="btn btn-danger"><span class="glyphicon glyphicon-remove-sign"></span></button>
+			     		<button type="button" ng-show="$first" ng-click="addNewChoice()" class="btn btn-primary add-more-field"><span class="glyphicon glyphicon-plus-sign"></span></button>
+			     	</div>
+			     </div>	 		     	  
+		    </div>
+		</div>
+		<p></p>
+		<div class="row">
+			<div class="col-md-12">
+				<button type="submit" ng-disabled="serviceInvoiceForm.$invalid" class="btn btn-primary btn-block input-lg work-invoice-btn iapp-lg-btn choices-holder">[[serviceInvoiceButton]]</button>
+			</div>
+		</div>
+		<p></p>
 	</form>
 </div> 	
 @stop

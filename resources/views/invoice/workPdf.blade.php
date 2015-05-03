@@ -220,12 +220,22 @@
     </tr>
     <tr>
       <td>
-        <b>{{$invoice['organization']->name}}</b><br>
-          <span>{{$invoice['organization']->address}}</span>
+        <div class="iapp-details">
+          <pre><b>{{$invoice['organization']->name}}</b></pre>
+        </div>
+          <div class="iapp-details">
+            <pre>
+              <span>{{$invoice['organization']->address}}</span>
+            </pre>
+          </div>
       </td>
       <td>
-        <b>{{$invoice['customer']->name}}</b><br>
-          <span>{{$invoice['customer']->address}}</span>
+        <div class="iapp-details">
+          <pre><b>{{$invoice['customer']->name}}</b></pre>  
+        </div>
+          <div class="iapp-details">
+            <pre>{{$invoice['customer']->address}}</pre>
+          </div>
       </td>
     </tr>
   </table>
