@@ -194,14 +194,14 @@
 </style>
 </head>  
 <body>
-<div id="container" class="container {{($requestType != 'downloadServicePDF') ? 'center-content' : ''}}">
+<div id="container" class="container {{($requestType != 'downloadServicePDF') ? 'center-content' : ''}}" ng-app="iApp" ng-controller="ServicePdfController">
   @if($requestType != 'downloadServicePDF')
   <div class="hidden-print">
   {!!Form::open(['url' => '/invoice/download'])!!}
     <input type="hidden" name="requestType" value="downloadServicePDF">
     <input type="hidden" name="invoiceId" value="{{$invoice->id}}">
     <div class="pdf-buttons button-content">
-      <a href="{{url('/home')}}" class="go-back">Go Back</a>
+      <button  type="button" class="go-back" ng-click="goBack()">Go Back</button>
       <button type="submit" class="btn-download-pdf">Download PDF</button>
       <button type="button" id="pdf-print-btn" class="pdf-print-btn">Print</button>
     </div>  
@@ -312,3 +312,13 @@
 </div>
 <script type="text/javascript" src="{{url('js/jquery.min.js')}}"></script>
 <script type="text/javascript" src="{{url('js/printPdf.js')}}"></script>
+<script type="text/javascript" src="{{url('js/angular.min.js')}}"></script>
+<script type="text/javascript">
+  var app = angular.module('iApp', []);
+  app.controller('ServicePdfController',function($scope, $timeout, $window){
+    $scope.goBack = function(){
+      $window.history.back();
+    }
+  });
+
+</script>
