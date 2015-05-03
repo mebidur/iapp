@@ -711,21 +711,19 @@ var appurl = document.getElementById('siteUrl').value,
 			        		},
 			    })
 				.success(function(data){
-					console.log(data);
 					if(data.statusCode == 200 && data.response == true){
 		            	window.location.replace(appurl+'/invoice/view?response='+data.invoiceId+'&secure='+data.invoiceTpye+'&status='+data.statusCode);
 		            }else if(data.statusCode == 503 && data.response == false){
 		            	$scope.databaseError = true;
 		            	$scope.workInvoiceButtonStatus = true;
 		            	$scope.workInvoiceButton = "Continue ...";
+		            }else{
+		            	$scope.hasErrors = true;
+		            	$scope.errors = data;
+		            	$timeout(function(){
+							 $("html, body").animate({ scrollTop: 0 }, 600);
+		            	});
 		            }
-		      //       else{
-		      //       	$scope.hasErrors = true;
-		      //       	$scope.errors = data;
-		      //       	$timeout(function(){
-							 // $("html, body").animate({ scrollTop: 0 }, 600);
-		      //       	});
-		      //       }
 		        });
 			}
 		}
