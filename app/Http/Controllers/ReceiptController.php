@@ -253,21 +253,34 @@ class ReceiptController extends Controller {
 
 				$receipt->update(array_merge($request->get('organization'),['state' => $request->get('organization')['isManual']]));
 				$receipt->customer->update($request->get('customer'));				
-				
+				$invoiceIds = [];
 				foreach ($request->get('descs') as $each) 
 				{				
 					if(!in_array('id', array_keys($each)))
 					{
 						$desc = new Description;
 						$desc->create(array_merge($each,['receipt_id' => $request->get('currentId')]));
+						array_push($invoiceIds, $desc->id);
 					}
 					elseif(in_array('id', array_keys($each)) && $each['id'])
 					{
 						$desc = Description::find($each['id']);
 						$desc->update($each);
+						array_push($invoiceIds, $each['id']);
 					}
 				}
-				return ['status' => 'OK', 'statusCode' => 200, 'receiptId' => $receipt->id,'receiptTpye' => $receipt->type,'response' => true];
+				$existingIds = array_column(Description::select('id')
+								->whereInvoiceId($request->get('currentId'))
+								->get()->toArray(), 'id');
+
+				$exists = array_diff($existingIds, $invoiceIds);
+				Description::whereIn('id',$exists)->delete();
+
+				return ['status' => 'OK', 
+						'statusCode' => 200, 
+						'receiptId' => $receipt->id,
+						'receiptTpye' => $receipt->type,
+						'response' => true];
 			} 
 			catch (Exception $e) 
 			{
@@ -287,25 +300,42 @@ class ReceiptController extends Controller {
 
 				$receipt->update(array_merge($request->get('organization'),['state' => $request->get('organization')['isManual']]));
 				$receipt->customer->update($request->get('customer'));				
-				
+				$invoiceIds = [];
 				foreach ($request->get('descs') as $each) 
 				{				
 					if(!in_array('id', array_keys($each)))
 					{
 						$desc = new Description;
 						$desc->create(array_merge($each,['receipt_id' => $request->get('currentId')]));
+						array_push($invoiceIds, $desc->id);
 					}
 					elseif(in_array('id', array_keys($each)) && $each['id'])
 					{
 						$desc = Description::find($each['id']);
 						$desc->update($each);
+						array_push($invoiceIds, $each['id']);
 					}
 				}
-				return ['status' => 'OK', 'statusCode' => 200, 'receiptId' => $receipt->id,'receiptTpye' => $receipt->type,'response' => true];
+				$existingIds = array_column(Description::select('id')
+								->whereInvoiceId($request->get('currentId'))
+								->get()->toArray(), 'id');
+
+				$exists = array_diff($existingIds, $invoiceIds);
+				Description::whereIn('id',$exists)->delete();
+
+				return Description::whereId($request->get('currentId'))->get();
+				
+				return ['status' => 'OK', 
+						'statusCode' => 200, 
+						'receiptId' => $receipt->id,
+						'receiptTpye' => $receipt->type,
+						'response' => true];
 			} 
 			catch (Exception $e) 
 			{
-				return ['status' => $e->getMessage(), 'statusCode' => 503, 'response' => false];
+				return ['status' => $e->getMessage(), 
+						'statusCode' => 503, 
+						'response' => false];
 			}
 		}
 		return 'Bad Request!';
@@ -321,7 +351,9 @@ class ReceiptController extends Controller {
 			{
 				$i = 0;
 				foreach ($receipt->description as $each) {
-					$description[$i] = ['id' => $each->id, 'workDescription' => $each->workDescription, 'amount' => $each->amount];
+					$description[$i] = ['id' => $each->id, 
+					'workDescription' => $each->workDescription, 
+					'amount' => $each->amount];
 					$i++;
 				}
 			}
@@ -329,14 +361,27 @@ class ReceiptController extends Controller {
 			{
 				$i = 0;
 				foreach ($receipt->description as $each) {
-					$description[$i] = ['id' => $each->id, 'workDescription' => $each->workDescription, 'rate' => $each->rate, 'hour' => $each->hour];
+					$description[$i] = ['id' => $each->id, 
+					'workDescription' => $each->workDescription, 
+					'rate' => $each->rate, 
+					'hour' => $each->hour];
 					$i++;
 				}				
 			}
 
-			$customer = ['name' => $receipt->customer->name, 'address' => $receipt->customer->address,'id' => $receipt->customer->id];
-			$organization = ['receiptNumber' => $receipt->receiptNumber, 'serviceDate' => $receipt->serviceDate, 'currency' => $receipt->currency,'id'=> $receipt->id, 'isManualCode' => $receipt->receiptNumber,'isManual' => 0];
-			return ['organization' => $organization, 'customer' => $customer, 'description' => $description];
+			$customer = ['name' => $receipt->customer->name, 
+						'address' => $receipt->customer->address,
+						'id' => $receipt->customer->id];
+			$organization = ['receiptNumber' => $receipt->receiptNumber, 
+							'serviceDate' => $receipt->serviceDate, 
+							'currency' => $receipt->currency,
+							'id'=> $receipt->id, 
+							'isManualCode' => $receipt->receiptNumber,
+							'isManual' => 0];
+
+			return ['organization' => $organization, 
+					'customer' => $customer, 
+					'description' => $description];
 		}
 	}
 }

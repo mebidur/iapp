@@ -261,21 +261,35 @@ class InvoiceController extends Controller {
 
 				$invoice->update(array_merge($request->get('organization'),['state' => $request->get('organization')['isManual']]));
 				$invoice->customer->update($request->get('customer'));				
-				
+				$invoiceIds = [];
 				foreach ($request->get('descs') as $each) 
 				{				
 					if(!in_array('id', array_keys($each)))
 					{
 						$desc = new Description;
-						$desc->create(array_merge($each,['invoice_id' => $request->get('currentId')]));
+						$desc = $desc->create(array_merge($each,['invoice_id' => $request->get('currentId')]));
+						array_push($invoiceIds, $desc->id);
 					}
 					elseif(in_array('id', array_keys($each)) && $each['id'])
 					{
 						$desc = Description::find($each['id']);
 						$desc->update($each);
+						array_push($invoiceIds, $each['id']);
 					}
 				}
-				return ['status' => 'OK', 'statusCode' => 200, 'invoiceId' => $invoice->id,'invoiceTpye' => $invoice->type,'response' => true];
+
+				$existingIds = array_column(Description::select('id')
+											->whereInvoiceId($request->get('currentId'))
+											->get()->toArray(), 'id');
+
+				$exists = array_diff($existingIds, $invoiceIds);
+				Description::whereIn('id', $exists)->delete();
+
+				return ['status' => 'OK', 
+						'statusCode' => 200, 
+						'invoiceId' => $invoice->id,
+						'invoiceTpye' => $invoice->type,
+						'response' => true];
 			} 
 			catch (Exception $e) 
 			{
@@ -296,25 +310,41 @@ class InvoiceController extends Controller {
 
 				$invoice->update(array_merge($request->get('organization'),['state' => $request->get('organization')['isManual']]));
 				$invoice->customer->update($request->get('customer'));				
-				
+				$invoiceIds = [];
+
 				foreach ($request->get('descs') as $each) 
 				{				
 					if(!in_array('id', array_keys($each)))
 					{
 						$desc = new Description;
 						$desc->create(array_merge($each,['invoice_id' => $request->get('currentId')]));
+						array_push($invoiceIds, $desc->id);
 					}
 					elseif(in_array('id', array_keys($each)) && $each['id'])
 					{
 						$desc = Description::find($each['id']);
 						$desc->update($each);
+						array_push($invoiceIds, $each['id']);
 					}
 				}
-				return ['status' => 'OK', 'statusCode' => 200, 'invoiceId' => $invoice->id,'invoiceTpye' => $invoice->type,'response' => true];
+				$existingIds = array_column(Description::select('id')
+								->whereInvoiceId($request->get('currentId'))
+								->get()->toArray(), 'id');
+
+				$exists = array_diff($existingIds, $invoiceIds);
+				Description::whereIn('id',$exists)->delete();
+
+				return ['status' => 'OK', 
+						'statusCode' => 200, 
+						'invoiceId' => $invoice->id,
+						'invoiceTpye' => $invoice->type,
+						'response' => true];
 			} 
 			catch (Exception $e) 
 			{
-				return ['status' => $e->getMessage(), 'statusCode' => 503, 'response' => false];
+				return ['status' => $e->getMessage(), 
+						'statusCode' => 503, 
+						'response' => false];
 			}
 		}
 		return 'Bad Request!';
@@ -330,7 +360,9 @@ class InvoiceController extends Controller {
 			{
 				$i = 0;
 				foreach ($invoice->description as $each) {
-					$description[$i] = ['id' => $each->id, 'workDescription' => $each->workDescription, 'amount' => $each->amount];
+					$description[$i] = ['id' => $each->id, 
+										'workDescription' => $each->workDescription, 
+										'amount' => $each->amount];
 					$i++;
 				}
 			}
@@ -338,14 +370,28 @@ class InvoiceController extends Controller {
 			{
 				$i = 0;
 				foreach ($invoice->description as $each) {
-					$description[$i] = ['id' => $each->id, 'workDescription' => $each->workDescription, 'rate' => $each->rate, 'hour' => $each->hour];
+					$description[$i] = ['id' => $each->id, 
+										'workDescription' => $each->workDescription, 
+										'rate' => $each->rate, 
+										'hour' => $each->hour];
 					$i++;
 				}				
 			}
 
-			$customer = ['name' => $invoice->customer->name, 'address' => $invoice->customer->address,'id' => $invoice->customer->id];
-			$organization = ['invoiceNumber' => $invoice->invoiceNumber, 'serviceDate' => $invoice->serviceDate, 'currency' => $invoice->currency,'id'=> $invoice->id, 'isManualCode' => $invoice->invoiceNumber,'isManual' => 0];
-			return ['organization' => $organization, 'customer' => $customer, 'description' => $description];
+			$customer = ['name' => $invoice->customer->name, 
+						'address' => $invoice->customer->address,
+						'id' => $invoice->customer->id];
+
+			$organization = ['invoiceNumber' => $invoice->invoiceNumber, 
+							'serviceDate' => $invoice->serviceDate, 
+							'currency' => $invoice->currency,
+							'id'=> $invoice->id, 
+							'isManualCode' => $invoice->invoiceNumber,
+							'isManual' => 0];
+
+			return ['organization' => $organization, 
+					'customer' => $customer, 
+					'description' => $description];
 		}
 	}
 }
