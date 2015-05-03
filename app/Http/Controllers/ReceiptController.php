@@ -248,8 +248,7 @@ class ReceiptController extends Controller {
 		{
 
 			try {
-				$receipt = Receipt::find($request->get('currentId'));
-				
+				$receipt = Receipt::find($request->get('currentId'));				
 
 				$receipt->update(array_merge($request->get('organization'),['state' => $request->get('organization')['isManual']]));
 				$receipt->customer->update($request->get('customer'));				
@@ -294,7 +293,6 @@ class ReceiptController extends Controller {
 	{
 		if($request->has('currentId'))
 		{
-
 			try {
 				$receipt = Receipt::find($request->get('currentId'));				
 
@@ -323,8 +321,6 @@ class ReceiptController extends Controller {
 				$exists = array_diff($existingIds, $invoiceIds);
 				Description::whereIn('id',$exists)->delete();
 
-				return Description::whereId($request->get('currentId'))->get();
-				
 				return ['status' => 'OK', 
 						'statusCode' => 200, 
 						'receiptId' => $receipt->id,

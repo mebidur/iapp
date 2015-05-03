@@ -315,7 +315,7 @@
 	<div class="row">
 		<p></p>
 		<div class="col-md-12 col-lg-12 col-xs-12 col-sm-12">
-			<button type="submit" ng-disabled="workInvoiceForm.$invalid || !workInvoiceButtonStatus" class="btn btn-primary btn-block input-lg work-invoice-btn iapp-lg-btn choices-holder">[[workInvoiceButton]]</button>
+			<button type="submit" ng-disabled="workInvoiceForm.$invalid || !workInvoiceButtonStatus" class="btn btn-primary input-lg work-invoice-btn iapp-lg-btn choices-holder">[[workInvoiceButton]]</button>
 		</div>
 		<p></p>
 	</div>

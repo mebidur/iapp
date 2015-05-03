@@ -103,6 +103,7 @@
   }
   .iapp-details{
     max-width: 900px !important;
+    padding: 4px!important;
   }
   .iapp-details pre{
     background: #fff !important;
@@ -217,12 +218,30 @@
     </tr>
     <tr>
       <td>
-        <b>{{$receipt['organization']->name}}</b><br>
-          <span>{{$receipt['organization']->address}}</span>
+       <div class="iapp-details">
+         <pre>
+            <b>{{$receipt['organization']->name}}</b>
+         </pre>
+       </div>
+          <div class="iapp-details">
+            <pre>
+              {{$receipt['organization']->address}},<?php echo "\n" ?>
+              {{$receipt['organization']->city}}<?php echo "\n" ?>
+              {{$receipt['organization']->country}}
+            </pre>
+          </div>
       </td>
       <td>
-        <b>{{$receipt['customer']->name}}</b><br>
-          <span>{{$receipt['customer']->address}}</span>
+        <div class="iapp-details">
+          <pre>
+            <b>{{$receipt['customer']->name}}</b>
+          </pre>
+        </div>
+          <div class="iapp-details">
+            <pre>
+              {{$receipt['customer']->address}}
+            </pre>
+          </div>
       </td>
     </tr>
   </table>

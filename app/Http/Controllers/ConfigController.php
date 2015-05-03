@@ -25,7 +25,7 @@ class ConfigController extends Controller {
 	{
 		$company = Organization::find(\Auth::user()->organization_id);
 		$company->update($request->all());
-		return \Redirect::to('home')->with(['message' => 'Organization Information Updated Successfully!']);
+		return \Redirect::to('home')->with(['message' => 'Organization Information Updated Successfully']);
 	}
 	private function autoReceipt()
 	{

@@ -17,11 +17,11 @@
 			<div class="row">
 				<div class="col-md-6">
 				<label><b>Name</b></label>
-				<input type="text" class="form-control" name="name" ng-model="company.name" placeholder="Organization Name" required>
+				<textarea class="form-control" rows="4" name="name" ng-model="company.name" placeholder="Organization Name" required></textarea>
 				</div>
 				<div class="col-md-6">
-				<label><b>Address</b></label>
-				<input type="text" class="form-control" name="address" ng-model="company.address" placeholder="Organization Address" required>
+				<label><b>Address</b></label>				
+				<textarea class="form-control" rows="4" name="address" ng-model="company.address" placeholder="Organization Address" required></textarea>
 				</div>
 			</div>
 			<p></p>
@@ -38,22 +38,26 @@
 			<p></p>
 			<div class="row">
 				<div class="col-md-6">
-					<label><b>City</b></label>
-					<input type="text" ng-model="company.city" name="city" class="form-control" placeholder="City" required>
+					<label><b>City , State</b></label>
+					<textarea rows="4" ng-model="company.city" name="city" class="form-control" placeholder="City, State" required></textarea>
 				</div>
-				<div class="col-md-6">
-					<label><b>State</b></label>
-					<input type="text" class="form-control" name="state" ng-model="company.state" placeholder="State" required>
-				</div>
-			</div>
-			<p></p>
-			<div class="row">
 				<div class="col-md-6">
 					<label><b>Country</b></label>
 					<select ng-model="company.country" class="form-control" name="country" required>
-						@include('include.country-list')
+						<option value="" selected disabled>Select Country</option>
+						<option value="Nepal">Nepal</option>
+						<option value="United Kingdom">United Kingdom</option>
+						<option value="United States">United States</option>
 					</select>
 				</div>
+				<!-- <div class="col-md-6">
+					<label><b>State</b></label>
+					<input type="text" class="form-control" name="state" ng-model="company.state" placeholder="State" required>
+				</div> -->
+			</div>
+			<p></p>
+			<div class="row">
+
 				<div class="col-md-6">
 					
 				</div>
@@ -79,7 +83,7 @@
 			<p></p>
 			<div class="row">
 				<div class="col-md-12">
-					<button type="submit" ng-disabled="configForm.$invalid" ng-click="doLoad()" class="btn btn-primary btn-block input-lg iapp-lg-btn">[[configButton]]</button>
+					<button type="submit" ng-disabled="configForm.$invalid" ng-click="doLoad()" class="btn btn-primary input-lg iapp-lg-btn">[[configButton]]</button>
 				</div>
 			</div>
 		</form>

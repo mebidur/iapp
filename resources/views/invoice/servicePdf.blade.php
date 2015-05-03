@@ -103,7 +103,7 @@
   }
   .iapp-details{
     max-width: 900px !important;
-    padding: 9px!important;
+    padding: 4px!important;
   }
   .iapp-details span{
     padding: 9px !important;
@@ -222,12 +222,30 @@
     </tr>
     <tr>
       <td>
-        <b>{{$invoice['organization']->name}}</b><br>
-          <span>{{$invoice['organization']->address}}</span>
+        <div class="iapp-details">
+          <pre>
+            <b>{{$invoice['organization']->name}}</b>
+          </pre>
+        </div>
+          <div class="iapp-details">
+            <pre>
+              {{$invoice['organization']->address}},<?php echo "\n" ?>
+              {{$invoice['organization']->city}}<?php echo "\n" ?>
+              {{$invoice['organization']->country}}
+            </pre>
+          </div>
       </td>
       <td>
-        <b>{{$invoice['customer']->name}}</b><br>
-          <span>{{$invoice['customer']->address}}</span>
+        <div class="iapp-details">
+          <pre>
+            <b>{{$invoice['customer']->name}}</b>
+          </pre>
+        </div>
+          <div class="iapp-details">
+            <pre>
+              {{$invoice['customer']->address}}
+            </pre>
+          </div>
       </td>
     </tr>
   </table>

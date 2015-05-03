@@ -63,7 +63,7 @@ html,body{
 
 .iapp-lg-btn{
 	height: 47px;
-	width: 160px !important;
+	/*width: 160px !important;*/
 	border-bottom: 2px solid #034E8E;
 	font-size: 20px;
 	border-radius: 1px;

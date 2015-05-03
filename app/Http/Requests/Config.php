@@ -27,7 +27,7 @@ class Config extends Request {
 			'phoneNo' 		=> 'required',
 			'email' 		=> 'required|email',
 			'city' 			=> 'required',
-			'state' 		=> 'required',
+			// 'state' 		=> 'required',
 			'country' 		=> 'required',
 			'rules' 		=> 'required',
 			'bankDetails' 	=> 'required',

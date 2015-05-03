@@ -435,7 +435,7 @@ var appurl = document.getElementById('siteUrl').value,
 	});
 
 	app.controller('ConfigController',function($scope, $http){	
-		$scope.configButton = 'Continue ...';
+		$scope.configButton = 'Update Information ...';
 		$scope.doLoad = function(){
 			$scope.configButton = 'Loading ...';
 		}

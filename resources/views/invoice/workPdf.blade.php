@@ -225,7 +225,9 @@
         </div>
           <div class="iapp-details">
             <pre>
-              <span>{{$invoice['organization']->address}}</span>
+              {{$invoice['organization']->address}},<?php echo "\n" ?>
+              {{$invoice['organization']->city}}<?php echo "\n" ?>
+              {{$invoice['organization']->country}}
             </pre>
           </div>
       </td>

@@ -163,7 +163,7 @@
 		<p></p>
 		<div class="row">
 			<div class="col-md-12">
-				<button type="submit" ng-disabled="serviceInvoiceForm.$invalid" class="btn btn-primary btn-block input-lg work-invoice-btn iapp-lg-btn choices-holder">[[serviceInvoiceButton]]</button>
+				<button type="submit" ng-disabled="serviceInvoiceForm.$invalid" class="btn btn-primary input-lg work-invoice-btn iapp-lg-btn choices-holder">[[serviceInvoiceButton]]</button>
 			</div>
 		</div>
 		<p></p>
