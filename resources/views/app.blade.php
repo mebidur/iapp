@@ -65,11 +65,9 @@
 		<div class="iapp-footer">
 	       <center>
 	          <p>&copy; 2015 | All rights reserved. <a href="javascript:void(0)" class="iapp-terms hidden-xs">Privacy</a>  <a href="javascript:void(0)" class="iapp-policy hidden-xs">Terms</a> <a href="" class="iapp-policy hidden-xs">Security</a></p>
-	          <input type="hidden" id="siteUrl" value="{{url('/')}}">
+	          <input type="hidden" id="_url" value="{{url('/')}}">
 	          <input type="hidden" value="{{csrf_token()}}" id="_token" name="_token">
-	          <input type="hidden" value="{{date('Y-m-m')}}" id="_date">
-	       </center>
-	             
+	       </center>	             
 	  </div>
   </div>
 	{!!HTML::script('js/jquery.min.js')!!}

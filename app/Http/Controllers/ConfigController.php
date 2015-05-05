@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use View;
 use App\Organization;
 use App\Receipt;
+use App\Customer;
 use App\Invoice;
 
 class ConfigController extends Controller {
@@ -27,7 +28,7 @@ class ConfigController extends Controller {
 		$company->update($request->all());
 		return \Redirect::to('home')->with(['message' => 'Organization Information Updated Successfully']);
 	}
-	private function autoReceipt()
+	public function autoReceipt()
 	{
 		$year = substr(date('Y'),1,4).'-';
 		$number = Receipt::select('receiptNumber')
@@ -38,7 +39,7 @@ class ConfigController extends Controller {
 		return $year.$isUnique;
 	}
 	
-	private function autoInvoice()
+	public function autoInvoice()
 	{
 		$year = substr(date('Y'),1,4).'-';
 		$number = Invoice::select('invoiceNumber')
@@ -60,12 +61,10 @@ class ConfigController extends Controller {
 	public function getInit()
 	{
 		if(\Request::ajax()){
-			$localData = ['invoiceNumber' => $this->autoInvoice(),
-						'isManualCode' => $this->autoInvoice() ,
-						'currency' => '£', 'isManual' => 0, 
-						'serviceDate' => date('Y-m-d')];
-						
-			return array_merge($localData ,$this->organization()); 		
+		return ['invoiceNumber' => $this->autoInvoice(),
+				'isManualCode' => $this->autoInvoice() ,
+				'currency' => '£', 'isManual' => 0, 
+				'serviceDate' => date('Y-m-d')];
 		}
 	}
 
@@ -73,13 +72,11 @@ class ConfigController extends Controller {
 	{
 		if(\Request::ajax())
 		{
-			$localData = ['receiptNumber' => $this->autoReceipt(),
-						'isManualCode' => $this->autoReceipt() ,
-						'currency' => '£', 
-						'isManual' => 0, 
-						'serviceDate' => date('Y-m-d')];
-						
-			return array_merge($localData ,$this->organization());
+			return ['receiptNumber' => $this->autoReceipt(),
+					'isManualCode' => $this->autoReceipt() ,
+					'currency' => '£', 
+					'isManual' => 0, 
+					'serviceDate' => date('Y-m-d')];
 		}
 	}
 
@@ -88,6 +85,32 @@ class ConfigController extends Controller {
 		if(\Request::ajax())
 		{
 			return $this->organization();
+		}
+	}
+
+	public function postSearchcustomer()
+	{
+		if(\Request::ajax())
+		{
+			$customers = Customer::select('name','address')->where('name', 'LIKE', '%'.\Input::get('searchText').'%')
+								->whereOrganizationId(\Auth::user()->organization_id)->get();
+			$customersList = [];
+			if(!empty($customers)){				
+				foreach ($customers as $each) {
+					if(strlen($each->address) > 40){
+						$address = substr($each->address, 0, 40).' ....';
+					}else{
+						$address = $each->address;
+					}
+
+					$eachCustomer = ['name' => $each->name, 'short_address' => $address, 'long_address' => $each->address];
+
+					array_push($customersList, $eachCustomer);
+				}
+				return $customersList;
+			}else{
+				return '';
+			}
 		}
 	}
 

@@ -65,7 +65,7 @@ class ReceiptController extends Controller {
 					$fillDesc = [];
 
 					foreach (\Input::get('descs') as $each){
-						array_push($fillDesc, new Description(array_merge(['receipt_id' => $receipt->id],$each)));
+						array_push($fillDesc, new Description(array_merge($each, ['receipt_id' => $receipt->id, 'unit' => ucwords($each['descType'])])));
 					}
 
 					$desc = $receipt->description()->saveMany($fillDesc);

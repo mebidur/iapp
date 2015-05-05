@@ -16,23 +16,12 @@
 			<input type="hidden" name="_token" value="{{csrf_token()}}">
 			<div class="row">
 				<div class="col-md-6">
-				<label><b>Name</b></label>
+				<label><b>Organization Name</b></label>
 				<textarea class="form-control" rows="4" name="name" ng-model="company.name" placeholder="Organization Name" required></textarea>
 				</div>
 				<div class="col-md-6">
-				<label><b>Address</b></label>				
+				<label><b>Street Address</b></label>				
 				<textarea class="form-control" rows="4" name="address" ng-model="company.address" placeholder="Organization Address" required></textarea>
-				</div>
-			</div>
-			<p></p>
-			<div class="row">
-				<div class="col-md-6">
-					<label><b>Email</b></label>
-					<input type="email" class="form-control" name="email" ng-model="company.email" placeholder="Email" required>
-				</div>
-				<div class="col-md-6">
-					<label><b>Contact No</b></label>
-					<input type="text" ng-model="company.phoneNo" name="phoneNo" class="form-control" placeholder="Contact No" ng-pattern="/^0|[1-9][0-9]*$/" required>
 				</div>
 			</div>
 			<p></p>
@@ -54,6 +43,17 @@
 					<label><b>State</b></label>
 					<input type="text" class="form-control" name="state" ng-model="company.state" placeholder="State" required>
 				</div> -->
+			</div>
+			<p></p>
+			<div class="row">
+				<div class="col-md-6">
+					<label><b>Email</b></label>
+					<input type="email" class="form-control" name="email" ng-model="company.email" placeholder="Email" required>
+				</div>
+				<div class="col-md-6">
+					<label><b>Contact No</b></label>
+					<input type="text" ng-model="company.phoneNo" name="phoneNo" class="form-control" placeholder="Contact No" ng-pattern="/^0|[1-9][0-9]*$/" required>
+				</div>
 			</div>
 			<p></p>
 			<div class="row">

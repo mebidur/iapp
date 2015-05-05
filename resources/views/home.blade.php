@@ -52,10 +52,10 @@
 									<div class="triangle-up triangle-iapp"></div>
 									@if($invoice->status == 0)
 									<li><a href="javascript:void(0)" data-id="{{$invoice->id}}" ng-pay-invoice><span class="glyphicon glyphicon-credit-card"></span> Paid</a></li>
-									<li class="divider"></li>
-									@endif
+									<li class="divider"></li>									
 									<li><a href="javascript:void(0)" data-id="{{$invoice->id}}" ng-edit-invoice><span class="glyphicon glyphicon-pencil"></span> Edit</a></li>
 									<li class="divider"></li>
+									@endif
 									<li><a href="javascript:void(0)" data-id="{{$invoice->id}}" ng-remove-invoice><span class="glyphicon glyphicon-remove-sign"></span> Delete</a></li>
 								</ul>
 						</td>

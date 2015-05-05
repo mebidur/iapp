@@ -45,14 +45,6 @@
 				required />
 
 				<div ng-show="workInvoiceForm.invoiceNumber.$dirty && workInvoiceForm.invoiceNumber.$invalid && !workInvoiceForm.invoiceNumber.$focused">
-		        <!-- <small class="text-danger" 
-		                ng-show="workInvoiceForm.invoiceNumber.$error.minlength">
-		                Your Invoice no is required to be at least 5 characters
-		        </small>
-		        <small class="text-danger" 
-		                ng-show="workInvoiceForm.invoiceNumber.$error.maxlength">
-		                Your invoice no cannot be longer than 20 characters
-		        </small> -->
 		        <small class="text-danger"
 						ng-show="workInvoiceForm.invoiceNumber.$error.unique" ng-hide="workInvoiceForm.invoiceNumber.$error">
 						That invoice number provided is  already taken, please try another.
@@ -95,157 +87,49 @@
 			</div>
 		</div>
 		<p></p>
-<!-- 		<div class="row">
-			<div class="col-md-6">
-				<label><b>Service Provider</b></label>
-				<textarea type="text" class="form-control" 
-				name="serviceProvider" 
-				ng-model="organization.name"
-				placeholder="Company Name" 
-				ng-minlength="3" 
-				rows="3" 
-				required >
-				</textarea>
-				<div ng-show="workInvoiceForm.serviceProvider.$dirty && workInvoiceForm.serviceProvider.$invalid">
-			        <small class="text-danger" ng-show="workInvoiceForm.serviceProvider.$error.minlength">
-			        	It needs to be at least 3 characters long.
-			        </small>
-			      </div>
-			</div>
-			<div class="col-md-6">
-				<label><b>Service Provider Address</b></label>
-				<textarea class="form-control" 
-				rows="3" 
-				name="companyAddress" 
-				placeholder="Company Location"
-				ng-model="organization.address"
-				ng-minlength="5"
-				required></textarea>
-				<div ng-show="workInvoiceForm.companyAddress.$dirty && workInvoiceForm.companyAddress.$invalid">
-			        <small class="text-danger" ng-show="workInvoiceForm.companyAddress.$error.minlength">
-			        	Address provided is required to be at least 5 characters long.
-			        </small>
-			    </div>
-			</div>
-		</div> -->
-<!-- 		<p></p>
-		<div class="row">
-			<div class="col-md-6">
-				<label><b>Phone No</b></label>
-				<input type="text" class="form-control" placeholder="Phone No" ng-pattern="/^0|[1-9][0-9]*$/"  name="companyPhone" ng-model="organization.phoneNo" required>
-			</div>
-			<div class="col-md-6">
-				<label><b>Email</b></label>
-				<input type="email" class="form-control" placeholder="Email" name="companyEmail" ng-model="organization.email" required>
-			</div>
-		</div>
-		<p></p>
-		<div class="row">
-			<div class="col-md-6">
-				<label><b>City</b></label>
-				<input type="text" class="form-control" name="companyCity" ng-model="organization.city" placeholder="City" required>
-			</div>
-			<div class="col-md-6">
-				<label><b>State</b></label>
-				<input type="text" class="form-control" name="companyState" ng-model="organization.state" placeholder="State" required>
-			</div>
-		</div>
-		<p></p> -->
-		<!-- <div class="row">
-			<div class="col-md-6">
-				<label><b>Country</b></label>
-				<select class="form-control" name="companyCountry" ng-model="organization.country" required>
-					@include('include.country-list')
-				</select>
-			</div>
-			<div class="col-md-6">
-				<label><b>Currency</b></label>
-				<select class="form-control" name="currency" ng-model="organization.currency" required>
-					<option selected disabled value="">Select Currency</option>
-					<option value="Rs">Nepalese Rupee</option>
-					<option value="&euro;">Euro</option>				
-					<option value="&pound;" selected>Pound Sterling</option>			
-					<option value="&dollar;">US Dollar</option>
-				</select>
-			</div>
-		</div> -->
-<!-- 		<p></p>
-		<div class="row">
-			<div class="col-md-6">
-				<label><b>Terms &amp; Conditions</b></label>
-				<textarea class="form-control" 
-				rows="10" 
-				name="termsCondition" 
-				ng-minlength="20"
-				ng-maxlength="250"
-				maxlength="250"
-				ng-model="organization.rules"
-				placeholder="Terms of Services" required></textarea>
-				<div ng-show="workInvoiceForm.termsCondition.$dirty && workInvoiceForm.termsCondition.$invalid">
-			        <small class="text-danger" ng-show="workInvoiceForm.termsCondition.$error.minlength">
-			        	Terms &amp; condition provided is required to be at least 20 characters
-			        </small>
-			        <small class="text-danger" ng-show="workInvoiceForm.termsCondition.$error.maxlength">
-			        	Terms &amp; condition provided is required to be at maximum 250 characters
-			        </small>
-				</div>
-			</div>
-			<div class="col-md-6">
-				<label><b>Bank Account Details</b></label>
-				<textarea class="form-control" 
-				rows="10" name="bankDetails" 
-				placeholder="Bank Account Detail Information ..."
-				ng-model="organization.bankDetails"
-				required></textarea>
-			</div>
-		</div> -->
-<!-- 		<p></p>
-		<div class="row">
-			<div class="col-md-6">
-				<label><b>Note</b></label>
-				<textarea class="form-control" 
-				rows="5" name="keyNote" 
-				placeholder="Note from service provider"
-				ng-model="organization.note"
-				ng-minlength="20"
-				required >
-				</textarea>
-				<div class="" ng-show="workInvoiceForm.keyNote.$dirty && workInvoiceForm.keyNote.$invalid">
-			        <small class="text-danger" ng-show="workInvoiceForm.keyNote.$error.minlength">
-			        	This field is required to be at least 20 characters
-			        </small>
-			      </div>
-			</div>
-		</div> -->
-
 	</div>
 	<p></p>
 	<div class="customer-content section-content">
 	<h4 class="content-title">Customer Information</h4>
 		<div class="row">
 			<div class="col-md-6">
-				<label><b>Customer Name</b></label>
-				<textarea
-				ng-minlength ="3"
-				required
-				rows ="3"
-				name="customerName"
-				ng-model="customer.name"
-				class="form-control"
-				placeholder="Customer Name">					
-				</textarea>
-				<div ng-show="workInvoiceForm.serviceReceiver.$dirty && workInvoiceForm.serviceReceiver.$invalid">
-			        <small class="text-danger" ng-show="workInvoiceForm.serviceReceiver.$error.minlength">
-			        	Customer name is required to be at least 3 characters long.
-			        </small>
-			      </div>
+				<div class="customer-name-wrap">
+					<label><b>Customer Name</b></label>
+					<textarea
+					ng-minlength ="1"
+					required
+					rows ="3"
+					name="customerName"
+					ng-change="searchCustomer()"
+					ng-model="customer.name"
+					class="form-control"
+					placeholder="Customer Name">					
+					</textarea>
+					<div ng-show="workInvoiceForm.serviceReceiver.$dirty && workInvoiceForm.serviceReceiver.$invalid">
+				        <small class="text-danger" ng-show="workInvoiceForm.serviceReceiver.$error.minlength">
+				        	Customer name is required to be at least 3 characters long.
+				        </small>
+				      </div>
+				    <div class="searched-result" ng-show="suggestList">
+						<ul id="results" data-ng-repeat="customer in customers">
+							<li class="result">
+								<a class="each-result" ng-click="selectAddress($index)">
+									<h6>
+										<span class="customer-name">[[customer.name]]</span> 
+										<span class="glyphicon glyphicon-map-marker"></span> 
+										<span class="searched-address">[[customer.short_address]]</span> 
+									</h6>
+								</a>
+							</li>
+						</ul>
+				    </div>
+				</div>
 			</div>
-
 			<div class="col-md-6">
 				<label><b>Customer Address</b></label>
 				<textarea class="form-control" 
 				rows="3" name="clientAddress" 
-				placeholder="Street, City, State, Country"
+				placeholder="Street Address, City, State, Country"
 				ng-minlength="5"
 				ng-model="customer.address"
 				required></textarea>
@@ -257,34 +141,6 @@
 			</div>
 		</div>	
 		<p></p>
-		<!-- <div class="row">
-			<div class="col-md-6">
-				<label><b>Phone No</b></label>
-				<input type="text" class="form-control" placeholder="Phone No" ng-pattern="/^0|[1-9][0-9]*$/" name="customerPhone" ng-model="customer.phone" required>
-			</div>
-			<div class="col-md-6">
-				<label><b>Email</b></label>
-				<input type="email" class="form-control" placeholder="Email" name="customereEmail" ng-model="customer.email" required>
-			</div>
-		</div> -->
-		<p></p>
-		<div class="row">
-			<!-- <div class="col-md-6">
-				<label><b>City, State</b></label>
-				<input type="text" class="form-control" name="customerCity" ng-model="customer.city" placeholder="City, State" required>
-			</div> -->
-			<!-- <div class="col-md-3">
-				<label><b>State</b></label>
-				<input type="text" class="form-control" name="customerState" ng-model="customer.state" placeholder="State" required>
-			</div> -->
-			<!-- <div class="col-md-6">
-				<label><b>Country</b></label>
-				<select class="form-control" name="customerCountry" ng-model="customer.country" required>
-					@include('include.country-list')
-				</select>
-			</div> -->
-		</div>
-		<p></p>
 	</div>
 	<p></p>
 	<div class="desc-holder section-content">
@@ -293,15 +149,18 @@
 		     <div class="row">
 		     	<div class="col-md-6">
 		     		<label><b>Work Description</b></label>
-		     		<textarea rows="3" class="form-control" ng-model="choice.workDescription" placeholder="Work Description ..." required></textarea>
+		     		<textarea rows="2" class="form-control" ng-model="choice.workDescription" placeholder="Work Description ..." required></textarea>
 		     	</div>
 		     	<div class="col-md-2 col-xs-12 col-sm-12">
 		     	<label><b>Rate</b></label>
-		     		<input type="text" class="form-control" ng-model="choice.rate" name="" ng-pattern="/^0|[1-9][0-9]*$/" placeholder="Enter hour" required>
+		     		<input type="text" class="form-control" ng-model="choice.rate" name="" ng-pattern="/^0|[1-9][0-9]*$/" placeholder="Enter rate" required>
 		     	</div>
 		     	<div class="col-md-3 col-xs-9 col-sm-10">
-		     		<label><b>Hour</b></label>
-		     		<input type="text" class="form-control" ng-model="choice.hour" name="" ng-pattern="/^0|[1-9][0-9]*$/" placeholder="Enter rate" required>
+		     					
+					<input type="radio" name="descType[[$index]]" ng-attr-id="ishour[[$index]]" ng-model="choice.descType" value="hour" ng-checked="true"> <label for="ishour[[$index]]"><b> Hour</b></label>&nbsp;
+					<input type="radio" name="descType[[$index]]" ng-attr-id="isitem[[$index]]" ng-model="choice.descType" value="item" ng-checked="false"> <label for="isitem[[$index]]"><b> Item</b></label>
+
+		     		<input type="text" class="form-control" ng-model="choice.hour" name="" ng-pattern="/^0|[1-9][0-9]*$/" placeholder="Enter hour / item" required>
 		     	</div>
 		     	<div class="col-md-1 col-xs-2 col-sm-1"><p><br></p>
 		     		<button type="button" ng-click="removeInput($index)" ng-hide="($index == 0)" class="btn btn-danger"><span class="glyphicon glyphicon-remove-sign"></span></button>

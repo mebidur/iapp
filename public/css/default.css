@@ -63,9 +63,8 @@ html,body{
 
 .iapp-lg-btn{
 	height: 47px;
-	/*width: 160px !important;*/
 	border-bottom: 2px solid #034E8E;
-	font-size: 20px;
+	font-size: 18px;
 	border-radius: 1px;
 }
 .iapp-lg-btn.disabled{
@@ -474,3 +473,120 @@ hr{
 .has-more-invoice{
 	padding-bottom:80px !important;
 }
+
+/*css below is for serarch*/
+
+.searched-result{
+  background: #F8F8F8;
+  padding: 0;
+  position: absolute;
+  width: 100%;
+  z-index: 100;
+  max-height: 240px !important;
+  margin-top: 4px;
+  border-top: 0;
+  box-shadow: 0px 2px 5px 0px rgba(179, 179, 179, 0.78);
+}
+
+ul#results {
+	margin-top: 4px;
+	-webkit-border-radius: 2px;
+	-moz-border-radius: 2px;
+	border-radius: 2px;
+	padding: 5px 10px !important;
+}
+ul#results li {
+	list-style: none !important;	
+	cursor: pointer !important;
+	margin: 0px !important;
+	padding: 1px 10px!important;
+	transition: background-color .3s ease-in-out !important;
+	-moz-transition: background-color .3s ease-in-out !important;
+	-webkit-transition: background-color .3s ease-in-out !important;
+	transition: background-color .3s ease-in-out !important;
+}
+ul#results li:hover {
+	background-color: #F7F7F7;
+}
+
+ul#results li:first-child {
+	border-top: none;
+}
+#results li:last-child a {
+	  border-bottom: none !important;
+}
+
+ul#results li h3, ul#results li h4 {
+	transition: color .3s ease-in-out;
+	-moz-transition: color .3s ease-in-out;
+	-webkit-transition: color .3s ease-in-out;
+	color: #A89C9C;
+	line-height: 1.2em;
+}
+ul#results li:hover h3, ul#results li:hover h4  {
+	color: #A89C9C;
+	font-weight: bold;
+}
+#results{
+	padding: 0 !important;
+	margin: 0 !important;
+}
+#results li{
+	border-bottom: 1px solid #CFCFCF;
+}
+#results li:last-child{
+	border-bottom: none !important;
+}
+
+#results li a{
+	padding: 1px 11px;
+	display: block;
+}
+#results li a:hover{
+	text-decoration: none;
+}
+#results li a:focus{
+	outline: 0;
+}
+.customer-name-wrap{
+	position: relative;
+}
+.result h6{
+	font-size: 14px !important;
+	color:#999;
+}
+.result h6 .customer-name{
+	font-weight: 700;
+}
+.result h6:hover, .result h6:focus{
+	color: #5990BE !important;
+}
+.result .glyphicon-map-marker{
+	font-size: 11px !important;
+}
+.searched-address{
+	font-size: 14px;
+	color: #A89C9C;
+}
+
+::-webkit-scrollbar {
+    width: 5px;
+    border-radius: 10px;
+}
+ 
+::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3); 
+    -webkit-border-radius: 10px;
+    border-radius: 10px;
+}
+ 
+::-webkit-scrollbar-thumb {
+	background: rgba(195, 193, 193, 0.8);
+	-webkit-border-radius: 10px;
+    border-radius: 10px;
+  -webkit-box-shadow: inset 0 0 6px rgba(150, 129, 129, 0.5);
+}
+::-webkit-scrollbar-thumb:window-inactive {
+	background: rgba(236, 236, 236, 0.8);
+}
+

@@ -4,6 +4,7 @@ use Illuminate\Support\Str;
 use App\Http\Requests\WorkInvoice;
 use App\Http\Requests\ServiceInvoice;
 use App\Invoice;
+use App\Receipt;
 use App\Organization;
 use App\Customer;
 use App\Description;
@@ -64,7 +65,7 @@ class InvoiceController extends Controller {
 					$fillDesc = [];
 
 					foreach (\Input::get('descs') as $each){
-						array_push($fillDesc, new Description(array_merge(['invoice_id' => $invoice->id],$each)));
+						array_push($fillDesc, new Description(array_merge($each, ['invoice_id' => $invoice->id, 'unit' => ucwords($each['descType'])])));
 					}
 
 					$desc = $invoice->description()->saveMany($fillDesc);
@@ -190,13 +191,59 @@ class InvoiceController extends Controller {
 		
 	}
 
-	public function postStatus()
+	public function postStatus(ConfigController $config, Receipt $receipt)
 	{
-		$invoice = Invoice::find(\Input::get('id'));
-		if(!empty($invoice)){
-			$invoice->status = 1;
-			$invoice->update();
-			return ['statusCode' => 200, 'status' => 'OK'];
+		if(\Input::has('id'))
+		{
+			$invoice = Invoice::find(\Input::get('id'));
+			if(!empty($invoice)){
+				$newReceiptNo = $config->autoReceipt();
+				$desc = [];
+				$receipt = Receipt::where('referenceInvoiceNumber', $invoice->invoiceNumber)->first();
+				if(empty($receipt))
+				{
+					$receipt = new Receipt;
+					$receipt->receiptNumber = $newReceiptNo;
+					$receipt->referenceInvoiceNumber = $invoice->invoiceNumber;
+					$receipt->organization_id = $invoice->organization_id;
+					$receipt->customer_id = $invoice->customer_id;
+					$receipt->serviceDate = date('Y/m/d');
+					$receipt->currency = $invoice->currency;
+					$receipt->type = $invoice->type;
+					$receipt->state = 0;
+					$receipt->ismanual = 0;
+					$receipt->save();
+
+					foreach ($invoice->description as $each){
+						if($invoice->type == 1)
+						{
+							$desc = new Description;
+							$desc->receipt_id = $receipt->id;
+							$desc->workDescription = $each->workDescription;
+							$desc->rate = $each->rate;
+							$desc->hour = $each->hour;
+							$desc->unit = $each->unit;
+							
+							$desc->unit = $each->unit;
+
+						}elseif($invoice->type == 2)
+						{
+							$desc = new Description;
+							$desc->receipt_id = $receipt->id;
+							$desc->workDescription = $each->workDescription;
+							$desc->amount = $each->amount;
+							
+							$desc->unit = $each->unit;
+						}
+						$desc->save();					
+					}				
+					$invoice->status = 1;
+					$invoice->update();
+					return ['statusCode' => 200, 
+							'status' => 'OK', 
+							'message' => 'Receipt Generated Successfully'];
+				}
+			}
 		}
 	}
 
@@ -256,8 +303,7 @@ class InvoiceController extends Controller {
 		{
 
 			try {
-				$invoice = Invoice::find($request->get('currentId'));
-				
+				$invoice = Invoice::find($request->get('currentId'));				
 
 				$invoice->update(array_merge($request->get('organization'),['state' => $request->get('organization')['isManual']]));
 				$invoice->customer->update($request->get('customer'));				
@@ -303,15 +349,12 @@ class InvoiceController extends Controller {
 	{
 		if($request->has('currentId'))
 		{
-
 			try {
-				$invoice = Invoice::find($request->get('currentId'));
-				
+				$invoice = Invoice::find($request->get('currentId'));				
 
 				$invoice->update(array_merge($request->get('organization'),['state' => $request->get('organization')['isManual']]));
 				$invoice->customer->update($request->get('customer'));				
 				$invoiceIds = [];
-
 				foreach ($request->get('descs') as $each) 
 				{				
 					if(!in_array('id', array_keys($each)))

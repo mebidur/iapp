@@ -147,7 +147,7 @@
 			     <div class="row">
 			     	<div class="col-md-6">
 			     		<label><b>Work Description</b></label>
-			     		<textarea rows="3" class="form-control" ng-model="choice.workDescription" placeholder="Work Description ..." required></textarea>
+			     		<textarea rows="2" class="form-control" ng-model="choice.workDescription" placeholder="Work Description ..." required></textarea>
 			     	</div>
 			     	<div class="col-md-5 col-xs-8 col-sm-8">
 			     	<label><b>Amount</b></label>

@@ -1,7 +1,5 @@
-var appurl = document.getElementById('siteUrl').value,
+var appurl = document.getElementById('_url').value,
 	_token 	= document.getElementById('_token').value,
-	_today = document.getElementById('_date').value,
-
 
 	app = angular.module('iApp', ['ngRoute','ngMessages']), 
 	typingTimer;
@@ -68,6 +66,7 @@ var appurl = document.getElementById('siteUrl').value,
 			}
 		}
 	});
+
 	app.directive('ngFocus', [function() {
 		var FOCUS_CLASS = "ng-focused";
 		return {
@@ -105,9 +104,8 @@ var appurl = document.getElementById('siteUrl').value,
 	});
 
 
-	app.controller('WorkInvoiceController',function($scope, $http, $timeout){
-
-		$scope.workInvoiceButton = "Continue ...";
+	app.controller('WorkInvoiceController',function($scope, $http, $timeout, $element){
+		$scope.workInvoiceButton = "Create Invoice ...";
 		$scope.workInvoiceButtonStatus = true;
 		$scope.databaseError = false;
 		$scope.dataSubmitted = false;
@@ -115,9 +113,52 @@ var appurl = document.getElementById('siteUrl').value,
 		$scope.errors = [{}];
 		$scope.hasErrors = false;
 
-		$scope.choices = [{}];
+		$scope.suggestList = false;
+		$scope.customer = {};
+		$scope.organization = {};
+		$scope.customers = [{}];
+		$scope.searchCustomer = function(){
+			var searchText = $scope.customer.name;
+			if(searchText){
+				$timeout.cancel(typingTimer);
+				typingTimer = $timeout(function(){
+					
+					if(!searchText){
+						$('.searched-result').fadeOut();
+					}else{
+						$http({
+								method: 'POST',
+								url: appurl+'/config/searchcustomer',
+								data:{'searchText': searchText}
+						}).success(function(response){
+							if(response == ''){
+								$('.searched-result').fadeOut();
+							}
+							if(response != ''){
+								$scope.customers = response;
+								$scope.suggestList = true;
+								$('.searched-result').fadeIn();
+							}
+						});
+					}
+					
+				},300);	
+			}
+			$element.on('focusout', function(){
+				$('.searched-result').fadeOut();
+			});
+		}
+
+		$scope.selectAddress = function(index){
+			var name = $scope.customers[index].name,
+				address = $scope.customers[index].long_address;
+			$scope.customer.name = name;
+			$scope.customer.address = address;
+		}
+
+		$scope.choices = [{"descType":"hour"}];
 		$scope.addNewChoice = function() {  
-			$scope.choices.push({});
+			$scope.choices.push({"descType":"hour"});
 		};
 
 		$scope.removeInput = function(index){
@@ -125,9 +166,8 @@ var appurl = document.getElementById('siteUrl').value,
 				$scope.choices.splice(index,1);	
 			}	    
 		}
-
-		$scope.organization = {};
-		$scope.customer = {};
+		
+		
 		$http.get(appurl+'/config/init').success(function(data){
          	$scope.organization = data;
         });
@@ -160,7 +200,7 @@ var appurl = document.getElementById('siteUrl').value,
 			}
 
 			if($scope.workInvoiceForm.$valid){
-				$scope.workInvoiceButton = "Please wait ...";
+				$scope.workInvoiceButton = "Creating Invoice ...";
 				$scope.workInvoiceButtonStatus = false;	
 				$http({
 			        method  : 'POST',
@@ -179,7 +219,7 @@ var appurl = document.getElementById('siteUrl').value,
 		            }else if(data.statusCode == 503 && data.response == false){
 		            	$scope.databaseError = true;
 		            	$scope.workInvoiceButtonStatus = true;
-		            	$scope.workInvoiceButton = "Continue ...";
+		            	$scope.workInvoiceButton = "Create Invoice ...";
 		            }else{
 		            	$scope.hasErrors = true;
 		            	$scope.errors = data;
@@ -199,13 +239,53 @@ var appurl = document.getElementById('siteUrl').value,
 		}
 	});
 
-	app.controller('ServiceInvoiceController',function($scope, $http, $timeout){
-		$scope.serviceInvoiceButton = "Continue ...";
+	app.controller('ServiceInvoiceController',function($scope, $http, $timeout, $element){
+		$scope.serviceInvoiceButton = "Create Invoice ...";
 		$scope.serviceInvoiceButtonStatus = true;
 		$scope.databaseError = false;
 		$scope.manualCode = false;
 		$scope.errors = [{}];
 		$scope.hasErrors = false;
+
+		$scope.suggestList = false;
+		$scope.customer = {};
+		$scope.organization = {};
+		$scope.customers = [{}];
+		$scope.searchCustomer = function(){
+			$timeout.cancel(typingTimer);
+			typingTimer = $timeout(function(){
+				var searchText = $scope.customer.name;
+				if(!searchText){
+					$('.searched-result').fadeOut();
+				}else{
+					$http({
+							method: 'POST',
+							url: appurl+'/config/searchcustomer',
+							data:{'searchText': searchText}
+					}).success(function(response){
+						if(response == ''){
+							$('.searched-result').fadeOut();
+						}
+						if(response != ''){
+							$scope.customers = response;
+							$scope.suggestList = true;
+							$('.searched-result').fadeIn();
+						}
+					});
+				}
+				
+			},300);	
+			$element.on('focusout', function(){
+				$('.searched-result').fadeOut();
+			});
+		}
+
+		$scope.selectAddress = function(index){
+			var name = $scope.customers[index].name,
+				address = $scope.customers[index].long_address;
+			$scope.customer.name = name;
+			$scope.customer.address = address;
+		}
 
 		$scope.choices = [{}];
 		$scope.addNewChoice = function() {  
@@ -218,8 +298,6 @@ var appurl = document.getElementById('siteUrl').value,
 			}	    
 		}
 
-		$scope.organization = {};
-		$scope.customer = {};
 		$http.get(appurl+'/config/init').success(function(data){
          	$scope.organization = data;
         });
@@ -248,7 +326,7 @@ var appurl = document.getElementById('siteUrl').value,
 
 		$scope.serviceInvoiceProcess = function(){	
 			if($scope.serviceInvoiceForm.$valid){
-				$scope.serviceInvoiceButton = "Please wait ...";
+				$scope.serviceInvoiceButton = "Creating Invoice ...";
 				$scope.serviceInvoiceButtonStatus = false;
 
 				$http({
@@ -268,7 +346,7 @@ var appurl = document.getElementById('siteUrl').value,
 		            }else if(data.statusCode == 503 && data.response == false){
 		            	$scope.databaseError = true;
 		            	$scope.serviceInvoiceButtonStatus = true;
-		            	$scope.serviceInvoiceButton = "Continue ...";
+		            	$scope.serviceInvoiceButton = "Create Invoice ...";
 		            }else{
 		            	$scope.hasErrors = true;
 		            	$scope.errors = data;
@@ -281,17 +359,57 @@ var appurl = document.getElementById('siteUrl').value,
 		}
 	});
 
-	app.controller('WorkReceiptController',function($scope, $http, $timeout){
-		$scope.workReceiptButton = "Continue ...";
+	app.controller('WorkReceiptController',function($scope, $http, $timeout, $element){
+		$scope.workReceiptButton = "Create Receipt ...";
 		$scope.workReceiptButtonStatus = true;
 		$scope.databaseError = false;
 		$scope.manualCode = false;
 		$scope.errors = [{}];
 		$scope.hasErrors = false;
 
-		$scope.choices = [{}];
+		$scope.suggestList = false;
+		$scope.customer = {};
+		$scope.organization = {};
+		$scope.customers = [{}];
+		$scope.searchCustomer = function(){
+			$timeout.cancel(typingTimer);
+			typingTimer = $timeout(function(){
+				var searchText = $scope.customer.name;
+				if(!searchText){
+					$('.searched-result').fadeOut();
+				}else{
+					$http({
+							method: 'POST',
+							url: appurl+'/config/searchcustomer',
+							data:{'searchText': searchText}
+					}).success(function(response){
+						if(response == ''){
+							$('.searched-result').fadeOut();
+						}
+						if(response != ''){
+							$scope.customers = response;
+							$scope.suggestList = true;
+							$('.searched-result').fadeIn();
+						}
+					});
+				}
+				
+			},300);	
+			$element.on('focusout', function(){
+				$('.searched-result').fadeOut();
+			});
+		}
+
+		$scope.selectAddress = function(index){
+			var name = $scope.customers[index].name,
+				address = $scope.customers[index].long_address;
+			$scope.customer.name = name;
+			$scope.customer.address = address;
+		}
+
+		$scope.choices = [{"descType":"hour"}];
 		$scope.addNewChoice = function() {  
-			$scope.choices.push({});
+			$scope.choices.push({"descType":"hour"});
 		};
 
 		$scope.removeInput = function(index){
@@ -300,8 +418,6 @@ var appurl = document.getElementById('siteUrl').value,
 			}	    
 		}
 		
-		$scope.organization = {};
-		$scope.customer = {};
 		$http.get(appurl+'/config/initr').success(function(data){
          	$scope.organization = data;
         });
@@ -330,7 +446,7 @@ var appurl = document.getElementById('siteUrl').value,
 
 		$scope.workReceiptProcess = function(){	
 			if($scope.workReceiptForm.$valid){
-				$scope.workReceiptButton = "Please wait ...";
+				$scope.workReceiptButton = "Creating Receipt ...";
 				$scope.workReceiptButtonStatus = false;
 				var bulkData = {'organization' : $scope.organization,'customer': $scope.customer,
 								'descs': $scope.choices, '_token' : _token, 'requestType': 'default', 'currentState': 'work'};
@@ -341,7 +457,7 @@ var appurl = document.getElementById('siteUrl').value,
 		            }else if(data.statusCode == 503 && data.response == false){
 		            	$scope.databaseError = true;
 		            	$scope.workReceiptButtonStatus = true;
-		            	$scope.workReceiptButton = "Continue ...";
+		            	$scope.workReceiptButton = "Create Receipt ...";
 		            }else{
 		            	$scope.hasErrors = true;
 		            	$scope.errors = data;
@@ -354,13 +470,53 @@ var appurl = document.getElementById('siteUrl').value,
 		}
 	});	
 
-	app.controller('ServiceReceiptController',function($scope, $http, $timeout){		
-		$scope.serviceReceiptButton = "Continue ...";
+	app.controller('ServiceReceiptController',function($scope, $http, $timeout, $element){		
+		$scope.serviceReceiptButton = "Create Receipt ...";
 		$scope.serviceReceiptButtonStatus = true;
 		$scope.databaseError = false;
 		$scope.manualCode = false;
 		$scope.errors = [{}];
 		$scope.hasErrors = false;
+
+		$scope.suggestList = false;
+		$scope.customer = {};
+		$scope.organization = {};
+		$scope.customers = [{}];
+		$scope.searchCustomer = function(){
+			$timeout.cancel(typingTimer);
+			typingTimer = $timeout(function(){
+				var searchText = $scope.customer.name;
+				if(!searchText){
+					$('.searched-result').fadeOut();
+				}else{
+					$http({
+							method: 'POST',
+							url: appurl+'/config/searchcustomer',
+							data:{'searchText': searchText}
+					}).success(function(response){
+						if(response == ''){
+							$('.searched-result').fadeOut();
+						}
+						if(response != ''){
+							$scope.customers = response;
+							$scope.suggestList = true;
+							$('.searched-result').fadeIn();
+						}
+					});
+				}
+				
+			},300);
+			$element.on('focusout', function(){
+				$('.searched-result').fadeOut();
+			});
+		}
+
+		$scope.selectAddress = function(index){
+			var name = $scope.customers[index].name,
+				address = $scope.customers[index].long_address;
+			$scope.customer.name = name;
+			$scope.customer.address = address;
+		}
 
 		$scope.choices = [{}];
 		$scope.addNewChoice = function() {  
@@ -372,8 +528,7 @@ var appurl = document.getElementById('siteUrl').value,
 				$scope.choices.splice(index,1);	
 			}	    
 		}	
-		$scope.organization = {};
-		$scope.customer = {};
+
 		$http.get(appurl+'/config/initr').success(function(data){
          	$scope.organization = data;
         });
@@ -402,7 +557,7 @@ var appurl = document.getElementById('siteUrl').value,
 
 		$scope.serviceReceiptProcess = function(){
 			if($scope.serviceReceiptForm.$valid){
-				$scope.serviceReceiptButton = "Please wait ...";
+				$scope.serviceReceiptButton = "Creating Receipt ...";
 				$scope.serviceReceiptButtonStatus = false;
 				$http({
 			        method  : 'POST',
@@ -421,7 +576,7 @@ var appurl = document.getElementById('siteUrl').value,
 		            }else if(data.statusCode == 503 && data.response == false){
 		            	$scope.databaseError = true;
 		            	$scope.serviceReceiptButtonStatus = true;
-		            	$scope.serviceReceiptButton = "Continue ...";
+		            	$scope.serviceReceiptButton = "Create Receipt ...";
 		            }else{
 		            	$scope.hasErrors = true;
 		            	$scope.errors = data;
@@ -437,7 +592,7 @@ var appurl = document.getElementById('siteUrl').value,
 	app.controller('ConfigController',function($scope, $http){	
 		$scope.configButton = 'Update Information ...';
 		$scope.doLoad = function(){
-			$scope.configButton = 'Loading ...';
+			$scope.configButton = 'Updating Information ...';
 		}
 		$scope.company = {};
 		$http.get(appurl+'/config/inito').success(function(data){
@@ -460,7 +615,9 @@ var appurl = document.getElementById('siteUrl').value,
             				element.html('Wait ..').css('background-color','#45B4D7').css('color','#fff');
             				$timeout(function(){
             					element.closest('td').prev().find('span').replaceWith('<span class="iapp-badge">Paid</span>');
+		                		element.parent().next().next('li').remove();
 		                		element.replaceWith('<span class="glyphicon glyphicon-ok iapp-ok"></span>');				                			
+
             				},1000);
             				
             			}
@@ -532,7 +689,6 @@ var appurl = document.getElementById('siteUrl').value,
 					        url     : appurl+'/receipt/remove',
 					        data    : {id : Id, _token : _token}, 
 					}).success(function(data){
-						console.log(data);
 	        			if(data.statusCode == 200){
 	        				window.location.reload();            				               				
 	        			}
@@ -543,7 +699,7 @@ var appurl = document.getElementById('siteUrl').value,
 	});
 
 	app.controller('EditServiceInvoiceController',function($scope, $http, $timeout){
-		$scope.serviceInvoiceButton = "Continue ...";
+		$scope.serviceInvoiceButton = "Update Invoice ...";
 		$scope.serviceInvoiceButtonStatus = true;
 		$scope.databaseError = false;
 		$scope.manualCode = false;
@@ -598,7 +754,7 @@ var appurl = document.getElementById('siteUrl').value,
 
 		$scope.serviceInvoiceProcess = function(){	
 			if($scope.serviceInvoiceForm.$valid){
-				$scope.serviceInvoiceButton = "Please wait ...";
+				$scope.serviceInvoiceButton = "Updating Invoice ... ...";
 				$scope.serviceInvoiceButtonStatus = false;
 
 				$http({
@@ -619,7 +775,7 @@ var appurl = document.getElementById('siteUrl').value,
 		            }else if(data.statusCode == 503 && data.response == false){
 		            	$scope.databaseError = true;
 		            	$scope.serviceInvoiceButtonStatus = true;
-		            	$scope.serviceInvoiceButton = "Continue ...";
+		            	$scope.serviceInvoiceButton = "Update Invoice ...";
 		            }
 		            else{
 		            	$scope.hasErrors = true;
@@ -635,7 +791,7 @@ var appurl = document.getElementById('siteUrl').value,
 
 	app.controller('EditWorkInvoiceController',function($scope, $http, $timeout){
 
-		$scope.workInvoiceButton = "Continue ...";
+		$scope.workInvoiceButton = "Update Invoice ...";
 		$scope.workInvoiceButtonStatus = true;
 		$scope.databaseError = false;
 		$scope.dataSubmitted = false;
@@ -696,7 +852,7 @@ var appurl = document.getElementById('siteUrl').value,
 			}
 
 			if($scope.workInvoiceForm.$valid){
-				$scope.workInvoiceButton = "Please wait ...";
+				$scope.workInvoiceButton = "Updating Invoice ...";
 				$scope.workInvoiceButtonStatus = false;	
 				$http({
 			        method  : 'POST',
@@ -716,7 +872,7 @@ var appurl = document.getElementById('siteUrl').value,
 		            }else if(data.statusCode == 503 && data.response == false){
 		            	$scope.databaseError = true;
 		            	$scope.workInvoiceButtonStatus = true;
-		            	$scope.workInvoiceButton = "Continue ...";
+		            	$scope.workInvoiceButton = "Update Invoice ...";
 		            }else{
 		            	$scope.hasErrors = true;
 		            	$scope.errors = data;
@@ -730,7 +886,7 @@ var appurl = document.getElementById('siteUrl').value,
 	});
 
 	app.controller('EditWorkReceiptController',function($scope, $http, $timeout){
-		$scope.workReceiptButton = "Continue ...";
+		$scope.workReceiptButton = "Update Receipt ...";
 		$scope.workReceiptButtonStatus = true;
 		$scope.databaseError = false;
 		$scope.manualCode = false;
@@ -786,7 +942,7 @@ var appurl = document.getElementById('siteUrl').value,
 
 		$scope.workReceiptProcess = function(){	
 			if($scope.workReceiptForm.$valid){
-				$scope.workReceiptButton = "Please wait ...";
+				$scope.workReceiptButton = "Updating Receipt ...";
 				$scope.workReceiptButtonStatus = false;
 				$http.post(appurl+'/receipt/updatework' ,{'organization' : $scope.organization,
 															'customer': $scope.customer,
@@ -801,22 +957,21 @@ var appurl = document.getElementById('siteUrl').value,
 		            }else if(data.statusCode == 503 && data.response == false){
 		            	$scope.databaseError = true;
 		            	$scope.workReceiptButtonStatus = true;
-		            	$scope.workReceiptButton = "Continue ...";
+		            	$scope.workReceiptButton = "Update Receipt ...";
+		            }else{
+		            	$scope.hasErrors = true;
+		            	$scope.errors = data;
+		            	$timeout(function(){
+							 $("html, body").animate({ scrollTop: 0 }, 600);
+		            	});
 		            }
-		      //       else{
-		      //       	$scope.hasErrors = true;
-		      //       	$scope.errors = data;
-		      //       	$timeout(function(){
-							 // $("html, body").animate({ scrollTop: 0 }, 600);
-		      //       	});
-		      //       }
 		        });	
 			}
 		}
 	});	
 
 	app.controller('EditServiceReceiptController',function($scope, $http, $timeout){		
-		$scope.serviceReceiptButton = "Continue ...";
+		$scope.serviceReceiptButton = "Update Receipt ...";
 		$scope.serviceReceiptButtonStatus = true;
 		$scope.databaseError = false;
 		$scope.manualCode = false;
@@ -872,7 +1027,7 @@ var appurl = document.getElementById('siteUrl').value,
 
 		$scope.serviceReceiptProcess = function(){
 			if($scope.serviceReceiptForm.$valid){
-				$scope.serviceReceiptButton = "Please wait ...";
+				$scope.serviceReceiptButton = "Updating Receipt ...";
 				$scope.serviceReceiptButtonStatus = false;
 				$http({
 			        method  : 'POST',
@@ -887,22 +1042,19 @@ var appurl = document.getElementById('siteUrl').value,
 			        		},
 			    })
 				.success(function(data){
-					console.log(data);
-
-		            if(data.statusCode == 200 && data.response == true){
+					if(data.statusCode == 200 && data.response == true){
 		            	window.location.href = appurl+'/receipt/view?response='+data.receiptId+'&secure='+data.receiptTpye+'&status='+data.statusCode;
 		            }else if(data.statusCode == 503 && data.response == false){
 		            	$scope.databaseError = true;
 		            	$scope.serviceReceiptButtonStatus = true;
-		            	$scope.serviceReceiptButton = "Continue ...";
+		            	$scope.serviceReceiptButton = "Update Receipt ...";
+		            }else{
+		            	$scope.hasErrors = true;
+		            	$scope.errors = data;
+		            	$timeout(function(){
+							 $("html, body").animate({ scrollTop: 0 }, 600);
+		            	});
 		            }
-		      //       else{
-		      //       	$scope.hasErrors = true;
-		      //       	$scope.errors = data;
-		      //       	$timeout(function(){
-							 // $("html, body").animate({ scrollTop: 0 }, 600);
-		      //       	});
-		      //       }
 		        });	
 			}
 		}
