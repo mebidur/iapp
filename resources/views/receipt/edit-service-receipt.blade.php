@@ -97,7 +97,7 @@
 			<h4 class="content-title">Customer Information</h4>
 			<div class="row">
 				<div class="col-md-6">
-					<label><b>Customer Name</b></label>
+					<div class="customer-name-wrap">
 					 	<label><b>Customer Name</b></label>
 						<textarea
 						ng-minlength ="1"
@@ -110,27 +110,28 @@
 						placeholder="Customer Name">					
 						</textarea>	
 
-					<div ng-show="serviceReceiptForm.serviceReceiver.$dirty && serviceReceiptForm.serviceReceiver.$invalid">
-				        <small class="text-danger" ng-show="serviceReceiptForm.serviceReceiver.$error.required">
-				           Customer name is required.
-				        </small>
-				        <small class="text-danger" ng-show="serviceReceiptForm.serviceReceiver.$error.minlength">
-				        	Customer name is required to be at least 3 characters
-				        </small>
-				    </div>
-				    <div class="searched-result" ng-show="suggestList">
-						<ul id="results" data-ng-repeat="customer in customers">
-							<li class="result">
-								<a class="each-result" ng-click="selectAddress($index)">
-									<h6>
-										<span class="customer-name">[[customer.name]]</span> 
-										<span class="glyphicon glyphicon-map-marker"></span> 
-										<span class="searched-address">[[customer.short_address]]</span> 
-									</h6>
-								</a>
-							</li>
-						</ul>
-				    </div>
+						<div ng-show="serviceReceiptForm.serviceReceiver.$dirty && serviceReceiptForm.serviceReceiver.$invalid">
+					        <small class="text-danger" ng-show="serviceReceiptForm.serviceReceiver.$error.required">
+					           Customer name is required.
+					        </small>
+					        <small class="text-danger" ng-show="serviceReceiptForm.serviceReceiver.$error.minlength">
+					        	Customer name is required to be at least 3 characters
+					        </small>
+					    </div>
+					    <div class="searched-result" ng-show="suggestList">
+							<ul id="results" data-ng-repeat="customer in customers">
+								<li class="result">
+									<a class="each-result" ng-click="selectAddress($index)">
+										<h6>
+											<span class="customer-name">[[customer.name]]</span> 
+											<span class="glyphicon glyphicon-map-marker"></span> 
+											<span class="searched-address">[[customer.short_address]]</span> 
+										</h6>
+									</a>
+								</li>
+							</ul>
+					    </div>
+					</div>
 				</div>
 				<div class="col-md-6">
 					<label><b>Customer Address</b></label>

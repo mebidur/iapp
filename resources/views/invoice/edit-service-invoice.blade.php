@@ -101,6 +101,7 @@
 			<h4 class="content-title">Customer Information</h4>
 			<div class="row">
 				<div class="col-md-6">
+				<div class="customer-name-wrap">
 					<label><b>Customer Name</b></label>
 					<textarea
 					ng-minlength ="1"
@@ -133,6 +134,7 @@
 							</li>
 						</ul>
 				    </div>
+				</div>
 				</div>
 				<div class="col-md-6">
 					<label><b>Customer Address</b></label>
