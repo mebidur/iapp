@@ -49,8 +49,8 @@
 							<button type="button" class="edit-btn dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><span class="glyphicon glyphicon-option-vertical"></span></button>
 								<ul class="dropdown-menu dropdown-menu-hover" role="menu">
 									<div class="triangle-up triangle-iapp"></div>
-									<li><a href="javascript:void(0)" data-id="{{$receipt->id}}" ng-edit-receipt><span class="glyphicon glyphicon-pencil"></span> Edit</a></li>
-									<li class="divider"></li>
+									<!-- <li><a href="javascript:void(0)" data-id="{{$receipt->id}}" ng-edit-receipt><span class="glyphicon glyphicon-pencil"></span> Edit</a></li> -->
+									<!-- <li class="divider"></li> -->
 									<li><a href="javascript:void(0)" data-id="{{$receipt->id}}" ng-remove-receipt><span class="glyphicon glyphicon-remove-sign"></span> Delete</a></li>
 								</ul>
 						</td>
