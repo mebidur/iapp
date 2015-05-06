@@ -65,7 +65,7 @@ class InvoiceController extends Controller {
 					$fillDesc = [];
 
 					foreach (\Input::get('descs') as $each){
-						array_push($fillDesc, new Description(array_merge($each, ['invoice_id' => $invoice->id, 'unit' => ucwords($each['descType'])])));
+						array_push($fillDesc, new Description(array_merge($each, ['invoice_id' => $invoice->id, 'unit' => ucwords($each['unit'])])));
 					}
 
 					$desc = $invoice->description()->saveMany($fillDesc);
@@ -313,13 +313,13 @@ class InvoiceController extends Controller {
 					if(!in_array('id', array_keys($each)))
 					{
 						$desc = new Description;
-						$desc = $desc->create(array_merge($each,['invoice_id' => $request->get('currentId')]));
+						$desc = $desc->create(array_merge($each,['invoice_id' => $request->get('currentId'), 'unit' => ucwords($each['unit'])]));
 						array_push($invoiceIds, $desc->id);
 					}
 					elseif(in_array('id', array_keys($each)) && $each['id'])
 					{
 						$desc = Description::find($each['id']);
-						$desc->update($each);
+						$desc->update(array_merge($each, ['unit' => ucwords($each['unit'])]));
 						array_push($invoiceIds, $each['id']);
 					}
 				}
@@ -416,7 +416,8 @@ class InvoiceController extends Controller {
 					$description[$i] = ['id' => $each->id, 
 										'workDescription' => $each->workDescription, 
 										'rate' => $each->rate, 
-										'hour' => $each->hour];
+										'hour' => $each->hour,
+										'unit' => strtolower($each->unit)];
 					$i++;
 				}				
 			}

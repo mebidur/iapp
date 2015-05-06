@@ -256,7 +256,8 @@
       @foreach($invoice['description'] as $each)
       <tr>
         <td>{{$each['workDescription']}}</td>
-        <td>{{$each['hour']}}</td>
+        <?php $unit = ($each['hour'] > 1) ? $each['unit'].'s': $each['unit']?>
+        <td>{{$each['hour'].' '.$unit}}</td>
         <?php $subTotal += $each['rate'] * $each['hour'];?>
         <td><span class="currency-view">{{$invoice->currency}}</span><span>{{$each['rate']}}</span></td>
         <td><span class="currency-view">{{$invoice->currency}}</span><span>{{$each['rate'] * $each['hour']}}</span></td>

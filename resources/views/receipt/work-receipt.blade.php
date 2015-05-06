@@ -168,8 +168,8 @@
 		     		<input type="text" class="form-control" ng-model="choice.rate" name="" ng-pattern="/^0|[1-9][0-9]*$/" placeholder="Enter hour" required>
 		     	</div>
 		     	<div class="col-md-3 col-xs-9 col-sm-10">
-		     			<input type="radio" name="descType[[$index]]" ng-attr-id="ishour[[$index]]" ng-model="choice.descType" value="hour" ng-checked="true"> <label for="ishour[[$index]]"><b> Hour</b></label>&nbsp;
-					<input type="radio" name="descType[[$index]]" ng-attr-id="isitem[[$index]]" ng-model="choice.descType" value="item" ng-checked="false"> <label for="isitem[[$index]]"><b> Item</b></label>
+		     		<input type="radio" name="unit[[$index]]" ng-attr-id="ishour[[$index]]" ng-model="choice.unit" value="hour" ng-checked="true"> <label for="ishour[[$index]]"><b> Hour</b></label>&nbsp;
+					<input type="radio" name="unit[[$index]]" ng-attr-id="isitem[[$index]]" ng-model="choice.unit" value="item" ng-checked="false"> <label for="isitem[[$index]]"><b> Item</b></label>
 					
 		     		<input type="text" class="form-control" ng-model="choice.hour" name="" ng-pattern="/^0|[1-9][0-9]*$/" placeholder="Enter rate" required>
 		     	</div>

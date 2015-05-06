@@ -156,9 +156,9 @@ var appurl = document.getElementById('_url').value,
 			$scope.customer.address = address;
 		}
 
-		$scope.choices = [{"descType":"hour"}];
+		$scope.choices = [{"unit":"hour"}];
 		$scope.addNewChoice = function() {  
-			$scope.choices.push({"descType":"hour"});
+			$scope.choices.push({"unit":"hour"});
 		};
 
 		$scope.removeInput = function(index){
@@ -407,9 +407,9 @@ var appurl = document.getElementById('_url').value,
 			$scope.customer.address = address;
 		}
 
-		$scope.choices = [{"descType":"hour"}];
+		$scope.choices = [{"unit":"hour"}];
 		$scope.addNewChoice = function() {  
-			$scope.choices.push({"descType":"hour"});
+			$scope.choices.push({"unit":"hour"});
 		};
 
 		$scope.removeInput = function(index){
@@ -698,13 +698,53 @@ var appurl = document.getElementById('_url').value,
 	    };
 	});
 
-	app.controller('EditServiceInvoiceController',function($scope, $http, $timeout){
+	app.controller('EditServiceInvoiceController',function($scope, $http, $timeout, $element){
 		$scope.serviceInvoiceButton = "Update Invoice ...";
 		$scope.serviceInvoiceButtonStatus = true;
 		$scope.databaseError = false;
 		$scope.manualCode = false;
 		$scope.errors = [{}];
 		$scope.hasErrors = false;
+
+		$scope.suggestList = false;
+		$scope.customer = {};
+		$scope.organization = {};
+		$scope.customers = [{}];
+		$scope.searchCustomer = function(){
+			$timeout.cancel(typingTimer);
+			typingTimer = $timeout(function(){
+				var searchText = $scope.customer.name;
+				if(!searchText){
+					$('.searched-result').fadeOut();
+				}else{
+					$http({
+							method: 'POST',
+							url: appurl+'/config/searchcustomer',
+							data:{'searchText': searchText}
+					}).success(function(response){
+						if(response == ''){
+							$('.searched-result').fadeOut();
+						}
+						if(response != ''){
+							$scope.customers = response;
+							$scope.suggestList = true;
+							$('.searched-result').fadeIn();
+						}
+					});
+				}
+				
+			},300);	
+			$element.on('focusout', function(){
+				$('.searched-result').fadeOut();
+			});
+		}
+
+		$scope.selectAddress = function(index){
+			var name = $scope.customers[index].name,
+				address = $scope.customers[index].long_address;
+			$scope.customer.name = name;
+			$scope.customer.address = address;
+		}
 
 		$scope.choices = [{}];
 		$scope.addNewChoice = function() {  
@@ -719,8 +759,6 @@ var appurl = document.getElementById('_url').value,
 		var currentId;
 		$timeout(function(){
 			currentId = $scope.general.currentId;
-			$scope.organization = {};
-			$scope.customer = {};
 			$http.get(appurl+'/invoice/current/'+currentId)
 			.success(function(data){
 	         	$scope.organization = data.organization;
@@ -728,7 +766,7 @@ var appurl = document.getElementById('_url').value,
 	         	$scope.customer = data.customer;
 	        });
 		
-		},1000);
+		},500);
 
 		$scope.doFocus = function(){
 			$scope.manualCode = true;
@@ -789,7 +827,7 @@ var appurl = document.getElementById('_url').value,
 		}
 	});
 
-	app.controller('EditWorkInvoiceController',function($scope, $http, $timeout){
+	app.controller('EditWorkInvoiceController',function($scope, $http, $timeout, $element){
 
 		$scope.workInvoiceButton = "Update Invoice ...";
 		$scope.workInvoiceButtonStatus = true;
@@ -799,9 +837,50 @@ var appurl = document.getElementById('_url').value,
 		$scope.errors = [{}];
 		$scope.hasErrors = false;
 
-		$scope.choices = [{}];
+		$scope.suggestList = false;
+		$scope.customer = {};
+		$scope.organization = {};
+		$scope.customers = [{}];
+		$scope.searchCustomer = function(){
+			$timeout.cancel(typingTimer);
+			typingTimer = $timeout(function(){
+				var searchText = $scope.customer.name;
+				if(!searchText){
+					$('.searched-result').fadeOut();
+				}else{
+					$http({
+							method: 'POST',
+							url: appurl+'/config/searchcustomer',
+							data:{'searchText': searchText}
+					}).success(function(response){
+						if(response == ''){
+							$('.searched-result').fadeOut();
+						}
+						if(response != ''){
+							$scope.customers = response;
+							$scope.suggestList = true;
+							$('.searched-result').fadeIn();
+						}
+					});
+				}
+				
+			},300);	
+			$element.on('focusout', function(){
+				$('.searched-result').fadeOut();
+			});
+		}
+
+		$scope.selectAddress = function(index){
+			var name = $scope.customers[index].name,
+				address = $scope.customers[index].long_address;
+			$scope.customer.name = name;
+			$scope.customer.address = address;
+		}
+
+
+		$scope.choices = [{"unit":"hour"}];
 		$scope.addNewChoice = function() {  
-			$scope.choices.push({});
+			$scope.choices.push({"unit":"hour"});
 		};
 
 		$scope.removeInput = function(index){
@@ -813,8 +892,6 @@ var appurl = document.getElementById('_url').value,
 		var currentId;
 		$timeout(function(){
 			currentId = $scope.general.currentId;
-			$scope.organization = {};
-			$scope.customer = {};
 			$http.get(appurl+'/invoice/current/'+currentId)
 			.success(function(data){
 	         	$scope.organization = data.organization;
@@ -885,13 +962,54 @@ var appurl = document.getElementById('_url').value,
 		}
 	});
 
-	app.controller('EditWorkReceiptController',function($scope, $http, $timeout){
+	app.controller('EditWorkReceiptController',function($scope, $http, $timeout, $element){
 		$scope.workReceiptButton = "Update Receipt ...";
 		$scope.workReceiptButtonStatus = true;
 		$scope.databaseError = false;
 		$scope.manualCode = false;
 		$scope.errors = [{}];
 		$scope.hasErrors = false;
+
+		$scope.suggestList = false;
+		$scope.customer = {};
+		$scope.organization = {};
+		$scope.customers = [{}];
+		$scope.searchCustomer = function(){
+			$timeout.cancel(typingTimer);
+			typingTimer = $timeout(function(){
+				var searchText = $scope.customer.name;
+				if(!searchText){
+					$('.searched-result').fadeOut();
+				}else{
+					$http({
+							method: 'POST',
+							url: appurl+'/config/searchcustomer',
+							data:{'searchText': searchText}
+					}).success(function(response){
+						if(response == ''){
+							$('.searched-result').fadeOut();
+						}
+						if(response != ''){
+							$scope.customers = response;
+							$scope.suggestList = true;
+							$('.searched-result').fadeIn();
+						}
+					});
+				}
+				
+			},300);	
+			$element.on('focusout', function(){
+				$('.searched-result').fadeOut();
+			});
+		}
+
+		$scope.selectAddress = function(index){
+			var name = $scope.customers[index].name,
+				address = $scope.customers[index].long_address;
+			$scope.customer.name = name;
+			$scope.customer.address = address;
+		}
+
 
 		$scope.choices = [{}];
 		$scope.addNewChoice = function() {  
@@ -907,8 +1025,6 @@ var appurl = document.getElementById('_url').value,
 		var currentId;
 		$timeout(function(){
 			currentId = $scope.general.currentId;
-			$scope.organization = {};
-			$scope.customer = {};
 			$http.get(appurl+'/receipt/current/'+currentId)
 			.success(function(data){
 	         	$scope.organization = data.organization;
@@ -970,13 +1086,53 @@ var appurl = document.getElementById('_url').value,
 		}
 	});	
 
-	app.controller('EditServiceReceiptController',function($scope, $http, $timeout){		
+	app.controller('EditServiceReceiptController',function($scope, $http, $timeout, $element){		
 		$scope.serviceReceiptButton = "Update Receipt ...";
 		$scope.serviceReceiptButtonStatus = true;
 		$scope.databaseError = false;
 		$scope.manualCode = false;
 		$scope.errors = [{}];
 		$scope.hasErrors = false;
+
+				$scope.suggestList = false;
+		$scope.customer = {};
+		$scope.organization = {};
+		$scope.customers = [{}];
+		$scope.searchCustomer = function(){
+			$timeout.cancel(typingTimer);
+			typingTimer = $timeout(function(){
+				var searchText = $scope.customer.name;
+				if(!searchText){
+					$('.searched-result').fadeOut();
+				}else{
+					$http({
+							method: 'POST',
+							url: appurl+'/config/searchcustomer',
+							data:{'searchText': searchText}
+					}).success(function(response){
+						if(response == ''){
+							$('.searched-result').fadeOut();
+						}
+						if(response != ''){
+							$scope.customers = response;
+							$scope.suggestList = true;
+							$('.searched-result').fadeIn();
+						}
+					});
+				}
+				
+			},300);	
+			$element.on('focusout', function(){
+				$('.searched-result').fadeOut();
+			});
+		}
+
+		$scope.selectAddress = function(index){
+			var name = $scope.customers[index].name,
+				address = $scope.customers[index].long_address;
+			$scope.customer.name = name;
+			$scope.customer.address = address;
+		}
 
 		$scope.choices = [{}];
 		$scope.addNewChoice = function() {  
@@ -992,8 +1148,6 @@ var appurl = document.getElementById('_url').value,
 		var currentId;
 		$timeout(function(){
 			currentId = $scope.general.currentId;
-			$scope.organization = {};
-			$scope.customer = {};
 			$http.get(appurl+'/receipt/current/'+currentId)
 			.success(function(data){
 	         	$scope.organization = data.organization;

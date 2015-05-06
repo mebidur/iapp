@@ -65,7 +65,7 @@ class ReceiptController extends Controller {
 					$fillDesc = [];
 
 					foreach (\Input::get('descs') as $each){
-						array_push($fillDesc, new Description(array_merge($each, ['receipt_id' => $receipt->id, 'unit' => ucwords($each['descType'])])));
+						array_push($fillDesc, new Description(array_merge($each, ['receipt_id' => $receipt->id, 'unit' => ucwords($each['unit'])])));
 					}
 
 					$desc = $receipt->description()->saveMany($fillDesc);
@@ -258,13 +258,13 @@ class ReceiptController extends Controller {
 					if(!in_array('id', array_keys($each)))
 					{
 						$desc = new Description;
-						$desc->create(array_merge($each,['receipt_id' => $request->get('currentId')]));
+						$desc->create(array_merge($each,['receipt_id' => $request->get('currentId'), 'unit' => ucwords($each['unit'])]));
 						array_push($invoiceIds, $desc->id);
 					}
 					elseif(in_array('id', array_keys($each)) && $each['id'])
 					{
 						$desc = Description::find($each['id']);
-						$desc->update($each);
+						$desc->update(array_merge($each , ['unit' => ucwords($each['unit'])]));
 						array_push($invoiceIds, $each['id']);
 					}
 				}
@@ -360,7 +360,8 @@ class ReceiptController extends Controller {
 					$description[$i] = ['id' => $each->id, 
 					'workDescription' => $each->workDescription, 
 					'rate' => $each->rate, 
-					'hour' => $each->hour];
+					'hour' => $each->hour,
+					'unit' => strtolower($each->unit)];
 					$i++;
 				}				
 			}

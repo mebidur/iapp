@@ -100,7 +100,6 @@
 				<div class="col-md-6">
 				<div class="customer-name-wrap">
 					<label><b>Customer Name</b></label>
-					 	<label><b>Customer Name</b></label>
 						<textarea
 						ng-minlength ="1"
 						required
@@ -153,35 +152,6 @@
 				    </div>
 				</div>
 			</div>
-			<!-- <p></p>
-			<div class="row">
-				<div class="col-md-6">
-					<label><b>Phone No</b></label>
-					<input type="text" class="form-control" placeholder="Phone No" ng-pattern="/^0|[1-9][0-9]*$/" name="customerPhone" ng-model="customer.phone" required>
-				</div>
-				<div class="col-md-6">
-					<label><b>Email</b></label>
-					<input type="email" class="form-control" placeholder="Email" name="customereEmail" ng-model="customer.email" required>
-				</div>
-			</div>
-			<p></p>
-			<div class="row">
-				<div class="col-md-6">
-					<label><b>City</b></label>
-					<input type="text" class="form-control" name="customerCity" ng-model="customer.city" placeholder="City" required>
-				</div>
-				<div class="col-md-3">
-					<label><b>State</b></label>
-					<input type="text" class="form-control" name="customerState" ng-model="customer.state" placeholder="State" required>
-				</div>
-				<div class="col-md-3">
-					<label><b>Country</b></label>
-					<select class="form-control" name="customerCountry" ng-model="customer.country" required>
-						@include('include.country-list')
-					</select>
-				</div>
-			</div>
-			<p></p> -->
 		</div>
 		<p></p>
 		<div class="desc-holder section-content">

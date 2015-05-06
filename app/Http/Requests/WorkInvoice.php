@@ -32,8 +32,9 @@ class WorkInvoice extends Request {
 				}
 			}
 		}
-		$rules['hour'] = '';
+		$rules['unit'] = '';
 		$rules['item'] = '';
+		$rules['hour'] = '';
 		return $rules;
 	}
 

@@ -100,7 +100,8 @@
 			<div class="col-md-6">
 				<label><b>Customer Name</b></label>
 				<textarea
-				ng-minlength ="3"
+				ng-minlength ="1"
+				ng-change="searchCustomer()"
 				required
 				rows ="3"
 				name="customerName"
@@ -115,7 +116,20 @@
 			        <small class="text-danger" ng-show="workReceiptForm.serviceReceiver.$error.minlength">
 			        	Customer name is required to be at least 3 characters
 			        </small>
-			      </div>
+			    </div>
+			    <div class="searched-result" ng-show="suggestList">
+					<ul id="results" data-ng-repeat="customer in customers">
+						<li class="result">
+							<a class="each-result" ng-click="selectAddress($index)">
+								<h6>
+									<span class="customer-name">[[customer.name]]</span> 
+									<span class="glyphicon glyphicon-map-marker"></span> 
+									<span class="searched-address">[[customer.short_address]]</span> 
+								</h6>
+							</a>
+						</li>
+					</ul>
+			    </div>
 			</div>
 			<div class="col-md-6">
 				<label><b>Customer Address</b></label>
@@ -151,7 +165,9 @@
 		     		<input type="text" class="form-control" ng-model="choice.rate" name="" ng-pattern="/^0|[1-9][0-9]*$/" placeholder="Enter hour" required>
 		     	</div>
 		     	<div class="col-md-3 col-xs-9 col-sm-10">
-		     		<label><b>Hour</b></label>
+		     		<input type="radio" name="unit[[$index]]" ng-attr-id="ishour[[$index]]" ng-model="choice.unit" value="hour" ng-checked="true"> <label for="ishour[[$index]]"><b> Hour</b></label>&nbsp;
+					<input type="radio" name="unit[[$index]]" ng-attr-id="isitem[[$index]]" ng-model="choice.unit" value="item" ng-checked="false"> <label for="isitem[[$index]]"><b> Item</b></label>
+		     		
 		     		<input type="text" class="form-control" ng-model="choice.hour" name="" ng-pattern="/^0|[1-9][0-9]*$/" placeholder="Enter rate" required>
 		     	</div>
 		     	<div class="col-md-1 col-xs-2 col-sm-1"><p><br></p>
