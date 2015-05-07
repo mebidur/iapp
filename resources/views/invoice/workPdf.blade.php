@@ -1,9 +1,18 @@
-<style type="text/css">
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Work PDF File</title>
+  <style type="text/css">
   html {
     font-family: sans-serif;
+    -ms-text-size-adjust: 100%;
+    -webkit-text-size-adjust: 100%
   }
   body {
-    margin: 0;
+      font-family: 'Open Sans', sans-serif;
+      font-size: 14px;
+      line-height: 1.42857;
+      background-color: #fff
   }
     table {
     background-color: transparent;
@@ -189,135 +198,138 @@
 }
 
 </style>
-</head>  
+</head>
 <body>
-
-<div id="container" class="container {{($requestType != 'downloadWorkPDF') ? 'center-content' : ''}}" ng-app="iApp" ng-controller="WorkPdfController">
-  @if($requestType != 'downloadWorkPDF')
-  <div class="hidden-print">
-    {!!Form::open(['url' => '/invoice/download'])!!}
-    <input type="hidden" name="requestType" value="downloadWorkPDF">
-    <input type="hidden" name="invoiceId" value="{{$invoice->id}}">
-    <div class="pdf-buttons button-content">
-      <button  type="button" class="go-back" ng-click="goBack()">Go Back</button>
-      <button type="submit" class="btn-download-pdf">Download PDF</button>
-      <button type="button" id="pdf-print-btn" class="pdf-print-btn">Print</button>
-    </div>  
-  {!!Form::close()!!}
+  <div id="container" class="container {{($requestType != 'downloadWorkPDF') ? 'center-content' : ''}}" ng-app="iApp" ng-controller="WorkPdfController">
+    @if($requestType != 'downloadWorkPDF')
+    <div class="hidden-print">
+      {!!Form::open(['url' => '/invoice/download'])!!}
+      <input type="hidden" name="requestType" value="downloadWorkPDF">
+      <input type="hidden" name="invoiceId" value="{{$invoice->id}}">
+      <div class="pdf-buttons button-content">
+        <button  type="button" class="go-back" ng-click="goBack()">Go Back</button>
+        <button type="submit" class="btn-download-pdf">Download PDF</button>
+        <button type="button" id="pdf-print-btn" class="pdf-print-btn">Print</button>
+      </div>  
+    {!!Form::close()!!}
+    </div>
+    @endif
+    <h2 style="text-align:center">Invoice</h2><br>
+    <table class="table table-header">
+      <tr>
+        <td class="invoice-no"><b>Invoice No:</b> {{$invoice->invoiceNumber}}</td>
+        <td class="invoice-date"><b>Invoice Date:</b> {{date('d/m/Y',strtotime($invoice->serviceDate))}}</td>
+      </tr>
+    </table>
+    <table class="table table-bordered panels">
+      <tr>
+        <th>Service Provider</th>
+        <th>Customer Information</th>
+      </tr>
+      <tr>
+        <td>
+          <div class="iapp-details">
+            <pre><b>{{$invoice['organization']->name}}</b></pre>
+          </div>
+            <div class="iapp-details">
+              <pre>
+                {{$invoice['organization']->address}},<?php echo "\n" ?>
+                {{$invoice['organization']->city}}<?php echo "\n" ?>
+                {{$invoice['organization']->country}}
+              </pre>
+            </div>
+        </td>
+        <td>
+          <div class="iapp-details">
+            <pre><b>{{$invoice['customer']->name}}</b></pre>  
+          </div>
+            <div class="iapp-details">
+              <pre>{{$invoice['customer']->address}}</pre>
+            </div>
+        </td>
+      </tr>
+    </table>
+    <p></p>
+    <table class="table table-bordered mid-panels">
+      <thead>
+        <tr>
+          <th>Service</th>
+          <th>Hours / Qty</th>
+          <th>Rate / Price</th>
+          <th>Sub Total</th>
+        </tr>
+      </thead>
+      <tbody>
+      <?php $subTotal = 0;?>
+        @foreach($invoice['description'] as $each)
+        <tr>
+          <td>{{$each['workDescription']}}</td>
+          <?php $unit = ($each['hour'] > 1) ? $each['unit'].'s': $each['unit']?>
+          <td>{{$each['hour'].' '.$unit}}</td>
+          <?php $subTotal += $each['rate'] * $each['hour'];?>
+          <td><span class="currency-view">{{$invoice->currency}}</span><span>{{$each['rate']}}</span></td>
+          <td><span class="currency-view">{{$invoice->currency}}</span><span>{{$each['rate'] * $each['hour']}}</span></td>
+        </tr>
+        @endforeach
+        <tr>
+          <td colspan="3" style="text-align:right"><b>Total:</b></td>
+          <td><b><span class="currency-view">{{$invoice->currency}}</span><span>{{round($subTotal,2)}}</span></b></td>
+        </tr>
+      </tbody>
+    </table>
+    <p></p>
+    <table class="panels table table-bordered">
+      <tr>
+        <th>Bank details</th>
+        <th>Terms &amp; Conditions</th>
+      </tr>
+      <tr>
+        <td>
+          <div class="iapp-details">
+            <pre>{{$invoice['organization']->bankDetails}}</pre>
+          </div>
+        </td>
+        <td>
+          <div class="iapp-details">
+            <pre>
+              {{$invoice['organization']->rules}}
+            </pre>
+          </div>
+        </td>
+      </tr>
+    </table>
+    <p></p>
+    <table class="panels table table-bordered">
+      <tr>
+        <th>Note</th>
+      </tr>
+      <tr>
+        <td>
+            <div class="iapp-details">
+              <pre>
+                {{$invoice['organization']->note}}
+              </pre>
+          </div>
+        </td>
+      </tr>
+    </table>
   </div>
-  @endif
-  <h2 style="text-align:center">Invoice</h2><br>
-  <table class="table table-header">
-    <tr>
-      <td class="invoice-no"><b>Invoice No:</b> {{$invoice->invoiceNumber}}</td>
-      <td class="invoice-date"><b>Invoice Date:</b> {{date('d/m/Y',strtotime($invoice->serviceDate))}}</td>
-    </tr>
-  </table>
-  <table class="table table-bordered panels">
-    <tr>
-      <th>Service Provider</th>
-      <th>Customer Information</th>
-    </tr>
-    <tr>
-      <td>
-        <div class="iapp-details">
-          <pre><b>{{$invoice['organization']->name}}</b></pre>
-        </div>
-          <div class="iapp-details">
-            <pre>
-              {{$invoice['organization']->address}},<?php echo "\n" ?>
-              {{$invoice['organization']->city}}<?php echo "\n" ?>
-              {{$invoice['organization']->country}}
-            </pre>
-          </div>
-      </td>
-      <td>
-        <div class="iapp-details">
-          <pre><b>{{$invoice['customer']->name}}</b></pre>  
-        </div>
-          <div class="iapp-details">
-            <pre>{{$invoice['customer']->address}}</pre>
-          </div>
-      </td>
-    </tr>
-  </table>
-  <p></p>
-  <table class="table table-bordered mid-panels">
-    <thead>
-      <tr>
-        <th>Service</th>
-        <th>Hours / Qty</th>
-        <th>Rate / Price</th>
-        <th>Sub Total</th>
-      </tr>
-    </thead>
-    <tbody>
-    <?php $subTotal = 0;?>
-      @foreach($invoice['description'] as $each)
-      <tr>
-        <td>{{$each['workDescription']}}</td>
-        <?php $unit = ($each['hour'] > 1) ? $each['unit'].'s': $each['unit']?>
-        <td>{{$each['hour'].' '.$unit}}</td>
-        <?php $subTotal += $each['rate'] * $each['hour'];?>
-        <td><span class="currency-view">{{$invoice->currency}}</span><span>{{$each['rate']}}</span></td>
-        <td><span class="currency-view">{{$invoice->currency}}</span><span>{{$each['rate'] * $each['hour']}}</span></td>
-      </tr>
-      @endforeach
-      <tr>
-        <td colspan="3" style="text-align:right"><b>Total:</b></td>
-        <td><b><span class="currency-view">{{$invoice->currency}}</span><span>{{round($subTotal,2)}}</span></b></td>
-      </tr>
-    </tbody>
-  </table>
-  <p></p>
-  <table class="panels table table-bordered">
-    <tr>
-      <th>Bank details</th>
-      <th>Terms &amp; Conditions</th>
-    </tr>
-    <tr>
-      <td>
-        <div class="iapp-details">
-          <pre>{{$invoice['organization']->bankDetails}}</pre>
-        </div>
-      </td>
-      <td>
-        <div class="iapp-details">
-          <pre>
-            {{$invoice['organization']->rules}}
-          </pre>
-        </div>
-      </td>
-    </tr>
-  </table>
-  <p></p>
-  <table class="panels table table-bordered">
-    <tr>
-      <th>Note</th>
-    </tr>
-    <tr>
-      <td>
-          <div class="iapp-details">
-            <pre>
-              {{$invoice['organization']->note}}
-            </pre>
-        </div>
-      </td>
-    </tr>
-  </table>
-</div>
-<script type="text/javascript" src="{{url('js/jquery.min.js')}}"></script>
-<script type="text/javascript" src="{{url('js/printPdf.js')}}"></script>
-<script type="text/javascript" src="{{url('js/angular.min.js')}}"></script>
-<script type="text/javascript">
-  var app = angular.module('iApp', []);
-  app.controller('WorkPdfController',function($scope, $timeout, $window){
-    $scope.goBack = function(){
-      $window.history.back();
-    }
-  });
+  <script type="text/javascript" src="{{url('js/jquery.min.js')}}"></script>
+  <script type="text/javascript" src="{{url('js/printPdf.js')}}"></script>
+  <script type="text/javascript" src="{{url('js/angular.min.js')}}"></script>
+  <script type="text/javascript">
+    var app = angular.module('iApp', []);
+    app.controller('WorkPdfController',function($scope, $timeout, $window){
+      $scope.goBack = function(){
+        $window.history.back();
+      }
+    });
 
-</script>
+  </script>
+</body>
+</html>
+
+
 
 
 

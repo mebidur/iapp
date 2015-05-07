@@ -1,10 +1,5 @@
 @extends('app')
 @section('content')
-<div class="container iapp-status">
-	<div class="row">
-		<div class="col-md-12">Home / Invoices History</div>
-	</div>
-</div>
 <div class="container container-bordered">
 	<h3 class="title-text">Invoice History</h3>
 		@if(Session::has('message'))
@@ -13,7 +8,7 @@
 			<a href="javascript:void(0)" class="pull-right alert-close" ng-fade-out><span class="success-close">&times;</span></a>
 		</div>
 		@endif
-	<span class="pagination-view hidden-xs" style="top: 4% !important;">Showing {{$invoices->firstItem()}} to {{$invoices->lastItem()}} of {{$invoices->total()}} Invoices</span>
+	<span class="pagination-view hidden-xs" style="top: 3% !important;">Showing {{$invoices->firstItem()}} to {{$invoices->lastItem()}} of {{$invoices->total()}} Invoices</span>
 	<div class="table-responsive iapp-option {{(count($invoices) < 10) ? 'has-more-invoice' : '' }}">
 		<table class="table">
 			<tr>

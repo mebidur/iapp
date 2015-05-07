@@ -1,9 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Service Receipt PDF File</title>
 <style type="text/css">
   html {
     font-family: sans-serif;
+    -ms-text-size-adjust: 100%;
+    -webkit-text-size-adjust: 100%
   }
   body {
-    margin: 0;
+      font-family: 'Open Sans', sans-serif;
+      font-size: 14px;
+      line-height: 1.42857;
+      background-color: #fff
   }
     table {
     background-color: transparent;
@@ -187,9 +196,9 @@
   color: #fff;
 }
 </style>
-</head>  
+</head>
 <body>
-<div  id="container" class="container {{($requestType != 'downloadServicePDF') ? 'center-content' : ''}}" ng-app="iApp" ng-controller="WorkPdfController">
+  <div  id="container" class="container {{($requestType != 'downloadServicePDF') ? 'center-content' : ''}}" ng-app="iApp" ng-controller="WorkPdfController">
   @if($requestType != 'downloadServicePDF')
   <div class="hidden-print">
     {!!Form::open(['url' => '/receipt/download'])!!}
@@ -298,3 +307,5 @@
   });
 
 </script>
+</body>
+</html>

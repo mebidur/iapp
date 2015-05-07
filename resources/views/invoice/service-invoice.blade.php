@@ -1,10 +1,10 @@
 @extends('app')
 @section('content')
-<div class="container iapp-status">
+<!-- <div class="container iapp-status">
 	<div class="row">
 		<div class="col-md-12">Invoices / Service Invoice</div>
 	</div>
-</div>
+</div> -->
 <div class="container container-bordered" ng-controller="ServiceInvoiceController">
 	<h3 class="title-line hidden-xs">Create New Service Invoice</h3>
 	<h4 class="title-line visible-xs hidden-lg hidden-md hidden-sm">New Invoice</h4>

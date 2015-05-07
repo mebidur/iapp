@@ -1,10 +1,10 @@
 @extends('app')
 @section('content')
-<div class="container iapp-status">
+<!-- <div class="container iapp-status">
 	<div class="row">
 		<div class="col-md-12">Receipts / Receipts History</div>
 	</div>
-</div>
+</div> -->
 <div class="container container-bordered">
 	<h3 class="title-text">Receipt History</h3>
 		@if(Session::has('message'))

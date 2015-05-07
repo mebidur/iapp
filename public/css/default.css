@@ -28,6 +28,7 @@ html,body{
 	border:1px solid #dfdfdf !important;
 	border-top: 1px solid #EAEBEC !important;
 	position: relative !important;
+  border-radius: 5px !important;
 }
 .iapp-footer{
 	background-color: #F8F8F8;
@@ -135,7 +136,7 @@ input[type="date"]{
 	border-radius: 10px;
 }
 .content-holder{
-	padding-top: 65px !important;
+	padding-top: 85px !important;
 }
 .success-close{
 	color: #3C763D !important;
@@ -208,10 +209,7 @@ select.ng-pristine{
 	padding: 5px 0px 6px;
 	color: #907F7F !important;
 }
-.iapp-drop-down-menu{
-	  border-radius: 0px !important;
-	  padding: 2px !important;
-}
+
 .datepicker td.active, 
 .datepicker td.active:hover {
 	background-image: linear-gradient(to bottom, #0088cc, #0099C9) !important;
@@ -226,24 +224,7 @@ select.ng-pristine{
 	border-right: 7px solid transparent;
 	border-bottom: 7px solid #F8F8F8;
 }
-.iapp-nav .navbar-nav ul{
-	padding: 0px !important;
-}
-.iapp-nav .navbar-nav > li > .dropdown-menu {
-	margin-top: 10px !important;
-	border-radius: 0px !important; 
-	background-color: #F8F8F8 !important; 
-}
-.iapp-nav .dropdown-menu > li > a {
-	padding-top: 11px !important;
-	padding-bottom: 8px !important;
-}
-.iapp-nav .dropdown-menu > li > a:hover{
-	background: rgb(0, 153, 201) !important;
-	color: #fff !important;
-	padding-top: 11px;
-	padding-bottom: 8px;
-}
+
 .current-list{
 	background: rgb(0, 153, 201);
 	color: #fff !important;
@@ -262,7 +243,6 @@ select.ng-pristine{
 .navbar-default .navbar-nav > .open > a,
 .navbar-default .navbar-nav > .open > a:hover, 
 .navbar-default .navbar-nav > .open > a:focus{
-  /*border-bottom: 4px solid #E7E7E7 !important;*/
   background-color: #fff;
   border-bottom: 4px solid #FFFFFF !important;
 }
@@ -440,7 +420,6 @@ hr{
 	font-size: 13px;
 	border-bottom: 2px solid #087A9D;
 	color: #fff;
-	  /*min-width: 81px !important;*/
 }
 .dropdown-menu-hover {
 	position: absolute;
@@ -568,7 +547,44 @@ ul#results li:hover h3, ul#results li:hover h4  {
 	color: #A89C9C;
 }
 
-::-webkit-scrollbar {
+.navbar-brand {
+  float: left !important;
+  padding: 24px 15px !important;
+ font-size: 18px !important;
+  line-height: 17px !important;
+  height: 65px !important;
+}
+.app-navbar-default {
+  background-color: #e0e7eb !important;
+  border-color: #e0e7eb !important;
+}
+.iapp-navbar-nav > li > a {
+  padding-top: 26px !important;
+}
+.table>thead>tr>td, 
+.table>tbody>tr>th, 
+.table>tbody>tr>td, 
+.table>tfoot>tr>th, 
+.table>tfoot>tr>td {
+  padding: 12px !important;
+  border-top: 1px solid #e0e7eb !important;
+}
+
+.dropdown-menu>li>a {
+    display: block;
+    padding: 8px 20px;
+    clear: both;
+    font-weight: 400;
+    line-height: 1.42857;
+    white-space: nowrap
+}
+.dropdown-menu>li>a:hover,
+.dropdown-menu>li>a:focus {
+    text-decoration: none;
+    color: #fff;
+    background-color: #337AB7;
+}
+/*::-webkit-scrollbar {
     width: 5px;
     border-radius: 10px;
 }
@@ -587,5 +603,40 @@ ul#results li:hover h3, ul#results li:hover h4  {
 }
 ::-webkit-scrollbar-thumb:window-inactive {
 	background: rgba(236, 236, 236, 0.8);
+}*/
+
+input[type="radio"]:checked+label:before, input[type="radio"]:checked+.value-label:before {
+  background-color: #fff !important;
+   box-shadow: inset 0 0 0 3px #337AB7 !important; 
+}
+
+input[type="checkbox"]+label:before, input[type="checkbox"]+.value-label:before, input[type="radio"]+label:before, input[type="radio"]+.value-label:before {
+  font-family: "bdl-icons";
+  font-style: normal;
+  font-weight: 400;
+  text-decoration: inherit;
+  text-align: center;
+  font-variant: normal;
+  text-transform: none;
+  font-size: 1.4em;
+  speak: none;
+  content: ' ';
+  display: inline-block;
+  vertical-align: text-top;
+  margin-right: 10px;
+  margin-left: -18px;
+  width: 15px;
+  height: 15px;
+  text-indent: -2px;
+  line-height: 14px;
+  background-color: #fff;
+  border: 1px solid #BABCBE;
+  border-radius: 2px;
+}
+input[type="radio"]+label:before, input[type="radio"]+.value-label:before {
+  border-radius: 100px;
+}
+input[type="radio"]+label:before, input[type="radio"]+.value-label:before {
+  border-radius: 100px !important;
 }
 

@@ -8,12 +8,13 @@
 	<title>Invoice App</title>
 
 	<link href="{{ asset('/css/app.css') }}" rel="stylesheet">
+	<!-- <link rel="stylesheet" type="text/css" href="{{url('css/bigdl.css')}}"> -->
 	<link rel="stylesheet" type="text/css" href="{{url('css/default.css')}}">
 	<link rel="stylesheet" type="text/css" href="{{url('css/datepicker.css')}}">
 </head>
 <body>
 	<div class="wrapper">
-		<div id="app-menu" class="navbar navbar-default navbar-fixed-top" role="navigation">
+		<div id="app-menu" class="navbar navbar-default app-navbar-default navbar-fixed-top" role="navigation">
 		    <div class="container">
 		        <div class="navbar-header iapp-logo"><a class="navbar-brand" href="{{url('/')}}">Invoice App</a>
 		            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-menubuilder"><span class="glyphicon glyphicon-menu-hamburger"></span>
@@ -21,7 +22,7 @@
 		        </div>
 		        <div class="collapse navbar-collapse navbar-menubuilder">
 		            @if(Auth::check())
-		            <ul class="nav navbar-nav navbar-left iapp-nav">
+		            <ul class="nav navbar-nav iapp-navbar-nav navbar-left iapp-nav">
 		                <li class="{{($current == 'home') ? 'current' : ''}}"><a href="{{url('/')}}"><b>Home</b></a></li>
 		                <li class="dropdown {{($current == 'invoice' ||$current == 'work-invoice' || $current == 'service-invoice') ? 'current' : ''}}">
 							<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><b>Invoices</b></a>
@@ -43,12 +44,12 @@
 						</li>						
 		            </ul>
 		            @endif
-		            <ul class="nav navbar-nav navbar-right iapp-nav">
+		            <ul class="nav navbar-nav iapp-navbar-nav navbar-right iapp-nav">
 		            	@if (Auth::check())
 							<li class="dropdown">
 								<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">{{ Auth::user()->email }} <span class="caret"></span></a>
 								<ul class="dropdown-menu iapp-drop-down-menu" role="menu">
-									<div class="triangle-up"></div>
+									<!-- <div class="triangle-up"></div> -->
 									<li><a href="{{url('config/profile')}}"><span class="glyphicon glyphicon-cog"></span> Settings</a></li>
 									<li class="divider"></li>
 									<li><a href="{{URL::to('/auth/logout')}}"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>

@@ -1,189 +1,181 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Service PDF File</title>
 <style type="text/css">
-	html {
-	  font-family: sans-serif;
-	}
-	body {
-	  margin: 0;
-	}
-    table {
-    background-color: transparent;
-  }
-  th {
-    text-align: left;
-  }
-  .table {
-    width: 100%;
-    max-width: 100%;
-    margin-bottom: 20px;
-  }
-  .table > thead > tr > th,
-  .table > tbody > tr > th,
-  .table > tfoot > tr > th,
-  .table > thead > tr > td,
-  .table > tbody > tr > td,
-  .table > tfoot > tr > td {
-    padding: 8px;
-    line-height: 1.42857143;
-    vertical-align: top;
-    border-top: 1px solid #ddd;
-  }
-  .table > thead > tr > th {
-    vertical-align: bottom;
-    border-bottom: 2px solid #ddd;
-  }
-  .table > caption + thead > tr:first-child > th,
-  .table > colgroup + thead > tr:first-child > th,
-  .table > thead:first-child > tr:first-child > th,
-  .table > caption + thead > tr:first-child > td,
-  .table > colgroup + thead > tr:first-child > td,
-  .table > thead:first-child > tr:first-child > td {
-    border-top: 0;
-  }
-  .table > tbody + tbody {
-    border-top: 2px solid #ddd;
-  }
-  .table .table {
-    background-color: #fff;
-  } 
-  .table-striped > tbody > tr:nth-child(odd) > td,
-  .table-striped > tbody > tr:nth-child(odd) > th {
-    background-color: #f9f9f9;
-  }
-  table col[class*="col-"] {
-    position: static;
-    display: table-column;
-    float: none;
-  }
-  table td[class*="col-"],
-  table th[class*="col-"] {
-    position: static;
-    display: table-cell;
-    float: none;
-  }
-  .table > thead > tr > td.active,
-  .table > tbody > tr > td.active,
-  .table > tfoot > tr > td.active,
-  .table > thead > tr > th.active,
-  .table > tbody > tr > th.active,
-  .table > tfoot > tr > th.active,
-  .table > thead > tr.active > td,
-  .table > tbody > tr.active > td,
-  .table > tfoot > tr.active > td,
-  .table > thead > tr.active > th,
-  .table > tbody > tr.active > th,
-  .table > tfoot > tr.active > th {
-    background-color: #f5f5f5;
-  }
-  .table-hover > tbody > tr > td.active:hover,
-  .table-hover > tbody > tr > th.active:hover,
-  .table-hover > tbody > tr.active:hover > td,
-  .table-hover > tbody > tr:hover > .active,
-  .table-hover > tbody > tr.active:hover > th {
-    background-color: #e8e8e8;
-  }
-  .panel{
-      -webkit-box-shadow: none !important;
-      box-shadow: none !important;
-      border-color: #dfdfdf;
-  }
-  .total-label{
-    padding-right: 0px !important; 
-    padding-left: 0px !important; 
-    text-align: right;
-  }
-  .panel-info {
-	  border-color: #CADCE5 !important;
-	}
-  h5{
-    font-style: bold !important;
-  }
-  .underline-text{
-    padding-bottom: 2px !important;
-    border-bottom: 1px dashed #dfdfdf;
-  }
-  .iapp-details{
-    max-width: 900px !important;
-    padding: 4px!important;
-  }
-  .iapp-details span{
-    padding: 9px !important;
-  }
-  .iapp-details h4{
-    font-size: 16px !important;
-    padding-left: 9px !important;
-  }
-  .iapp-details pre{
-    background: #fff !important;
-    border: none !important;
-    padding: 0px !important;
-    font-family: sans-serif !important;
-    margin: 0px !important;
-    white-space: pre-line !important;
-  }
-
-  .pdf-print-btn{
-    padding: 6px 15px;
-    border-radius: 13px;
-    background: #0099C9;
-    border: 0px;
-    font-size: 13px;
-    border-color: #087A9D;
-    color: #fff;    
-  }
-
-  .invoice-info td{
-    width: 50%;
-  }
-  .mid-panels th{
-    background: #D9EDF7;
-  }
-  .panels th{
-    width: 50%;
-    background: #D9EDF7;
-  }
-  @media print {
-    .hidden-print {
-      display: none !important;
-    }
-  }
-  .container{
-    max-width:900px !important;
-    overflow: hidden !important;
-  }
-  .center-content{
-    margin: 0 auto !important;
-  }
-  .table-header tr td{
-    vertical-align: middle !important;
-  }
-  .invoice-date{
-    text-align: right !important;
-    vertical-align: middle !important;
-  }
-  .invoice-no{
-    width: 50% !important;
-    vertical-align: middle !important;
-  }
-  .btn-download-pdf{
-    padding: 6px 0px;
-    width: 120px;
-    border-radius: 13px;
-    background: #0099C9;
-    border: 0px;
-    font-size: 13px;
-    border-color: #087A9D;
-    color: #fff;
-  }
-  .button-content{
-    position:absolute;
-    margin-top: 10px !important;
-  }
-.currency-view{
-  padding-right: 2px !important;
+html {
+  font-family: sans-serif;
+  -ms-text-size-adjust: 100%;
+  -webkit-text-size-adjust: 100%
 }
-.go-back, .go-back:hover{
-  padding: 6px 12px;
-  text-decoration: none;
+body {
+    font-family: 'Open Sans', sans-serif;
+    font-size: 14px;
+    line-height: 1.42857;
+    background-color: #fff
+}
+  table {
+  background-color: transparent;
+}
+th {
+  text-align: left;
+}
+.table {
+  width: 100%;
+  max-width: 100%;
+  margin-bottom: 20px;
+}
+.table > thead > tr > th,
+.table > tbody > tr > th,
+.table > tfoot > tr > th,
+.table > thead > tr > td,
+.table > tbody > tr > td,
+.table > tfoot > tr > td {
+  padding: 8px;
+  line-height: 1.42857143;
+  vertical-align: top;
+  border-top: 1px solid #ddd;
+}
+.table > thead > tr > th {
+  vertical-align: bottom;
+  border-bottom: 2px solid #ddd;
+}
+.table > caption + thead > tr:first-child > th,
+.table > colgroup + thead > tr:first-child > th,
+.table > thead:first-child > tr:first-child > th,
+.table > caption + thead > tr:first-child > td,
+.table > colgroup + thead > tr:first-child > td,
+.table > thead:first-child > tr:first-child > td {
+  border-top: 0;
+}
+.table > tbody + tbody {
+  border-top: 2px solid #ddd;
+}
+.table .table {
+  background-color: #fff;
+} 
+.table-striped > tbody > tr:nth-child(odd) > td,
+.table-striped > tbody > tr:nth-child(odd) > th {
+  background-color: #f9f9f9;
+}
+table col[class*="col-"] {
+  position: static;
+  display: table-column;
+  float: none;
+}
+table td[class*="col-"],
+table th[class*="col-"] {
+  position: static;
+  display: table-cell;
+  float: none;
+}
+.table > thead > tr > td.active,
+.table > tbody > tr > td.active,
+.table > tfoot > tr > td.active,
+.table > thead > tr > th.active,
+.table > tbody > tr > th.active,
+.table > tfoot > tr > th.active,
+.table > thead > tr.active > td,
+.table > tbody > tr.active > td,
+.table > tfoot > tr.active > td,
+.table > thead > tr.active > th,
+.table > tbody > tr.active > th,
+.table > tfoot > tr.active > th {
+  background-color: #f5f5f5;
+}
+.table-hover > tbody > tr > td.active:hover,
+.table-hover > tbody > tr > th.active:hover,
+.table-hover > tbody > tr.active:hover > td,
+.table-hover > tbody > tr:hover > .active,
+.table-hover > tbody > tr.active:hover > th {
+  background-color: #e8e8e8;
+}
+.panel{
+    -webkit-box-shadow: none !important;
+    box-shadow: none !important;
+    border-color: #dfdfdf;
+}
+.total-label{
+  padding-right: 0px !important; 
+  padding-left: 0px !important; 
+  text-align: right;
+}
+.panel-info {
+  border-color: #CADCE5 !important;
+}
+h5{
+  font-style: bold !important;
+}
+.underline-text{
+  padding-bottom: 2px !important;
+  border-bottom: 1px dashed #dfdfdf;
+}
+.iapp-details{
+  max-width: 900px !important;
+  padding: 4px!important;
+}
+.iapp-details span{
+  padding: 9px !important;
+}
+.iapp-details h4{
+  font-size: 16px !important;
+  padding-left: 9px !important;
+}
+.iapp-details pre{
+  background: #fff !important;
+  border: none !important;
+  padding: 0px !important;
+  font-family: sans-serif !important;
+  margin: 0px !important;
+  white-space: pre-line !important;
+}
+
+.pdf-print-btn{
+  padding: 6px 15px;
+  border-radius: 13px;
+  background: #0099C9;
+  border: 0px;
+  font-size: 13px;
+  border-color: #087A9D;
+  color: #fff;    
+}
+
+.invoice-info td{
+  width: 50%;
+}
+.mid-panels th{
+  background: #D9EDF7;
+}
+.panels th{
+  width: 50%;
+  background: #D9EDF7;
+}
+@media print {
+  .hidden-print {
+    display: none !important;
+  }
+}
+.container{
+  max-width:900px !important;
+  overflow: hidden !important;
+}
+.center-content{
+  margin: 0 auto !important;
+}
+.table-header tr td{
+  vertical-align: middle !important;
+}
+.invoice-date{
+  text-align: right !important;
+  vertical-align: middle !important;
+}
+.invoice-no{
+  width: 50% !important;
+  vertical-align: middle !important;
+}
+.btn-download-pdf{
+  padding: 6px 0px;
+  width: 120px;
   border-radius: 13px;
   background: #0099C9;
   border: 0px;
@@ -191,8 +183,24 @@
   border-color: #087A9D;
   color: #fff;
 }
+.button-content{
+  position:absolute;
+  margin-top: 10px !important;
+}
+.currency-view{
+padding-right: 2px !important;
+}
+.go-back, .go-back:hover{
+padding: 6px 12px;
+text-decoration: none;
+border-radius: 13px;
+background: #0099C9;
+border: 0px;
+font-size: 13px;
+border-color: #087A9D;
+color: #fff;
+}
 </style>
-</head>  
 <body>
 <div id="container" class="container {{($requestType != 'downloadServicePDF') ? 'center-content' : ''}}" ng-app="iApp" ng-controller="ServicePdfController">
   @if($requestType != 'downloadServicePDF')
@@ -322,3 +330,5 @@
   });
 
 </script>
+</body>
+</html>

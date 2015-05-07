@@ -1,10 +1,10 @@
 @extends('app')
 @section('content')
-<div class="container iapp-status">
+<!-- <div class="container iapp-status">
 	<div class="row">
 		<div class="col-md-12">Invoices / Edit Work Invoice</div>
 	</div>
-</div>
+</div> -->
 <div class="container container-bordered" ng-controller="EditWorkInvoiceController" ng-init="general.currentId='{{$currentId}}';">
 	<p></p>
 	<div class="errors" ng-if="hasErrors">
