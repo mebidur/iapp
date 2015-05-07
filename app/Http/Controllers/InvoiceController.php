@@ -126,14 +126,18 @@ class InvoiceController extends Controller {
 						 		'requestType' => 'downloadServicePDF'])
 						->render();
 
-			return $pdf->load($html, 'A4', 'portrait')->download();
+			return $pdf->load($html, 'A4', 'portrait')
+					   ->filename($filename = $invoiceData->invoiceNumber.'.pdf')
+					   ->download();
 		}
 		if(\Input::get('requestType') == 'downloadWorkPDF' && !empty($invoiceData))
 		{
 			$html = \View::make('invoice.workPdf')->with(['invoice' => $invoiceData,
 														  'requestType' => 'downloadWorkPDF',])
 														->render();
-			return $pdf->load($html, 'A4', 'portrait')->download();
+			return $pdf->load($html, 'A4', 'portrait')
+					   ->filename($filename = $invoiceData->invoiceNumber.'.pdf')
+					   ->download();
 		}
 		return 'Bad Request!';
 	}

@@ -72,6 +72,7 @@ class ReceiptController extends Controller {
 					$cust = $receipt->customer;
 				}
 				return ['status' => 'OK', 'statusCode' => 200, 'receiptId' => $receipt->id,'receiptTpye' => $receipt->type,'response' => true];
+				
 			} catch (Exception $e) {
 				return ['status' => 'Database Error', 'statusCode' => 503, 'response' => false];
 			}
@@ -125,14 +126,18 @@ class ReceiptController extends Controller {
 						 		'requestType' => 'downloadServicePDF'])
 						->render();
 
-			return $pdf->load($html, 'A4', 'portrait')->download();
+			return $pdf->load($html, 'A4', 'portrait')
+						->filename($filename = $receiptData->receiptNumber.'.pdf')
+						->download();
 		}
 		if(\Input::get('requestType') == 'downloadWorkPDF' && !empty($receiptData))
 		{
 			$html = \View::make('receipt.workReceiptPdf')->with(['receipt' => $receiptData,
 																 'requestType' => 'downloadWorkPDF',])
 														->render();
-			return $pdf->load($html, 'A4', 'portrait')->download();
+			return $pdf->load($html, 'A4', 'portrait')
+						->filename($filename = $receiptData->receiptNumber.'.pdf')
+						->download();
 		}
 		return 'Bad Request!';
 	}

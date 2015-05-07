@@ -474,14 +474,13 @@ hr{
 	padding-bottom:80px !important;
 }
 
-/*css below is for serarch*/
-
 .searched-result{
   background: #F8F8F8;
   padding: 0;
   position: absolute;
   width: 100%;
   z-index: 100;
+  overflow: hidden;
   max-height: 240px !important;
   margin-top: 4px;
   border-top: 0;
